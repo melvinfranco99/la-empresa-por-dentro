@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fundamentos · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="fundamentos">
+<main><div class="content">
+
+<section class="hero">
+  <div class="kicker">Antes de empezar</div>
+  <h1>Fundamentos imprescindibles</h1>
+  <p class="lead">Lo mínimo que hay que tener claro para entender cualquier red de empresa: qué hace cada aparato, qué cable usar, cómo funcionan las direcciones IP, las VLANs, el DNS, el Wi-Fi y la electricidad que lo alimenta todo.</p>
+</section>
+
+<h2>Bits, bytes y velocidades</h2>
+<p>El primer malentendido de casi todas las incidencias de "Internet va lento":</p>
+<div class="two">
+<div class="card">
+<h4>Las redes se miden en <b>bits</b> por segundo</h4>
+<p class="small">Mbps, Gbps (minúscula <b>b</b>). Es lo que vende la operadora: "fibra de 1 Gb" = 1.000 megabits por segundo.</p>
+</div>
+<div class="card">
+<h4>Los archivos se miden en <b>bytes</b></h4>
+<p class="small">MB, GB (mayúscula <b>B</b>). 1 byte = 8 bits. Lo que enseña el navegador al descargar.</p>
+</div>
+</div>
+<div class="formula">MB/s ≈ Mbps ÷ 8 &nbsp;&nbsp;→&nbsp;&nbsp; 1.000 Mbps ≈ 125 MB/s teóricos ≈ 110–117 MB/s reales</div>
+<p>La diferencia entre teórico y real se debe a las <b>cabeceras</b> de los protocolos (Ethernet, IP, TCP): cada paquete lleva unos 40–60 bytes de "sobre" además de los datos útiles. En la práctica se pierde un 5–8 %.</p>
+
+<h3>Ancho de banda, latencia y jitter</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Concepto</th><th>Qué es</th><th>Analogía</th><th>Se mide</th><th>Afecta a</th></tr></thead>
+<tbody>
+<tr><td><b>Ancho de banda</b></td><td>Cuántos datos caben por segundo</td><td>Número de carriles de la autopista</td><td>Mbps / Gbps</td><td>Descargas, backups, vídeo 4K</td></tr>
+<tr><td><b>Latencia</b></td><td>Cuánto tarda un paquete en ir y volver</td><td>Distancia y velocidad máxima del coche</td><td>ms (ping)</td><td>Videollamadas, escritorio remoto, juegos, bases de datos remotas</td></tr>
+<tr><td><b>Jitter</b></td><td>Cuánto varía la latencia</td><td>Atascos intermitentes</td><td>ms</td><td>Voz IP (VoIP), videollamada entrecortada</td></tr>
+<tr><td><b>Pérdida de paquetes</b></td><td>% de paquetes que no llegan</td><td>Coches que se salen de la carretera</td><td>%</td><td>Todo. Con más de un 1 % ya se nota</td></tr>
+</tbody></table></div>
+<div class="callout warn"><span class="t">Clave práctica</span>Contratar más megas mejora el <b>ancho de banda</b>, no la <b>latencia</b>. Si las videollamadas van mal y el ancho de banda no está saturado, el problema es latencia, jitter o pérdida; más megas no lo arreglan.</div>
+
+<h2>El modelo de capas (versión útil)</h2>
+<p>Olvida memorizar el modelo OSI completo. Lo útil es saber <b>en qué capa trabaja cada aparato</b>, porque eso te dice qué puede ver y qué puede hacer:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Capa</th><th>Nombre</th><th>Qué maneja</th><th>Aparatos</th><th>Cómo se identifica</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Física</td><td>Señales eléctricas, luz, radio</td><td>Cables, fibra, ONT, repetidores, latiguillos</td><td>—</td></tr>
+<tr><td>2</td><td>Enlace</td><td>Tramas dentro de una misma red local</td><td>Switch, punto de acceso Wi-Fi</td><td>Dirección MAC <code>3C:52:82:1A:F0:11</code></td></tr>
+<tr><td>3</td><td>Red</td><td>Paquetes entre redes distintas</td><td>Router, switch de capa 3, firewall</td><td>Dirección IP <code>192.168.1.20</code></td></tr>
+<tr><td>4</td><td>Transporte</td><td>Conexiones y puertos</td><td>Firewall, balanceador</td><td>Puerto <code>TCP 443</code>, <code>UDP 53</code></td></tr>
+<tr><td>7</td><td>Aplicación</td><td>El "qué": web, correo, ficheros</td><td>Firewall de nueva generación (NGFW), proxy, WAF</td><td>Dominio, URL, usuario, aplicación</td></tr>
+</tbody></table></div>
+<p>Cuando diagnostiques un problema, <b>sube de abajo arriba</b>: ¿hay luz en el puerto (capa 1)? ¿el switch ve la MAC (2)? ¿tiene IP y llega a la puerta de enlace (3)? ¿el puerto está abierto (4)? ¿la aplicación responde (7)? Más en <a href="problemas.html">Diagnóstico</a>.</p>
+
+<h2>Los aparatos y qué hace cada uno</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Aparato</th><th>Función en una frase</th><th>Dónde se pone</th><th>Por qué ahí</th></tr></thead>
+<tbody>
+<tr><td><b>ONT / módem</b></td><td>Convierte la fibra (luz) o el cable coaxial de la operadora en Ethernet.</td><td>Donde entra la línea de la operadora.</td><td>Lo instala la operadora y es suyo. El cable de fibra no se puede alargar a la ligera.</td></tr>
+<tr><td><b>Router</b></td><td>Conecta tu red con Internet (traduce direcciones con NAT, reparte IPs).</td><td>Junto a la ONT, o en el rack.</td><td>Es la frontera entre "dentro" y "fuera".</td></tr>
+<tr><td><b>Firewall</b></td><td>Decide qué tráfico pasa y cuál no. Los modernos (NGFW) inspeccionan aplicaciones, virus y amenazas.</td><td>Entre el router/ONT y la red interna.</td><td>Todo el tráfico de Internet debe atravesarlo.</td></tr>
+<tr><td><b>Switch</b></td><td>Multiplica puertos de red y reparte el tráfico local entre equipos.</td><td>En el rack o armario de comunicaciones, centro del cableado.</td><td>Todos los cables del edificio llegan a él (topología en estrella).</td></tr>
+<tr><td><b>Switch PoE</b></td><td>Switch que además da corriente por el cable de red.</td><td>Igual que el switch.</td><td>Alimenta APs, cámaras y teléfonos sin enchufes en el techo.</td></tr>
+<tr><td><b>Punto de acceso (AP)</b></td><td>Da Wi-Fi. No enruta, solo "convierte" el cable en radio.</td><td>Techo, centrado en la zona a cubrir.</td><td>Alto y despejado = mejor cobertura y menos obstáculos.</td></tr>
+<tr><td><b>Controladora Wi-Fi</b></td><td>Gestiona muchos APs como si fuesen uno (roaming, canales, potencias).</td><td>En el rack, en un servidor o en la nube.</td><td>Configuración centralizada.</td></tr>
+<tr><td><b>Patch panel</b></td><td>Panel donde terminan los cables que vienen de las paredes.</td><td>En el rack, encima o debajo del switch.</td><td>El cable de pared es rígido y no debe moverse; se conecta al switch con latiguillos cortos.</td></tr>
+<tr><td><b>NAS</b></td><td>Caja con discos que comparte archivos por la red.</td><td>Rack o armario ventilado, con SAI.</td><td>Necesita refrigeración, corriente estable y cable (nunca Wi-Fi).</td></tr>
+<tr><td><b>Servidor</b></td><td>Ordenador potente para ejecutar servicios y máquinas virtuales.</td><td>Rack con SAI y refrigeración.</td><td>Ruido, calor, seguridad física.</td></tr>
+<tr><td><b>SAI / UPS</b></td><td>Batería que mantiene encendidos los equipos al cortarse la luz.</td><td>Abajo del todo del rack (pesa mucho).</td><td>Centro de gravedad bajo; el rack no vuelca.</td></tr>
+</tbody></table></div>
+
+<h3>Switch: gestionable o no gestionable</h3>
+<div class="two">
+<div class="card"><h4>No gestionable</h4><ul class="small"><li>Enchufar y listo. Sin configuración.</li><li>No permite VLANs ni ver qué pasa.</li><li>OK para casa o 5 PCs.</li><li>20–80 €</li></ul></div>
+<div class="card"><h4>Gestionable (L2 / L3)</h4><ul class="small"><li>VLANs, monitorización, QoS, seguridad de puertos, agregación de enlaces (LACP), SNMP.</li><li>L3: además enruta entre VLANs a velocidad de cable.</li><li>Obligatorio a partir del <a href="nivel-2.html">nivel 2</a>.</li><li>150 € – 30.000 €</li></ul></div>
+</div>
+
+<h2>Cableado de cobre (Ethernet)</h2>
+<p>El cable de red de toda la vida (par trenzado, conector RJ45). Lleva 4 pares de hilos de cobre trenzados entre sí para anular interferencias.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Categoría</th><th>Velocidad máx.</th><th>Distancia</th><th>Frecuencia</th><th>Uso recomendado hoy</th><th class="num">Precio aprox. (caja 305 m)</th></tr></thead>
+<tbody>
+<tr><td>Cat 5e</td><td>1 Gbps</td><td>100 m</td><td>100 MHz</td><td>Solo latiguillos viejos. No instalar nuevo.</td><td class="num">60–90 €</td></tr>
+<tr><td>Cat 6</td><td>1 Gbps (10 Gbps hasta 55 m)</td><td>100 m</td><td>250 MHz</td><td>Mínimo aceptable para instalación nueva.</td><td class="num">90–150 €</td></tr>
+<tr><td><b>Cat 6A</b></td><td><b>10 Gbps</b></td><td>100 m</td><td>500 MHz</td><td><b>Estándar recomendado.</b> Necesario para APs Wi-Fi 6E/7 (2,5–10 Gb) y PoE alto.</td><td class="num">180–300 €</td></tr>
+<tr><td>Cat 7 / 7A</td><td>10 Gbps</td><td>100 m</td><td>600–1.000 MHz</td><td>No es estándar TIA, conector GG45/TERA. Poco sentido en empresa.</td><td class="num">250–400 €</td></tr>
+<tr><td>Cat 8</td><td>25/40 Gbps</td><td><b>30 m</b></td><td>2.000 MHz</td><td>Solo dentro del CPD, entre racks cercanos.</td><td class="num">400+ €</td></tr>
+</tbody></table></div>
+
+<h3>Cableado estructurado: cómo se monta de verdad</h3>
+<p>En una oficina el cable <b>no</b> va del PC al switch directamente. Va así:</p>
+<figure class="diagram">
+<svg viewBox="0 0 900 260" role="img" aria-label="Esquema de cableado estructurado">
+  <rect x="20" y="90" width="100" height="70" rx="8" class="bx"/>
+  <text x="70" y="122" text-anchor="middle" class="b">PC</text>
+  <text x="70" y="140" text-anchor="middle" class="s">tarjeta de red</text>
+  <path d="M120 125 H190" class="cu"/>
+  <text x="155" y="115" text-anchor="middle" class="s">latiguillo</text>
+  <text x="155" y="150" text-anchor="middle" class="s">≤ 5 m</text>
+  <rect x="190" y="100" width="70" height="50" rx="6" class="bx2"/>
+  <text x="225" y="122" text-anchor="middle" class="b">Roseta</text>
+  <text x="225" y="138" text-anchor="middle" class="s">en pared</text>
+  <path d="M260 125 H560" class="cu" stroke-width="4"/>
+  <text x="410" y="112" text-anchor="middle" class="b">Cable horizontal (rígido, por falso techo/canaleta)</text>
+  <text x="410" y="148" text-anchor="middle" class="s">≤ 90 m · nunca se mueve · etiquetado en ambos extremos (ej. P1-23)</text>
+  <!-- rack -->
+  <rect x="560" y="30" width="170" height="200" rx="6" class="bx2"/>
+  <text x="645" y="22" text-anchor="middle" class="b">Rack</text>
+  <rect x="575" y="100" width="140" height="22" rx="3" class="bx"/>
+  <text x="645" y="116" text-anchor="middle" class="s">Patch panel 24p</text>
+  <rect x="575" y="150" width="140" height="22" rx="3" class="bx"/>
+  <text x="645" y="166" text-anchor="middle" class="s">Switch 24p</text>
+  <path d="M600 122 C600 138 610 138 610 150" class="cu"/>
+  <path d="M630 122 C630 138 640 138 640 150" class="cu"/>
+  <path d="M660 122 C660 138 670 138 670 150" class="cu"/>
+  <text x="790" y="140" class="s">latiguillo</text>
+  <text x="790" y="155" class="s">≤ 5 m</text>
+  <path d="M720 140 H785" class="ln"/>
+  <text x="450" y="215" text-anchor="middle" class="m">Total canal ≤ 100 m  =  90 m fijos + 10 m de latiguillos</text>
+</svg>
+<figcaption>Cableado estructurado (norma ISO/IEC 11801, TIA-568). Se separa la parte fija (horizontal) de la parte móvil (latiguillos) para que el cable caro y difícil de sustituir nunca se toque.</figcaption>
+</figure>
+
+<ul class="check">
+  <li><b>Cable rígido (solid)</b> para lo que va por paredes; <b>flexible (stranded)</b> para latiguillos.</li>
+  <li>Norma de crimpado: usa siempre <b>T568B</b> (o siempre A) en toda la instalación. Mezclarlas crea cables cruzados.</li>
+  <li>Cubierta <b>LSZH</b> (libre de halógenos) obligatoria en interiores de edificios públicos y recomendable siempre: si arde no suelta gases tóxicos.</li>
+  <li>Separa el cable de datos al menos 20–30 cm de los cables eléctricos en paralelo; cruza en 90°.</li>
+  <li>No pases de 100 m. A partir de ahí: fibra, o un switch intermedio.</li>
+  <li><b>Certifica</b> la instalación con un certificador (Fluke o similar). Un cable "que funciona" puede ir a 100 Mbps en vez de 1 Gbps por un par mal crimpado.</li>
+</ul>
+
+<h3>PoE: corriente por el cable de red</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Estándar</th><th>Nombre</th><th class="num">Potencia en el switch</th><th class="num">Llega al equipo</th><th>Alimenta</th></tr></thead>
+<tbody>
+<tr><td>802.3af</td><td>PoE</td><td class="num">15,4 W</td><td class="num">12,95 W</td><td>Teléfonos IP, cámaras básicas, APs antiguos</td></tr>
+<tr><td>802.3at</td><td>PoE+</td><td class="num">30 W</td><td class="num">25,5 W</td><td>APs Wi-Fi 5/6, cámaras PTZ pequeñas</td></tr>
+<tr><td>802.3bt Tipo 3</td><td>PoE++ / 4PPoE</td><td class="num">60 W</td><td class="num">51 W</td><td>APs Wi-Fi 6E/7, cámaras con calefactor</td></tr>
+<tr><td>802.3bt Tipo 4</td><td>PoE++</td><td class="num">90–100 W</td><td class="num">71–90 W</td><td>Pantallas, luminarias, portátiles</td></tr>
+</tbody></table></div>
+<div class="callout"><span class="t">Presupuesto PoE</span>Un switch PoE tiene un límite total ("PoE budget"), p. ej. 370 W. Si conectas 10 APs de 25 W y 8 cámaras de 13 W = 354 W, vas justo. Calcúlalo en <a href="calculadoras.html#poe">la calculadora PoE</a>.</div>
+
+<h2>Fibra óptica</h2>
+<p>Transmite luz por un hilo de vidrio. No le afectan las interferencias eléctricas, llega mucho más lejos y admite muchas más velocidades. Se usa para unir plantas, edificios, el rack con el CPD, y entre switches.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Tipo</th><th>Núcleo</th><th>Color cubierta</th><th>Distancia a 10 Gb</th><th>Distancia a 100 Gb</th><th>Uso</th></tr></thead>
+<tbody>
+<tr><td>Multimodo OM3</td><td>50 µm</td><td>Turquesa</td><td>300 m</td><td>70 m (SR4)</td><td>Dentro del edificio / CPD</td></tr>
+<tr><td>Multimodo OM4</td><td>50 µm</td><td>Turquesa / violeta</td><td>400 m</td><td>100–150 m</td><td>Vertical entre plantas, CPD</td></tr>
+<tr><td><b>Monomodo OS2</b></td><td>9 µm</td><td>Amarillo</td><td>10–80 km</td><td>10–40 km</td><td><b>Entre edificios, campus, operadoras. Hoy es la opción por defecto</b> (los transceptores ya son baratos).</td></tr>
+</tbody></table></div>
+<div class="grid">
+<div class="card"><h4>Conectores</h4><p class="small"><b>LC</b>: pequeño, el estándar en switches. <b>SC</b>: cuadrado, típico de la operadora (ONT). <b>MPO/MTP</b>: 12–24 fibras en uno, para 40/100/400 Gb en CPD.</p></div>
+<div class="card"><h4>Transceptores</h4><p class="small">Módulo que se enchufa al switch y convierte señal eléctrica en luz. <b>SFP</b> 1 Gb · <b>SFP+</b> 10 Gb · <b>SFP28</b> 25 Gb · <b>QSFP28</b> 100 Gb · <b>QSFP-DD/OSFP</b> 400–800 Gb.</p></div>
+<div class="card"><h4>DAC / AOC</h4><p class="small">Cable con transceptores ya integrados. Para unir equipos en el mismo rack (1–5 m). Mucho más barato que dos transceptores + fibra.</p></div>
+</div>
+<div class="callout warn"><span class="t">Seguridad</span>Nunca mires directamente un conector de fibra activo. Los láseres de fibra son invisibles (infrarrojo) y pueden dañar la retina.</div>
+
+<h2>Direcciones IP, en práctico</h2>
+<p>Cada equipo en una red tiene una <b>IP</b>. Dentro de la empresa se usan rangos <b>privados</b> (no salen a Internet tal cual), y el router traduce todo a la IP pública con <b>NAT</b>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Rango privado</th><th>Notación</th><th class="num">Direcciones</th><th>Uso típico</th></tr></thead>
+<tbody>
+<tr><td>10.0.0.0 – 10.255.255.255</td><td><code>10.0.0.0/8</code></td><td class="num">16,7 millones</td><td>Empresas medianas y grandes (cabe todo)</td></tr>
+<tr><td>172.16.0.0 – 172.31.255.255</td><td><code>172.16.0.0/12</code></td><td class="num">1 millón</td><td>Redes de contenedores, VPNs</td></tr>
+<tr><td>192.168.0.0 – 192.168.255.255</td><td><code>192.168.0.0/16</code></td><td class="num">65.536</td><td>Casas y pequeñas oficinas</td></tr>
+</tbody></table></div>
+
+<h3>Lo que necesita cada equipo para tener red</h3>
+<pre><code>IP:              192.168.10.25      ← quién soy
+Máscara:         255.255.255.0 (/24) ← cuál es mi barrio
+Puerta enlace:   192.168.10.1       ← a quién le doy lo que no es de mi barrio (el router)
+DNS:             192.168.10.1       ← a quién le pregunto "¿qué IP tiene google.com?"</code></pre>
+<p>Si falta cualquiera de los cuatro, "no hay Internet". Normalmente los reparte automáticamente el servidor <b>DHCP</b>.</p>
+
+<h3>La máscara y el /CIDR (la única matemática que hay que saber)</h3>
+<p>Una IPv4 son 32 bits. El <code>/24</code> dice que los primeros 24 bits son la "red" y los 8 restantes son para equipos:</p>
+<div class="formula">Equipos utilizables = 2<sup>(32 − prefijo)</sup> − 2</div>
+<p>Se restan 2 porque la primera dirección identifica la red y la última es la de difusión (broadcast).</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Prefijo</th><th>Máscara</th><th class="num">Equipos</th><th>Uso típico</th></tr></thead>
+<tbody>
+<tr><td>/30</td><td>255.255.255.252</td><td class="num">2</td><td>Enlace punto a punto entre dos routers</td></tr>
+<tr><td>/28</td><td>255.255.255.240</td><td class="num">14</td><td>Bloque de IPs públicas fijas que da la operadora</td></tr>
+<tr><td>/26</td><td>255.255.255.192</td><td class="num">62</td><td>VLAN pequeña (impresoras, cámaras)</td></tr>
+<tr><td><b>/24</b></td><td><b>255.255.255.0</b></td><td class="num"><b>254</b></td><td><b>La red "estándar" de oficina</b></td></tr>
+<tr><td>/23</td><td>255.255.254.0</td><td class="num">510</td><td>Wi-Fi de una planta grande</td></tr>
+<tr><td>/22</td><td>255.255.252.0</td><td class="num">1.022</td><td>Wi-Fi de invitados de un edificio</td></tr>
+<tr><td>/16</td><td>255.255.0.0</td><td class="num">65.534</td><td>Una sede entera (luego se divide en VLANs)</td></tr>
+</tbody></table></div>
+<p>Hay una <a href="calculadoras.html#subred">calculadora de subredes</a> para practicar.</p>
+
+<details><summary>¿Y IPv6?</summary>
+<p>IPv6 usa 128 bits y existen tantas direcciones que no hace falta NAT. Las operadoras ya lo dan, y la nube y los móviles lo usan masivamente. En redes internas de empresa sigue conviviendo con IPv4 ("dual stack"). Prefijo típico: la operadora te da un <code>/48</code> o <code>/56</code>, y cada VLAN usa un <code>/64</code>. Lo importante: <b>si activas IPv6, el firewall debe tener reglas IPv6</b>; si no, puedes estar dejando todo abierto sin saberlo.</p>
+</details>
+
+<h2>VLANs: varias redes en el mismo cable</h2>
+<p>Una VLAN es una red "virtual": el mismo switch físico se divide en varias redes que no se ven entre sí. Es la herramienta básica para separar <b>empleados, invitados, cámaras, teléfonos y servidores</b> sin comprar switches distintos.</p>
+<figure class="diagram">
+<svg viewBox="0 0 900 300" role="img" aria-label="Ejemplo de VLANs en un switch">
+  <rect x="330" y="20" width="240" height="60" rx="8" class="bx"/>
+  <text x="450" y="46" text-anchor="middle" class="b">Firewall / router</text>
+  <text x="450" y="64" text-anchor="middle" class="s">enruta y filtra entre VLANs</text>
+  <path d="M450 80 V130" class="cu" stroke-width="5"/>
+  <text x="460" y="110" class="s">"trunk" 802.1Q: lleva todas las VLANs etiquetadas</text>
+  <rect x="200" y="130" width="500" height="50" rx="8" class="bx"/>
+  <text x="450" y="160" text-anchor="middle" class="b">Switch gestionable</text>
+  <g>
+    <path d="M250 180 V230" class="cu" style="stroke:#2563eb"/>
+    <rect x="190" y="230" width="120" height="50" rx="8" class="bx2"/>
+    <text x="250" y="252" text-anchor="middle" class="b">VLAN 10</text>
+    <text x="250" y="268" text-anchor="middle" class="s">Empleados</text>
+  </g>
+  <g>
+    <path d="M380 180 V230" class="cu" style="stroke:#16a34a"/>
+    <rect x="320" y="230" width="120" height="50" rx="8" class="bx2"/>
+    <text x="380" y="252" text-anchor="middle" class="b">VLAN 20</text>
+    <text x="380" y="268" text-anchor="middle" class="s">Servidores</text>
+  </g>
+  <g>
+    <path d="M520 180 V230" class="cu" style="stroke:#ea580c"/>
+    <rect x="460" y="230" width="120" height="50" rx="8" class="bx2"/>
+    <text x="520" y="252" text-anchor="middle" class="b">VLAN 30</text>
+    <text x="520" y="268" text-anchor="middle" class="s">Voz / cámaras</text>
+  </g>
+  <g>
+    <path d="M650 180 V230" class="cu" style="stroke:#dc2626"/>
+    <rect x="590" y="230" width="120" height="50" rx="8" class="bx2"/>
+    <text x="650" y="252" text-anchor="middle" class="b">VLAN 99</text>
+    <text x="650" y="268" text-anchor="middle" class="s">Invitados</text>
+  </g>
+  <text x="90" y="160" text-anchor="middle" class="s">puertos "access":</text>
+  <text x="90" y="176" text-anchor="middle" class="s">1 VLAN sin etiqueta</text>
+</svg>
+<figcaption>Los equipos de distintas VLANs solo pueden hablar entre sí pasando por el firewall, que aplica reglas: "invitados solo a Internet", "cámaras solo al grabador", etc.</figcaption>
+</figure>
+<p><b>Plan de VLANs típico</b> (se repetirá en los niveles 2+):</p>
+<div class="table-wrap"><table>
+<thead><tr><th>VLAN</th><th>Nombre</th><th>Red</th><th>Puede ir a…</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>(no usar)</td><td>—</td><td>VLAN por defecto. Se deja vacía por seguridad.</td></tr>
+<tr><td>10</td><td>Gestión</td><td>10.0.10.0/24</td><td>Solo IT. Interfaces de switches, APs, SAI, iDRAC/iLO.</td></tr>
+<tr><td>20</td><td>Servidores</td><td>10.0.20.0/24</td><td>Reciben conexiones de usuarios en puertos concretos.</td></tr>
+<tr><td>30</td><td>Usuarios</td><td>10.0.30.0/23</td><td>Internet, servidores, impresoras.</td></tr>
+<tr><td>40</td><td>Voz IP</td><td>10.0.40.0/24</td><td>Centralita / proveedor VoIP. Con QoS prioritaria.</td></tr>
+<tr><td>50</td><td>Impresoras</td><td>10.0.50.0/26</td><td>Nada. Solo reciben de usuarios y servidor de impresión.</td></tr>
+<tr><td>60</td><td>Cámaras / IoT</td><td>10.0.60.0/24</td><td>Solo al grabador (NVR). Sin Internet.</td></tr>
+<tr><td>99</td><td>Invitados</td><td>172.20.0.0/22</td><td>Solo Internet, con límite de velocidad. Aislamiento entre clientes.</td></tr>
+</tbody></table></div>
+
+<h2>DHCP y DNS: los dos servicios invisibles</h2>
+<div class="two">
+<div class="card">
+<h4>DHCP — "dame una IP"</h4>
+<ol class="small">
+<li>El PC se enciende y grita por la red: <i>"¿Hay algún DHCP?"</i> (DISCOVER)</li>
+<li>El servidor responde: <i>"Toma la 10.0.30.57"</i> (OFFER)</li>
+<li>El PC: <i>"La quiero"</i> (REQUEST)</li>
+<li>El servidor: <i>"Es tuya 8 horas"</i> (ACK)</li>
+</ol>
+<p class="small">Si el PC acaba con una IP <code>169.254.x.x</code> → no encontró DHCP. Problema de cable, VLAN o servidor DHCP caído o sin direcciones libres.</p>
+</div>
+<div class="card">
+<h4>DNS — "¿qué IP tiene este nombre?"</h4>
+<ol class="small">
+<li>El PC pregunta a su DNS: <i>"¿erp.empresa.local?"</i></li>
+<li>Si es interno, el DNS interno (controlador de dominio) responde.</li>
+<li>Si es externo (google.com), el DNS pregunta a Internet y guarda la respuesta en caché.</li>
+</ol>
+<p class="small">"Internet no va pero por IP sí" = DNS. Prueba <code>nslookup google.com</code>. El DNS es también una herramienta de seguridad: filtrar dominios maliciosos.</p>
+</div>
+</div>
+
+<h2>Wi-Fi sin mitos</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Generación</th><th>Estándar</th><th>Bandas</th><th>Velocidad "de caja"</th><th>Real típica por cliente</th></tr></thead>
+<tbody>
+<tr><td>Wi-Fi 5</td><td>802.11ac</td><td>5 GHz</td><td>3,5 Gbps</td><td>200–500 Mbps</td></tr>
+<tr><td>Wi-Fi 6</td><td>802.11ax</td><td>2,4 + 5 GHz</td><td>9,6 Gbps</td><td>300–800 Mbps</td></tr>
+<tr><td>Wi-Fi 6E</td><td>802.11ax</td><td>+ 6 GHz</td><td>9,6 Gbps</td><td>500 Mbps – 1,2 Gbps</td></tr>
+<tr><td><b>Wi-Fi 7</b></td><td>802.11be</td><td>2,4 + 5 + 6 GHz (MLO)</td><td>46 Gbps</td><td>1–2,5 Gbps</td></tr>
+</tbody></table></div>
+<div class="grid">
+<div class="card"><h4>2,4 GHz</h4><p class="small">Llega más lejos y atraviesa mejor paredes, pero solo hay <b>3 canales</b> que no se solapan (1, 6, 11) y está saturada (microondas, Bluetooth, vecinos). Para IoT y poco más.</p></div>
+<div class="card"><h4>5 GHz</h4><p class="small">Muchos más canales, más velocidad, menos alcance. <b>La banda principal de oficina.</b> Usa canales de 20/40 MHz en sitios densos, no de 80/160.</p></div>
+<div class="card"><h4>6 GHz</h4><p class="small">Banda nueva, limpia, muy rápida y de corto alcance (una sala o dos). Ideal para salas de reuniones y zonas de alta densidad.</p></div>
+</div>
+<div class="callout"><span class="t">El Wi-Fi es compartido y semidúplex</span>Todos los clientes de un AP en un canal se turnan para hablar. 30 personas en un AP de "2,4 Gbps" no tienen 2,4 Gbps cada una: comparten algo como 600–900 Mbps reales entre todas. Por eso en oficina se diseña por <b>densidad</b> (≈ 25–35 clientes activos por AP) y no solo por cobertura.</div>
+<p><b>Reglas de colocación:</b> en el techo, en el centro de la zona; a 10–15 m entre APs en oficina diáfana; canales distintos en APs vecinos; nada de esconderlos dentro de armarios metálicos o falsos techos con chapa; potencia media-baja (si todos los APs gritan, se pisan). Antes de comprar, haz un <b>estudio de cobertura</b> (site survey) con herramientas como Ekahau, Hamina o la planificación del fabricante.</p>
+
+<h2>El rack y la electricidad</h2>
+<div class="two">
+<figure class="diagram" style="margin:0">
+<svg viewBox="0 0 300 420" role="img" aria-label="Rack de 19 pulgadas típico">
+  <rect x="40" y="10" width="220" height="400" rx="6" class="bx2"/>
+  <g font-size="11">
+  <rect x="55" y="25" width="190" height="16" class="bx"/><text x="150" y="37" text-anchor="middle" class="s">Bandeja de fibra / ONT</text>
+  <rect x="55" y="45" width="190" height="16" class="bx"/><text x="150" y="57" text-anchor="middle" class="s">Firewall</text>
+  <rect x="55" y="65" width="190" height="16" class="bx"/><text x="150" y="77" text-anchor="middle" class="s">Patch panel 24p (A)</text>
+  <rect x="55" y="85" width="190" height="16" class="bx"/><text x="150" y="97" text-anchor="middle" class="s">Pasacables horizontal</text>
+  <rect x="55" y="105" width="190" height="16" class="bx" style="stroke:var(--d-cu)"/><text x="150" y="117" text-anchor="middle" class="s">Switch 48p PoE</text>
+  <rect x="55" y="125" width="190" height="16" class="bx"/><text x="150" y="137" text-anchor="middle" class="s">Pasacables horizontal</text>
+  <rect x="55" y="145" width="190" height="16" class="bx"/><text x="150" y="157" text-anchor="middle" class="s">Patch panel 24p (B)</text>
+  <rect x="55" y="175" width="190" height="16" class="bx"/><text x="150" y="187" text-anchor="middle" class="s">(hueco para crecer)</text>
+  <rect x="55" y="205" width="190" height="34" class="bx" style="stroke:var(--l3)"/><text x="150" y="226" text-anchor="middle" class="s">Servidor 2U</text>
+  <rect x="55" y="243" width="190" height="34" class="bx" style="stroke:var(--l3)"/><text x="150" y="264" text-anchor="middle" class="s">NAS 2U</text>
+  <rect x="55" y="290" width="190" height="16" class="bx"/><text x="150" y="302" text-anchor="middle" class="s">Regleta PDU</text>
+  <rect x="55" y="320" width="190" height="34" class="bx" style="stroke:var(--warn)"/><text x="150" y="341" text-anchor="middle" class="s">SAI 2U</text>
+  <rect x="55" y="358" width="190" height="34" class="bx" style="stroke:var(--warn)"/><text x="150" y="379" text-anchor="middle" class="s">Módulo de baterías</text>
+  </g>
+  <text x="20" y="40" class="s">red</text>
+  <text x="20" y="225" class="s">cálculo</text>
+  <text x="14" y="350" class="s">energía</text>
+</svg>
+<figcaption>Orden habitual: red arriba, servidores en medio, SAI y baterías abajo (peso).</figcaption>
+</figure>
+<div>
+<h4>Medidas del rack</h4>
+<ul class="small">
+<li><b>19"</b> de ancho estándar (482,6 mm).</li>
+<li>Altura en <b>U</b>: 1U = 44,45 mm. Armario de pared 6–12U; de suelo 42–47U.</li>
+<li>Fondo: armario de pared 450–600 mm; para servidores <b>1.000–1.200 mm</b>.</li>
+<li>Deja un 30 % de huecos libres para crecer.</li>
+</ul>
+<h4>SAI / UPS: tipos</h4>
+<ul class="small">
+<li><b>Offline/standby</b>: conmuta a batería al detectar el corte (≈ 10 ms). Para un PC en casa.</li>
+<li><b>Line-interactive</b>: corrige subidas y bajadas de tensión. Para rack pequeño.</li>
+<li><b>Online doble conversión</b>: los equipos siempre van por la batería/inversor, cero conmutación. Para servidores y CPD.</li>
+</ul>
+<h4>VA ≠ W</h4>
+<p class="small">Un SAI de 1.500 VA suele dar ≈ 900–1.350 W reales (factor de potencia 0,6–0,9). Dimensiona por <b>vatios</b> y deja un 20–30 % de margen. <a href="calculadoras.html#sai">Calculadora de SAI</a>.</p>
+</div>
+</div>
+
+<h2>Los cinco números que todo informático debe saber de memoria</h2>
+<div class="grid g3">
+<div class="card"><div class="big" style="font-size:28px;font-weight:800;color:var(--accent)">100 m</div><p class="small">Máximo de un cable de cobre Ethernet.</p></div>
+<div class="card"><div style="font-size:28px;font-weight:800;color:var(--accent)">÷ 8</div><p class="small">De Mbps a MB/s.</p></div>
+<div class="card"><div style="font-size:28px;font-weight:800;color:var(--accent)">254</div><p class="small">Equipos en una red /24.</p></div>
+<div class="card"><div style="font-size:28px;font-weight:800;color:var(--accent)">~1 ms / 100 km</div><p class="small">Latencia de ida y vuelta en fibra (la luz en vidrio va a ~200.000 km/s).</p></div>
+<div class="card"><div style="font-size:28px;font-weight:800;color:var(--accent)">3-2-1</div><p class="small">Regla de copias de seguridad.</p></div>
+</div>
+
+</div></main>
+<script src="assets/app.js"></script>
+</body>
+</html>

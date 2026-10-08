@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadoras IT · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="calculadoras" style="--lvl:var(--warn)">
+<main><div class="content">
+
+<section class="hero">
+  <div class="kicker">Práctica</div>
+  <h1>Matemáticas y calculadoras</h1>
+  <p class="lead">Las cuentas que de verdad se hacen en el día a día de IT, con la fórmula explicada y una calculadora para cada una. Todo se calcula en tu navegador.</p>
+</section>
+
+<h2 id="transferencia">Tiempo de transferencia</h2>
+<p>¿Cuánto tarda en subirse un backup, migrarse un servidor o descargarse un fichero?</p>
+<div class="formula">Tiempo (s) = Tamaño (bytes) × 8 ÷ (Velocidad (bps) × eficiencia)</div>
+<div class="calc" data-calc="transfer">
+  <div class="row">
+    <label>Tamaño<input type="number" id="t-size" value="500" min="0" step="any"></label>
+    <label>Unidad<select id="t-unit"><option value="1e9" selected>GB</option><option value="1e12">TB</option><option value="1e6">MB</option></select></label>
+    <label>Velocidad de la línea (Mbps)<input type="number" id="t-speed" value="300" min="0" step="any"></label>
+    <label>Eficiencia real (%)<input type="number" id="t-eff" value="85" min="1" max="100"></label>
+  </div>
+  <div class="out" id="t-out"></div>
+</div>
+<p class="small muted">La eficiencia descuenta cabeceras de protocolos, cifrado y uso compartido. 85–90 % por cable en LAN; 50–80 % hacia Internet o por VPN.</p>
+
+<h2 id="ancho">Ancho de banda necesario para una sede</h2>
+<div class="formula">BW = (Nₒ × 1 + Nᵥ × 3 + Nᵣ × 1,5 + Cám × 2) × margen</div>
+<div class="calc">
+  <div class="row">
+    <label>Personas en la sede<input type="number" id="b-users" value="40" min="0"></label>
+    <label>% en videollamada a la vez<input type="number" id="b-video" value="30" min="0" max="100"></label>
+    <label>% con escritorio remoto / VDI<input type="number" id="b-vdi" value="0" min="0" max="100"></label>
+    <label>Cámaras enviando a la nube/CPD<input type="number" id="b-cams" value="0" min="0"></label>
+    <label>Margen de crecimiento (%)<input type="number" id="b-margin" value="30" min="0"></label>
+  </div>
+  <div class="out" id="b-out"></div>
+</div>
+<p class="small muted">Consumos medios supuestos: ofimática/SaaS 1 Mbps, videollamada HD 3 Mbps, VDI 1,5 Mbps, cámara 1080p 2 Mbps. Dimensiona además para que el pico quede por debajo del 70 % de la línea.</p>
+
+<h2 id="subred">Subredes IPv4</h2>
+<p>Una dirección IPv4 tiene 32 bits. El prefijo <code>/n</code> indica cuántos bits son de red; el resto, de equipos.</p>
+<div class="formula">Equipos = 2<sup>32−n</sup> − 2 &nbsp;&nbsp;·&nbsp;&nbsp; Red = IP AND Máscara &nbsp;&nbsp;·&nbsp;&nbsp; Broadcast = Red OR NOT Máscara</div>
+<div class="calc">
+  <div class="row">
+    <label>Dirección IP<input type="text" id="s-ip" value="10.27.30.57"></label>
+    <label>Prefijo (/n)<input type="number" id="s-pfx" value="24" min="0" max="32"></label>
+  </div>
+  <div class="out" id="s-out"></div>
+</div>
+<details><summary>Cómo se calcula a mano (ejemplo /26)</summary>
+<p>IP <code>192.168.1.130/26</code>. Máscara /26 = 26 unos = <code>255.255.255.192</code>. El último octeto de la máscara es 192 → los bloques son de 256 − 192 = <b>64</b> direcciones: 0, 64, 128, 192. 130 cae en el bloque que empieza en 128.</p>
+<ul><li>Red: 192.168.1.128</li><li>Primer equipo: .129</li><li>Último equipo: .190</li><li>Broadcast: .191</li><li>Equipos: 64 − 2 = 62</li></ul>
+</details>
+
+<h2 id="raid">RAID: capacidad y tolerancia</h2>
+<p>Un RAID combina varios discos para ganar capacidad, velocidad y/o tolerancia a fallos. <b>RAID no es backup</b>: protege contra el fallo de un disco, no contra borrados, ransomware o incendios.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Nivel</th><th>Capacidad útil</th><th>Discos que pueden fallar</th><th>Mín. discos</th><th>Uso</th></tr></thead>
+<tbody>
+<tr><td>RAID 0</td><td>N × D</td><td>0</td><td>2</td><td>Solo datos temporales. Nunca para datos importantes.</td></tr>
+<tr><td>RAID 1</td><td>D</td><td>1 (de 2)</td><td>2</td><td>Sistema operativo, NAS de 2 bahías.</td></tr>
+<tr><td>RAID 5</td><td>(N − 1) × D</td><td>1</td><td>3</td><td>Discos pequeños o SSD. Con discos grandes mecánicos, la reconstrucción es arriesgada.</td></tr>
+<tr><td>RAID 6</td><td>(N − 2) × D</td><td>2</td><td>4</td><td>Recomendado con discos mecánicos grandes (≥ 8 TB).</td></tr>
+<tr><td>RAID 10</td><td>N/2 × D</td><td>1 por pareja</td><td>4</td><td>Bases de datos y VMs: máximo rendimiento de escritura.</td></tr>
+</tbody></table></div>
+<div class="calc">
+  <div class="row">
+    <label>Nivel<select id="r-lvl"><option>0</option><option>1</option><option>5</option><option selected>6</option><option>10</option></select></label>
+    <label>Nº de discos<input type="number" id="r-n" value="8" min="2"></label>
+    <label>Tamaño de cada disco (TB)<input type="number" id="r-d" value="16" min="0" step="any"></label>
+  </div>
+  <div class="out" id="r-out"></div>
+</div>
+<details><summary>Por qué RAID 5 es arriesgado con discos grandes</summary>
+<p>Al morir un disco, para reconstruir hay que leer <b>todos los bits de los demás</b>. Los discos mecánicos de consumo especifican una tasa de error de lectura irrecuperable (URE) de 1 cada 10<sup>14</sup> bits (≈ 12,5 TB); los empresariales, 1 cada 10<sup>15</sup>. Con 7 discos de 16 TB hay que leer 112 TB ≈ 9 × 10<sup>14</sup> bits:</p>
+<div class="formula">P(sin error) = (1 − 10<sup>−15</sup>)<sup>9×10<sup>14</sup></sup> ≈ e<sup>−0,9</sup> ≈ 41 %</div>
+<p>Es decir, ≈ 59 % de probabilidad de encontrar algún error durante la reconstrucción con discos empresariales (en la práctica los discos suelen ser mejores que su especificación, pero el riesgo es real). Con RAID 6, un error durante la reconstrucción se corrige con la segunda paridad.</p>
+</details>
+
+<h2 id="sai">SAI: potencia y autonomía</h2>
+<div class="formula">VA necesarios = W ÷ factor de potencia × 1,25 de margen &nbsp;&nbsp;·&nbsp;&nbsp; Autonomía (h) ≈ Wh baterías × eficiencia ÷ W carga</div>
+<div class="calc">
+  <div class="row">
+    <label>Consumo de los equipos (W)<input type="number" id="u-w" value="1200" min="0"></label>
+    <label>Factor de potencia del SAI<input type="number" id="u-pf" value="0.9" step="0.05" min="0.5" max="1"></label>
+    <label>Energía de baterías (Wh)<input type="number" id="u-wh" value="1800" min="0"></label>
+    <label>Eficiencia del inversor (%)<input type="number" id="u-eff" value="85" min="50" max="100"></label>
+  </div>
+  <div class="out" id="u-out"></div>
+</div>
+<p class="small muted">Wh de baterías: tensión × amperios-hora (p. ej. 4 baterías de 12 V y 9 Ah = 4 × 108 = 432 Wh). Las baterías de plomo dan bastante menos que su Wh nominal a descargas rápidas (ley de Peukert); usa las tablas de autonomía del fabricante para el cálculo final. Mide el consumo real con la PDU o el propio SAI: suele ser un 40–60 % de la potencia de la fuente.</p>
+
+<h2 id="poe">Presupuesto PoE</h2>
+<div class="calc">
+  <div class="row">
+    <label>Presupuesto PoE del switch (W)<input type="number" id="p-budget" value="370" min="0"></label>
+    <label>APs<input type="number" id="p-ap" value="6" min="0"></label>
+    <label>W por AP<input type="number" id="p-apw" value="25" min="0"></label>
+    <label>Cámaras<input type="number" id="p-cam" value="8" min="0"></label>
+    <label>W por cámara<input type="number" id="p-camw" value="8" min="0"></label>
+    <label>Teléfonos IP<input type="number" id="p-tel" value="20" min="0"></label>
+    <label>W por teléfono<input type="number" id="p-telw" value="4" min="0"></label>
+  </div>
+  <div class="out" id="p-out"></div>
+</div>
+<p class="small muted">Usa el consumo máximo de la ficha técnica del dispositivo. Muchos switches reservan la potencia de la <i>clase</i> PoE negociada (p. ej. 30 W para clase 4) aunque el dispositivo consuma menos: revisa si tu switch asigna por clase o por consumo real.</p>
+
+<h2 id="disponibilidad">Disponibilidad en serie y en paralelo</h2>
+<div class="two">
+<div class="formula">Serie: A = A₁ × A₂ × … × Aₙ</div>
+<div class="formula">Paralelo: A = 1 − (1 − A₁)(1 − A₂)…</div>
+</div>
+<p>Introduce la disponibilidad de cada eslabón de la cadena (firewall, switch, servidor, almacenamiento…) y cuántas unidades redundantes tiene cada uno:</p>
+<div class="calc">
+  <div id="a-rows"></div>
+  <div class="out" id="a-out"></div>
+</div>
+<p class="small muted">Simplificación: supone fallos independientes y conmutación perfecta. En la vida real, la redundancia comparte riesgos (misma corriente, mismo firmware, mismo error humano) y la conmutación también falla a veces.</p>
+
+<h2 id="btu">Climatización de una sala</h2>
+<p>Casi toda la energía eléctrica que consume un equipo se convierte en calor. Hay que extraerla:</p>
+<div class="formula">1 W = 3,412 BTU/h &nbsp;&nbsp;·&nbsp;&nbsp; 1 kW ≈ 860 frigorías/h</div>
+<div class="calc">
+  <div class="row">
+    <label>Consumo IT (W)<input type="number" id="h-it" value="3000" min="0"></label>
+    <label>Personas dentro habitualmente<input type="number" id="h-ppl" value="0" min="0"></label>
+    <label>Superficie (m²)<input type="number" id="h-m2" value="10" min="0"></label>
+    <label>Pérdidas SAI + iluminación (%)<input type="number" id="h-loss" value="15" min="0"></label>
+  </div>
+  <div class="out" id="h-out"></div>
+</div>
+<p class="small muted">Aproximación: cargas IT + pérdidas + 100 W por persona + ≈ 20 W/m² por cerramientos. Para salas con ventanas o al sol, pide un cálculo de cargas térmicas a un instalador.</p>
+
+<h2 id="crecimiento">Crecimiento de almacenamiento</h2>
+<div class="formula">Capacidad(t) = Actual × (1 + crecimiento)<sup>t</sup> &nbsp;&nbsp;·&nbsp;&nbsp; t para llegar al límite = ln(Límite/Actual) ÷ ln(1 + crecimiento)</div>
+<div class="calc">
+  <div class="row">
+    <label>Datos actuales (TB)<input type="number" id="g-now" value="40" min="0" step="any"></label>
+    <label>Capacidad total (TB)<input type="number" id="g-cap" value="80" min="0" step="any"></label>
+    <label>Crecimiento anual (%)<input type="number" id="g-rate" value="30" min="0" step="any"></label>
+    <label>Umbral de alarma (%)<input type="number" id="g-thr" value="80" min="1" max="100"></label>
+  </div>
+  <div class="out" id="g-out"></div>
+</div>
+
+<h2 id="backup">Tamaño del repositorio de backup</h2>
+<div class="formula">Repositorio ≈ (Completas + Días de retención × Datos × Tasa de cambio diaria) × (1 − reducción)</div>
+<div class="calc">
+  <div class="row">
+    <label>Datos a proteger (TB)<input type="number" id="k-data" value="10" min="0" step="any"></label>
+    <label>Tasa de cambio diaria (%)<input type="number" id="k-chg" value="3" min="0" step="any"></label>
+    <label>Días de retención<input type="number" id="k-days" value="30" min="1"></label>
+    <label>Completas sintéticas semanales retenidas<input type="number" id="k-full" value="1" min="1"></label>
+    <label>Reducción (compresión+dedup) %<input type="number" id="k-red" value="40" min="0" max="95"></label>
+  </div>
+  <div class="out" id="k-out"></div>
+</div>
+<p class="small muted">Tasa de cambio típica: 2–5 % diario en ficheros de oficina; 5–10 % en bases de datos activas. Con sistemas de ficheros con clonado de bloques (ReFS/XFS) las completas sintéticas casi no ocupan espacio adicional.</p>
+
+<h2 id="tco">Coste de una caída frente a coste de la redundancia</h2>
+<p>La cuenta que hay que presentar a dirección para pedir presupuesto:</p>
+<div class="formula">Coste anual esperado = Horas de caída/año × (Personas × Coste/hora + Ingresos perdidos/hora)</div>
+<div class="calc">
+  <div class="row">
+    <label>Personas afectadas<input type="number" id="c-ppl" value="40" min="0"></label>
+    <label>Coste/hora por persona (€)<input type="number" id="c-cost" value="30" min="0"></label>
+    <label>Ingresos perdidos/hora (€)<input type="number" id="c-rev" value="500" min="0"></label>
+    <label>Disponibilidad actual (%)<input type="number" id="c-a1" value="99.5" step="0.01"></label>
+    <label>Disponibilidad con la mejora (%)<input type="number" id="c-a2" value="99.95" step="0.01"></label>
+    <label>Coste anual de la mejora (€)<input type="number" id="c-inv" value="6000" min="0"></label>
+  </div>
+  <div class="out" id="c-out"></div>
+</div>
+<p class="small muted">Se calcula sobre horas laborables (≈ 2.000 h/año). Si el negocio funciona 24/7, cambia a 8.760 h.</p>
+
+</div></main>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const v = (id) => parseFloat($(id).value) || 0;
+  const fmt = (n, d = 1) => n.toLocaleString('es-ES', { maximumFractionDigits: d, minimumFractionDigits: 0 });
+  function dur(s) {
+    if (!isFinite(s)) return '∞';
+    if (s < 60) return fmt(s, 1) + ' s';
+    if (s < 3600) return fmt(s / 60, 1) + ' min';
+    if (s < 86400) return Math.floor(s / 3600) + ' h ' + Math.round((s % 3600) / 60) + ' min';
+    return fmt(s / 86400, 1) + ' días';
+  }
+  function bind(ids, fn) { ids.forEach(i => { $(i).addEventListener('input', fn); $(i).addEventListener('change', fn); }); fn(); }
+
+  // Transferencia
+  bind(['t-size', 't-unit', 't-speed', 't-eff'], () => {
+    const bytes = v('t-size') * parseFloat($('t-unit').value);
+    const bps = v('t-speed') * 1e6 * v('t-eff') / 100;
+    const s = bytes * 8 / bps;
+    const alt = [100, 300, 1000, 10000].map(m => `  a ${String(m).padStart(5)} Mbps → ${dur(bytes * 8 / (m * 1e6 * v('t-eff') / 100))}`).join('\n');
+    $('t-out').innerHTML = `<span class="big">${dur(s)}</span>\nVelocidad efectiva: ${fmt(bps / 8e6, 1)} MB/s\n\nComparativa:\n${alt}`;
+  });
+
+  // Ancho de banda
+  bind(['b-users', 'b-video', 'b-vdi', 'b-cams', 'b-margin'], () => {
+    const n = v('b-users'), pv = v('b-video') / 100, pr = v('b-vdi') / 100;
+    const nv = n * pv, nr = n * pr, no = Math.max(0, n - nv - nr);
+    const base = no * 1 + nv * 3 + nr * 1.5 + v('b-cams') * 2;
+    const tot = base * (1 + v('b-margin') / 100);
+    const line = tot / 0.7;
+    const opts = [100, 300, 600, 1000, 2500, 10000];
+    const rec = opts.find(o => o >= line) || opts[opts.length - 1];
+    $('b-out').innerHTML = `Consumo estimado en pico: ${fmt(base, 0)} Mbps\nCon margen de crecimiento: <span class="big">${fmt(tot, 0)} Mbps</span>\nPara no pasar del 70 % de uso: línea ≥ ${fmt(line, 0)} Mbps\nRecomendación comercial: <b>${rec >= 1000 ? rec / 1000 + ' Gbps' : rec + ' Mbps'}</b> simétrica + respaldo ≥ ${fmt(Math.max(50, base * 0.6), 0)} Mbps`;
+  });
+
+  // Subred
+  bind(['s-ip', 's-pfx'], () => {
+    const parts = $('s-ip').value.trim().split('.').map(Number);
+    const p = Math.round(v('s-pfx'));
+    if (parts.length !== 4 || parts.some(x => isNaN(x) || x < 0 || x > 255) || p < 0 || p > 32) {
+      $('s-out').textContent = 'Introduce una IPv4 válida (ej. 192.168.1.10) y un prefijo entre 0 y 32.'; return;
+    }
+    const ip = ((parts[0] << 24) >>> 0) + (parts[1] << 16) + (parts[2] << 8) + parts[3];
+    const mask = p === 0 ? 0 : (0xFFFFFFFF << (32 - p)) >>> 0;
+    const net = (ip & mask) >>> 0, bc = (net | (~mask >>> 0)) >>> 0;
+    const s = (n) => [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.');
+    const bin = (n) => [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].map(o => o.toString(2).padStart(8, '0')).join('.');
+    const hosts = p >= 31 ? (p === 31 ? 2 : 1) : Math.pow(2, 32 - p) - 2;
+    const first = p >= 31 ? net : net + 1, last = p >= 31 ? bc : bc - 1;
+    const priv = (parts[0] === 10) || (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) || (parts[0] === 192 && parts[1] === 168);
+    $('s-out').innerHTML =
+      `Máscara:     ${s(mask)}   (/${p})\n` +
+      `Red:         ${s(net)}\n` +
+      `Primer host: ${s(first)}\n` +
+      `Último host: ${s(last)}\n` +
+      `Broadcast:   ${s(bc)}\n` +
+      `Equipos:     <span class="big">${fmt(hosts, 0)}</span>\n` +
+      `Tipo:        ${priv ? 'privada (RFC 1918)' : 'pública / otra'}\n\n` +
+      `IP binaria:      ${bin(ip)}\nMáscara binaria: ${bin(mask)}`;
+  });
+
+  // RAID
+  bind(['r-lvl', 'r-n', 'r-d'], () => {
+    const l = $('r-lvl').value, n = Math.round(v('r-n')), d = v('r-d');
+    let cap, tol, min, note = '';
+    if (l === '0') { cap = n * d; tol = '0 — un fallo = pérdida total'; min = 2; }
+    if (l === '1') { cap = d; tol = (n - 1) + ' (espejo de ' + n + ')'; min = 2; }
+    if (l === '5') { cap = (n - 1) * d; tol = '1'; min = 3; if (d >= 8) note = '\n⚠ Con discos ≥ 8 TB se recomienda RAID 6.'; }
+    if (l === '6') { cap = (n - 2) * d; tol = '2'; min = 4; }
+    if (l === '10') { cap = Math.floor(n / 2) * d; tol = '1 por pareja (hasta ' + Math.floor(n / 2) + ' si caen en parejas distintas)'; min = 4; if (n % 2) note = '\n⚠ RAID 10 necesita un número par de discos.'; }
+    if (n < min) { $('r-out').textContent = `RAID ${l} necesita al menos ${min} discos.`; return; }
+    const raw = n * d, tib = cap * 1e12 / Math.pow(2, 40);
+    $('r-out').innerHTML = `Capacidad bruta: ${fmt(raw)} TB\nCapacidad útil: <span class="big">${fmt(cap)} TB</span>  (${fmt(cap / raw * 100, 0)} %)\nLo que verá el sistema: ≈ ${fmt(tib)} TiB\nDiscos que pueden fallar: ${tol}\nRecomendado dejar ≥ 20 % libre → ${fmt(cap * 0.8)} TB de uso cómodo${note}`;
+  });
+
+  // SAI
+  bind(['u-w', 'u-pf', 'u-wh', 'u-eff'], () => {
+    const w = v('u-w'), pf = v('u-pf') || 0.9;
+    const va = w / pf * 1.25;
+    const sizes = [600, 1000, 1500, 2200, 3000, 5000, 6000, 8000, 10000, 15000, 20000];
+    const rec = sizes.find(s => s >= va);
+    const mins = w > 0 ? v('u-wh') * v('u-eff') / 100 / w * 60 : 0;
+    $('u-out').innerHTML = `Potencia mínima: ${fmt(w * 1.25, 0)} W  →  ${fmt(va, 0)} VA\nModelo comercial: <span class="big">${rec ? fmt(rec, 0) + ' VA' : 'varios SAI / modular'}</span>\nAutonomía teórica: ≈ ${fmt(mins, 0)} min\n${mins < 10 ? '⚠ Menos de 10 min: añade módulos de baterías o configura apagado automático temprano.' : 'OK para un apagado ordenado o el arranque de un generador.'}`;
+  });
+
+  // PoE
+  bind(['p-budget', 'p-ap', 'p-apw', 'p-cam', 'p-camw', 'p-tel', 'p-telw'], () => {
+    const used = v('p-ap') * v('p-apw') + v('p-cam') * v('p-camw') + v('p-tel') * v('p-telw');
+    const b = v('p-budget'), pct = b ? used / b * 100 : 0;
+    const bar = '█'.repeat(Math.min(30, Math.round(pct / 100 * 30))) + '░'.repeat(Math.max(0, 30 - Math.round(pct / 100 * 30)));
+    $('p-out').innerHTML = `Consumo PoE: <span class="big">${fmt(used, 0)} W</span> de ${fmt(b, 0)} W\n${bar} ${fmt(pct, 0)} %\n${pct > 100 ? '✗ Excede el presupuesto: algunos dispositivos no arrancarán.' : pct > 80 ? '⚠ Por encima del 80 %: sin margen para crecer o picos.' : '✓ Correcto, con margen.'}`;
+  });
+
+  // Disponibilidad
+  const comps = [['Línea Internet', 99.5, 1], ['Firewall', 99.9, 1], ['Switch core', 99.95, 1], ['Servidor / host', 99.5, 1], ['Almacenamiento', 99.9, 1]];
+  const rows = $('a-rows');
+  comps.forEach((c, i) => {
+    const r = document.createElement('div'); r.className = 'row';
+    r.innerHTML = `<label>Componente<input type="text" id="a-n${i}" value="${c[0]}"></label><label>Disponibilidad unidad (%)<input type="number" step="0.01" id="a-a${i}" value="${c[1]}"></label><label>Unidades redundantes<input type="number" min="1" max="4" id="a-k${i}" value="${c[2]}"></label>`;
+    rows.appendChild(r);
+  });
+  const ids = []; comps.forEach((_, i) => ids.push('a-a' + i, 'a-k' + i, 'a-n' + i));
+  bind(ids, () => {
+    let total = 1, lines = [];
+    comps.forEach((_, i) => {
+      const a = v('a-a' + i) / 100, k = Math.max(1, Math.round(v('a-k' + i)));
+      const ap = 1 - Math.pow(1 - a, k);
+      total *= ap;
+      lines.push(`${$('a-n' + i).value.padEnd(18).slice(0, 18)} ×${k}  → ${(ap * 100).toFixed(5)} %`);
+    });
+    const down = (1 - total) * 8760;
+    $('a-out').innerHTML = lines.join('\n') + `\n\nDisponibilidad total (en serie): <span class="big">${(total * 100).toFixed(4)} %</span>\nCaída esperada: ${down >= 1 ? fmt(down, 1) + ' h/año' : fmt(down * 60, 1) + ' min/año'}  (${fmt(down * 60 / 12, 1)} min/mes)`;
+  });
+
+  // BTU
+  bind(['h-it', 'h-ppl', 'h-m2', 'h-loss'], () => {
+    const w = v('h-it') * (1 + v('h-loss') / 100) + v('h-ppl') * 100 + v('h-m2') * 20;
+    const btu = w * 3.412, fr = w / 1000 * 860;
+    $('h-out').innerHTML = `Calor a extraer: ${fmt(w, 0)} W\n= ${fmt(btu, 0)} BTU/h = ${fmt(fr, 0)} frigorías/h\nEquipo recomendado (×1,2 margen): <span class="big">${fmt(w * 1.2 / 1000, 1)} kW frío</span>\nRedundancia: 2 equipos de esa potencia (N+1).`;
+  });
+
+  // Crecimiento
+  bind(['g-now', 'g-cap', 'g-rate', 'g-thr'], () => {
+    const now = v('g-now'), cap = v('g-cap'), r = v('g-rate') / 100, thr = v('g-thr') / 100;
+    const yrs = (lim) => r > 0 && now > 0 ? Math.log(lim / now) / Math.log(1 + r) : Infinity;
+    const tThr = yrs(cap * thr), tFull = yrs(cap);
+    let tbl = 'Año  Datos (TB)  Uso\n';
+    for (let y = 0; y <= 5; y++) { const d = now * Math.pow(1 + r, y); tbl += `${String(y).padStart(3)}  ${fmt(d, 1).padStart(10)}  ${fmt(d / cap * 100, 0).padStart(3)} %${d > cap ? '  ✗ lleno' : d > cap * thr ? '  ⚠' : ''}\n`; }
+    const m = (t) => t <= 0 ? 'ya superado' : isFinite(t) ? fmt(t * 12, 0) + ' meses' : 'nunca';
+    $('g-out').innerHTML = `Umbral del ${fmt(thr * 100, 0)} % en: <span class="big">${m(tThr)}</span>\nLleno en: ${m(tFull)}\n\n${tbl}\nCompra con ≥ 3–6 meses de antelación al umbral (plazos de entrega).`;
+  });
+
+  // Backup
+  bind(['k-data', 'k-chg', 'k-days', 'k-full', 'k-red'], () => {
+    const d = v('k-data'), inc = d * v('k-chg') / 100 * v('k-days'), full = d * v('k-full');
+    const raw = full + inc, red = raw * (1 - v('k-red') / 100);
+    $('k-out').innerHTML = `Completas: ${fmt(full)} TB\nIncrementales (${v('k-days')} días): ${fmt(inc)} TB\nSin reducción: ${fmt(raw)} TB\nCon compresión/dedup: <span class="big">${fmt(red)} TB</span>\nCon 30 % de margen de crecimiento: ${fmt(red * 1.3)} TB\n(Multiplica por cada copia: local + off-site.)`;
+  });
+
+  // Coste caída
+  bind(['c-ppl', 'c-cost', 'c-rev', 'c-a1', 'c-a2', 'c-inv'], () => {
+    const H = 2000, perH = v('c-ppl') * v('c-cost') + v('c-rev');
+    const d1 = (1 - v('c-a1') / 100) * H, d2 = (1 - v('c-a2') / 100) * H;
+    const c1 = d1 * perH, c2 = d2 * perH, save = c1 - c2, roi = save - v('c-inv');
+    $('c-out').innerHTML = `Coste por hora de caída: ${fmt(perH, 0)} €\nAhora:      ${fmt(d1, 1)} h/año caído → ${fmt(c1, 0)} €/año\nCon mejora: ${fmt(d2, 1)} h/año caído → ${fmt(c2, 0)} €/año\nAhorro esperado: ${fmt(save, 0)} €/año − inversión ${fmt(v('c-inv'), 0)} €/año\nBalance: <span class="big" style="color:${roi >= 0 ? 'var(--ok)' : 'var(--bad)'}">${roi >= 0 ? '+' : ''}${fmt(roi, 0)} €/año</span>  ${roi >= 0 ? '✓ se justifica' : '✗ no se justifica solo por coste'}`;
+  });
+})();
+</script>
+</body>
+</html>

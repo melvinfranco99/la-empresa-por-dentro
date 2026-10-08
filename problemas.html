@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagnóstico y problemas · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="problemas" style="--lvl:var(--bad)">
+<main><div class="content">
+
+<section class="hero">
+  <div class="kicker">Práctica</div>
+  <h1>Diagnóstico y resolución de problemas</h1>
+  <p class="lead">Un método para no ir dando palos de ciego, las herramientas que hay que conocer, un asistente interactivo y una tabla de problemas con quién debe arreglar cada uno: tú, la operadora, el fabricante o la dirección con la cartera.</p>
+</section>
+
+<h2>El método: de abajo arriba</h2>
+<p>El error clásico es empezar por lo complicado ("será el firewall") cuando el cable está suelto. Sigue las capas:</p>
+<figure class="diagram">
+<svg viewBox="0 0 900 200" role="img" aria-label="Escalera de diagnóstico por capas">
+  <g>
+    <rect x="10" y="140" width="160" height="50" rx="8" class="bx" style="stroke:var(--l0);stroke-width:2"/><text x="90" y="162" text-anchor="middle" class="b">1 · Físico</text><text x="90" y="180" text-anchor="middle" class="s">¿luz? ¿cable? ¿corriente?</text>
+    <rect x="185" y="110" width="160" height="50" rx="8" class="bx" style="stroke:var(--l1);stroke-width:2"/><text x="265" y="132" text-anchor="middle" class="b">2 · Enlace</text><text x="265" y="150" text-anchor="middle" class="s">¿VLAN? ¿Wi-Fi asociado?</text>
+    <rect x="360" y="80" width="160" height="50" rx="8" class="bx" style="stroke:var(--l2);stroke-width:2"/><text x="440" y="102" text-anchor="middle" class="b">3 · IP</text><text x="440" y="120" text-anchor="middle" class="s">¿IP? ¿ping a la puerta?</text>
+    <rect x="535" y="50" width="160" height="50" rx="8" class="bx" style="stroke:var(--l3);stroke-width:2"/><text x="615" y="72" text-anchor="middle" class="b">4 · DNS / ruta</text><text x="615" y="90" text-anchor="middle" class="s">¿resuelve? ¿sale fuera?</text>
+    <rect x="710" y="20" width="180" height="50" rx="8" class="bx" style="stroke:var(--l4);stroke-width:2"/><text x="800" y="42" text-anchor="middle" class="b">5 · Aplicación</text><text x="800" y="60" text-anchor="middle" class="s">¿puerto? ¿servicio? ¿usuario?</text>
+  </g>
+  <path d="M90 140 L265 160 M265 110 L440 130 M440 80 L615 100 M615 50 L800 70" class="ln" stroke-dasharray="3 4"/>
+</svg>
+<figcaption>Si un escalón falla, no sigas subiendo: el problema está ahí.</figcaption>
+</figure>
+
+<h3>Antes de tocar nada, cinco preguntas</h3>
+<ol>
+<li><b>¿A quién le pasa?</b> ¿A un usuario, a una planta, a toda la sede, a todas las sedes? Define el alcance.</li>
+<li><b>¿Desde cuándo?</b> ¿Qué cambió justo antes? (actualización, cambio de configuración, obra, tormenta…). El 70–80 % de las caídas vienen de un cambio.</li>
+<li><b>¿Es siempre o intermitente?</b> ¿A ciertas horas?</li>
+<li><b>¿Qué funciona y qué no?</b> ¿Web sí y correo no? ¿Por cable sí y Wi-Fi no?</li>
+<li><b>¿Puedo reproducirlo?</b></li>
+</ol>
+
+<h2>Herramientas imprescindibles</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Herramienta</th><th>Windows</th><th>Linux / macOS</th><th>Para qué</th></tr></thead>
+<tbody>
+<tr><td>Configuración IP</td><td><code>ipconfig /all</code></td><td><code>ip a</code> · <code>ifconfig</code></td><td>¿Tengo IP, máscara, puerta de enlace y DNS? ¿169.254.x.x = sin DHCP?</td></tr>
+<tr><td>Ping</td><td><code>ping 8.8.8.8 -t</code></td><td><code>ping 8.8.8.8</code></td><td>¿Llego? ¿Con qué latencia? ¿Pierdo paquetes?</td></tr>
+<tr><td>Ruta</td><td><code>tracert 8.8.8.8</code> · <code>pathping</code></td><td><code>traceroute</code> · <code>mtr</code></td><td>¿En qué salto se pierde o se dispara la latencia?</td></tr>
+<tr><td>DNS</td><td><code>nslookup dominio</code> · <code>Resolve-DnsName</code></td><td><code>dig dominio</code></td><td>¿Resuelve? ¿Qué servidor responde? ¿Coincide la IP?</td></tr>
+<tr><td>Puertos</td><td><code>Test-NetConnection srv -Port 443</code></td><td><code>nc -zv srv 443</code> · <code>nmap</code></td><td>¿El servicio escucha y el firewall deja pasar?</td></tr>
+<tr><td>Velocidad LAN</td><td colspan="2"><code>iperf3 -s</code> en un extremo, <code>iperf3 -c ip</code> en el otro</td><td>Velocidad real entre dos puntos de tu red, sin Internet de por medio.</td></tr>
+<tr><td>Velocidad Internet</td><td colspan="2">speedtest (Ookla CLI), fast.com, test de la operadora</td><td>Siempre por cable y con el resto de la red tranquila.</td></tr>
+<tr><td>Captura</td><td colspan="2">Wireshark · <code>tcpdump -i eth0 port 53</code></td><td>Ver exactamente qué viaja. La verdad absoluta.</td></tr>
+<tr><td>Wi-Fi</td><td><code>netsh wlan show interfaces</code></td><td>WiFi Analyzer, <code>iw dev wlan0 link</code></td><td>Señal (RSSI), canal, ruido, velocidad negociada.</td></tr>
+<tr><td>Switch</td><td colspan="2"><code>show interface</code> · <code>show mac address-table</code> · <code>show log</code></td><td>Errores CRC (cable malo), duplex, VLAN del puerto, en qué puerto está una MAC.</td></tr>
+</tbody></table></div>
+
+<h3>Cómo leer un ping</h3>
+<pre><code>Respuesta desde 8.8.8.8: bytes=32 tiempo=12ms TTL=117   ← bien
+Respuesta desde 8.8.8.8: bytes=32 tiempo=14ms TTL=117
+Tiempo de espera agotado para esta solicitud.            ← pérdida
+Respuesta desde 8.8.8.8: bytes=32 tiempo=387ms TTL=117  ← pico: congestión/bufferbloat/Wi-Fi
+Respuesta desde 192.168.1.1: Host de destino inaccesible ← tu router no sabe llegar</code></pre>
+<p><b>Truco:</b> haz ping a la vez a tu puerta de enlace y a una IP de Internet. Si los dos fallan → problema local (Wi-Fi, cable, switch). Si solo falla el de Internet → router/operadora.</p>
+
+<h2>Asistente interactivo</h2>
+<p>Responde a las preguntas y te llevará a la causa más probable.</p>
+<div class="tree" id="tree"></div>
+
+<h2>¿Lo arreglo yo o no depende de mí?</h2>
+<p>Una parte importante del trabajo es saber <b>a quién</b> le toca. Esta es la clasificación que se usa en toda la guía:</p>
+<div class="grid">
+<div class="card"><span class="who int">Interno</span><p class="small">Configuración, cableado interno, puestos, servidores, usuarios. Lo arreglas tú o tu equipo.</p></div>
+<div class="card"><span class="who ext">Externo</span><p class="small">Operadora (línea, fibra, enrutamiento), fabricante (hardware averiado en garantía), proveedor SaaS (caída de M365, ERP en la nube), compañía eléctrica, instalador, mantenedor de clima.</p></div>
+<div class="card"><span class="who dir">Dirección / compras</span><p class="small">Necesita dinero o una decisión: más ancho de banda, más servidores, renovar equipos, contratar personal o soporte, cambiar de proveedor.</p></div>
+<div class="card"><span class="who mix">Mixto</span><p class="small">Tú diagnosticas y aportas pruebas; otro ejecuta. La mayoría de casos reales.</p></div>
+</div>
+
+<h3>Cómo saber si hay que contratar más ancho de banda</h3>
+<p>No se decide por sensaciones. Se decide con <b>gráficas de consumo</b> del firewall o router (SNMP, NetFlow) de al menos 2–4 semanas.</p>
+<ul>
+<li>Mira el <b>percentil 95</b> (el valor que se supera solo el 5 % del tiempo) en horas de trabajo, no la media ni el pico.</li>
+<li>Si el p95 supera el <b>70 % de la capacidad</b> de forma habitual, empiezan las colas y la latencia sube → hay que ampliar o priorizar (QoS).</li>
+<li>Si el consumo es bajo pero "va lento", <b>no es ancho de banda</b>: busca latencia, pérdida, DNS, Wi-Fi o la propia aplicación.</li>
+<li>Mira <b>subida y bajada por separado</b>: copias a la nube, videollamadas y envío de ficheros llenan la subida; muchas líneas son asimétricas.</li>
+</ul>
+<div class="callout warn"><span class="t">Ejemplo real</span>"Internet va lento todas las tardes". Gráfica: la bajada nunca pasa del 30 %, pero la <b>subida</b> está al 100 % de 17:00 a 19:00. Causa: el backup a la nube del NAS empieza a las 17:00. Solución: moverlo a las 22:00 y limitarlo al 50 %. Coste: 0 €. Sin gráficas, se habría contratado una línea más cara que no lo arreglaba (si la subida seguía siendo la misma).</div>
+
+<h3>Cómo reclamar a la operadora (y que te hagan caso)</h3>
+<ol>
+<li>Ten a mano: <b>número de servicio/circuito</b>, contrato y SLA (tiempo de respuesta y de resolución).</li>
+<li>Descarta lo tuyo: prueba con un equipo <b>conectado directamente</b> a la ONT/router de la operadora, por cable.</li>
+<li>Aporta datos: hora de inicio, MTR/traceroute mostrando dónde se pierde, gráficas de pérdida y latencia, luces de la ONT (LOS/PON).</li>
+<li>Pide <b>número de incidencia</b> y anótalo; pregunta el plazo comprometido.</li>
+<li>Escala si se incumple el SLA: gestor comercial, penalizaciones del contrato.</li>
+</ol>
+<pre><code>Asunto: Avería servicio FTTH 1 Gb · circuito ES-XXXX-1234 · Oficina Av. Ejemplo 12
+
+Desde hoy 08:42 se observa pérdida de paquetes del 8–15 % y latencia > 200 ms.
+- Prueba con PC directo a la ONT por cable: mismo resultado (descartada red interna).
+- ONT: luz PON fija verde, LOS apagada.
+- MTR adjunto: la pérdida empieza en el salto 3 (10.x.x.x, red del operador).
+- Afecta a 35 usuarios. SLA contratado: resolución 8 h laborables.
+Rogamos número de incidencia y hora estimada.</code></pre>
+
+<h3>Proveedores en la nube: comprueba antes de diagnosticar</h3>
+<p>Antes de pasar una hora revisando tu red porque "Teams no va", mira el estado del servicio: <b>Microsoft 365 Service Health</b> (portal de administración), status.cloud.google.com, health.aws.amazon.com, status de Cloudflare, Zscaler, Slack, Salesforce… o agregadores como Downdetector. Si es un problema global, tu trabajo es <b>comunicar</b> a los usuarios, no arreglar.</p>
+
+<h2>Catálogo de problemas</h2>
+<p>Filtra por texto o por categoría.</p>
+<div class="filter" data-filter-for="probs">
+  <input type="search" placeholder="Buscar: wifi, lento, dhcp, impresora…">
+  <button data-tag="all" class="on">Todos</button>
+  <button data-tag="red">Red</button>
+  <button data-tag="wifi">Wi-Fi</button>
+  <button data-tag="internet">Internet</button>
+  <button data-tag="srv">Servidores</button>
+  <button data-tag="puesto">Puesto</button>
+  <button data-tag="seg">Seguridad</button>
+  <button data-tag="fis">Físico / eléctrico</button>
+</div>
+<div class="table-wrap"><table id="probs">
+<thead><tr><th>Síntoma</th><th>Causas probables</th><th>Cómo comprobar</th><th>Quién</th><th>Solución</th></tr></thead>
+<tbody>
+<tr data-tags="red puesto"><td>PC sin red, IP 169.254.x.x</td><td>Sin DHCP: cable, puerto en VLAN errónea, ámbito DHCP lleno, servidor DHCP caído</td><td>Luz del puerto; <code>show interface</code>; ver ámbito DHCP</td><td><span class="who int">Interno</span></td><td>Cambiar cable/puerto; corregir VLAN; ampliar ámbito o reducir tiempo de concesión.</td></tr>
+<tr data-tags="red"><td>Va a 100 Mbps en vez de 1 Gbps</td><td>Un par del cable roto o mal crimpado (1 Gb usa los 4 pares, 100 Mb solo 2)</td><td>Velocidad negociada en el PC o switch; certificador</td><td><span class="who int">Interno</span></td><td>Recrimpar o cambiar latiguillo/roseta.</td></tr>
+<tr data-tags="red"><td>Toda la red cae de golpe y vuelve sola</td><td>Bucle de red / tormenta de broadcast</td><td>LEDs de switches parpadeando a la vez; CPU del switch al 100 %; logs de STP</td><td><span class="who int">Interno</span></td><td>Activar RSTP, BPDU Guard, storm control, loop protection.</td></tr>
+<tr data-tags="red"><td>Errores CRC en un puerto</td><td>Cable dañado, interferencias, conector sucio (fibra)</td><td>Contadores del puerto</td><td><span class="who int">Interno</span></td><td>Cambiar cable; limpiar conectores de fibra; revisar transceptor.</td></tr>
+<tr data-tags="red"><td>IP duplicada / conflicto</td><td>IP fija puesta a mano dentro del rango DHCP</td><td>Aviso de Windows; <code>arp -a</code></td><td><span class="who int">Interno</span></td><td>Reservar rangos: fijas fuera del DHCP. Usar reservas DHCP. Activar DHCP snooping.</td></tr>
+<tr data-tags="internet"><td>Sin Internet en toda la oficina</td><td>Caída de la línea, router/firewall colgado, corte eléctrico parcial</td><td>Luces ONT; ping a la puerta de enlace y a 8.8.8.8; consola del firewall</td><td><span class="who mix">Interno / operadora</span></td><td>Si la ONT marca LOS: operadora. Si no: reiniciar router/firewall y revisar. Línea de respaldo.</td></tr>
+<tr data-tags="internet"><td>"Hay Internet pero las webs no cargan"</td><td>DNS caído o mal configurado</td><td><code>ping 8.8.8.8</code> funciona pero <code>nslookup google.com</code> falla</td><td><span class="who int">Interno</span></td><td>Revisar servidor DNS interno / reenviadores; DNS secundario.</td></tr>
+<tr data-tags="internet"><td>Lento en horas punta</td><td>Saturación de la línea</td><td>Gráfica de consumo p95 &gt; 70 %</td><td><span class="who dir">Compras</span></td><td>QoS, mover tareas pesadas fuera de horario, ampliar caudal o añadir línea.</td></tr>
+<tr data-tags="internet"><td>Videollamadas entrecortadas, velocidad bien</td><td>Jitter / pérdida / bufferbloat / Wi-Fi</td><td>Test de bufferbloat; ping continuo durante la llamada; probar por cable</td><td><span class="who int">Interno</span></td><td>SQM/QoS priorizando UDP de voz/vídeo; cable; SD-WAN.</td></tr>
+<tr data-tags="internet"><td>Una web concreta no carga solo desde la empresa</td><td>Filtrado del firewall, inspección SSL, DNS, IP pública en lista negra</td><td>Logs del firewall; probar desde 5G</td><td><span class="who int">Interno</span></td><td>Excepción en el filtro/inspección; revisar reputación de la IP pública.</td></tr>
+<tr data-tags="internet"><td>Pérdida de paquetes a partir de un salto de la operadora</td><td>Problema en la red del operador</td><td>MTR durante varios minutos</td><td><span class="who ext">Operadora</span></td><td>Abrir incidencia con el MTR. Mientras, conmutar a la línea de respaldo.</td></tr>
+<tr data-tags="wifi"><td>Wi-Fi lento en una zona</td><td>Señal débil (RSSI &lt; −70 dBm), obstáculos, AP lejos</td><td>App de análisis: RSSI y SNR</td><td><span class="who int">Interno</span></td><td>Añadir/mover AP; no subir la potencia (empeora el roaming).</td></tr>
+<tr data-tags="wifi"><td>Buena señal pero va mal</td><td>Interferencia, canales solapados, demasiados clientes, canal muy ancho</td><td>Utilización del canal (%), clientes por AP</td><td><span class="who int">Interno</span></td><td>Plan de canales, 20/40 MHz, más APs con menos potencia, 5/6 GHz.</td></tr>
+<tr data-tags="wifi"><td>Los portátiles se quedan pegados a un AP lejano</td><td>Roaming "pegajoso", potencias mal ajustadas</td><td>Ver a qué AP está conectado al moverse</td><td><span class="who int">Interno</span></td><td>802.11k/v/r, umbral de RSSI mínimo, reducir potencia.</td></tr>
+<tr data-tags="wifi"><td>Dispositivo IoT no se conecta</td><td>Solo soporta 2,4 GHz / WPA2, o no le gusta el nombre de red con bandas unificadas</td><td>Ficha técnica del dispositivo</td><td><span class="who int">Interno</span></td><td>SSID específico IoT en 2,4 GHz WPA2, en su VLAN aislada.</td></tr>
+<tr data-tags="srv"><td>Servidor de ficheros lento</td><td>Disco saturado (latencia &gt; 20 ms), RAM, red, antivirus escaneando</td><td>Monitor de rendimiento: latencia de disco, cola</td><td><span class="who mix">Interno + compras</span></td><td>SSD/caché, exclusiones de antivirus, más RAM, enlace 10G.</td></tr>
+<tr data-tags="srv"><td>Disco lleno en un servidor</td><td>Logs, backups locales, crecimiento</td><td>Monitorización de espacio</td><td><span class="who int">Interno</span></td><td>Limpiar/rotar logs; ampliar disco de la VM; alerta al 80 %.</td></tr>
+<tr data-tags="srv"><td>RAID degradado</td><td>Disco averiado</td><td>Consola de la controladora / NAS</td><td><span class="who mix">Interno + fabricante</span></td><td>RMA del disco con garantía; sustituir cuanto antes; comprobar que el backup es reciente.</td></tr>
+<tr data-tags="srv seg"><td>"El certificado no es de confianza" en una web interna o en todas</td><td>Certificado caducado</td><td>Fecha de caducidad</td><td><span class="who int">Interno</span></td><td>Renovar. Automatizar (ACME/Let's Encrypt) y monitorizar caducidades.</td></tr>
+<tr data-tags="srv"><td>Usuarios no pueden iniciar sesión en el dominio</td><td>DC caído, hora desincronizada (Kerberos tolera 5 min), DNS mal apuntado</td><td><code>dcdiag</code>, <code>w32tm /query /status</code></td><td><span class="who int">Interno</span></td><td>Restaurar DC; NTP correcto; los PCs deben usar los DC como DNS.</td></tr>
+<tr data-tags="srv"><td>El backup falla en silencio</td><td>Credenciales cambiadas, espacio, VSS</td><td>Informe diario de backup</td><td><span class="who int">Interno</span></td><td>Alertas de fallo; prueba de restauración periódica.</td></tr>
+<tr data-tags="puesto"><td>Impresora no imprime / "desconectada"</td><td>IP cambiada, cola atascada, driver</td><td>Ping a la impresora; cola de impresión</td><td><span class="who int">Interno</span></td><td>IP reservada; reiniciar spooler; driver universal; servidor de impresión o impresión en la nube.</td></tr>
+<tr data-tags="puesto"><td>PC muy lento</td><td>Disco mecánico, poca RAM, malware, actualizaciones en curso</td><td>Administrador de tareas: disco al 100 %</td><td><span class="who mix">Interno + compras</span></td><td>SSD; ≥ 16 GB RAM; EDR scan; renovar equipo (&gt; 5 años).</td></tr>
+<tr data-tags="puesto"><td>Outlook / Teams no funciona y el resto sí</td><td>Caída del servicio, perfil corrupto, licencia</td><td>Service Health del proveedor</td><td><span class="who mix">Proveedor / interno</span></td><td>Si es global, comunicar y esperar. Si no: reparar perfil, revisar licencia.</td></tr>
+<tr data-tags="seg"><td>Correos sospechosos enviados desde una cuenta interna</td><td>Cuenta comprometida</td><td>Registros de inicio de sesión; reglas de buzón</td><td><span class="who int">Interno</span> + SOC</td><td>Bloquear, revocar sesiones, cambiar contraseña, borrar reglas maliciosas, revisar MFA, avisar a los destinatarios.</td></tr>
+<tr data-tags="seg"><td>Archivos con extensión rara y nota de rescate</td><td>Ransomware</td><td>—</td><td><span class="who mix">Interno + DFIR + dirección</span></td><td>Desconectar de la red (no apagar), activar plan de incidentes, no pagar sin asesoramiento, restaurar desde backup inmutable, notificar (AEPD 72 h, INCIBE-CERT, policía).</td></tr>
+<tr data-tags="seg"><td>Alerta de inicio de sesión desde otro país</td><td>Credenciales robadas o VPN del usuario</td><td>Logs de identidad</td><td><span class="who int">Interno</span></td><td>Verificar con el usuario; acceso condicional por país; MFA resistente a phishing.</td></tr>
+<tr data-tags="fis"><td>Equipos se reinician en tormentas</td><td>Sin SAI o SAI sin baterías; mala toma de tierra</td><td>Log del SAI; electricista</td><td><span class="who mix">Interno + electricista</span></td><td>SAI con baterías nuevas; protección contra sobretensiones; revisar tierra.</td></tr>
+<tr data-tags="fis"><td>Temperatura alta en el rack</td><td>Clima averiado, flujo de aire mal, rack lleno</td><td>Sensores; termómetro</td><td><span class="who mix">Interno + clima</span></td><td>Paneles ciegos, ordenar cables, reparar/duplicar clima.</td></tr>
+<tr data-tags="fis"><td>Switch o AP sin corriente</td><td>Presupuesto PoE superado; fuente averiada</td><td><code>show power inline</code></td><td><span class="who mix">Interno + compras</span></td><td>Redistribuir dispositivos; switch con más PoE; inyector.</td></tr>
+<tr data-tags="fis internet"><td>Se cae la conexión cuando llueve</td><td>Humedad en la acometida o arqueta de la operadora</td><td>Correlacionar caídas con el tiempo</td><td><span class="who ext">Operadora</span></td><td>Incidencia indicando el patrón; revisión de la planta exterior.</td></tr>
+</tbody></table></div>
+
+<h2>Después de resolver</h2>
+<ul class="check">
+<li>Documenta: síntoma, causa, solución, tiempo. La próxima vez tardarás 5 minutos.</li>
+<li>Si fue grave, haz un <b>postmortem</b> sin culpables: ¿cómo evitamos que se repita? ¿cómo lo detectamos antes?</li>
+<li>Si la solución definitiva requiere dinero, redacta una propuesta para dirección con <b>coste de la incidencia</b> (horas perdidas × personas × coste/hora) frente a <b>coste de la solución</b>.</li>
+<li>Añade una alerta de monitorización que lo hubiera detectado.</li>
+</ul>
+
+</div></main>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const N = {
+    start: { q: "¿Qué le pasa al usuario?", o: [
+      ["No tiene Internet / red", "alcance"],
+      ["Va lento", "lento"],
+      ["Falla una aplicación concreta", "app"],
+      ["Problema de Wi-Fi", "wifi"] ] },
+    alcance: { q: "¿A cuánta gente le pasa?", o: [
+      ["Solo a un equipo", "uno"],
+      ["A una zona o planta", "zona"],
+      ["A toda la oficina", "todos"] ] },
+    uno: { q: "En ese equipo, ejecuta ipconfig. ¿Qué IP tiene?", o: [
+      ["169.254.x.x o ninguna", "r_dhcp"],
+      ["Una IP normal de la red", "uno_ip"] ] },
+    uno_ip: { q: "¿Responde el ping a la puerta de enlace?", o: [
+      ["No", "r_l2"],
+      ["Sí", "uno_dns"] ] },
+    uno_dns: { q: "¿Responde ping 8.8.8.8 y falla nslookup google.com?", o: [
+      ["Sí, ping va y nslookup falla", "r_dns"],
+      ["Ping a 8.8.8.8 tampoco va", "r_proxy"],
+      ["Todo responde pero el navegador no carga", "r_navegador"] ] },
+    zona: { q: "¿Los equipos de esa zona comparten switch/IDF o AP?", o: [
+      ["Comparten switch", "r_switch"],
+      ["Solo los de Wi-Fi de esa zona", "r_ap"] ] },
+    todos: { q: "Mira la ONT/router de la operadora. ¿Luz LOS roja o PON apagada?", o: [
+      ["Sí", "r_fibra"],
+      ["No, luces normales", "todos2"] ] },
+    todos2: { q: "Desde la consola del firewall/router, ¿hace ping a 8.8.8.8?", o: [
+      ["No", "r_isp"],
+      ["Sí", "r_lan_core"] ] },
+    lento: { q: "¿El problema se nota también por cable?", o: [
+      ["Solo en Wi-Fi", "wifi"],
+      ["También por cable", "lento2"] ] },
+    lento2: { q: "¿Las gráficas de consumo de la línea están cerca del 100 %?", o: [
+      ["Sí, saturada", "r_satur"],
+      ["No, consumo normal", "lento3"],
+      ["No tengo gráficas", "r_medir"] ] },
+    lento3: { q: "¿Es todo lento o solo cierto servicio/servidor?", o: [
+      ["Solo un servicio / servidor interno", "r_srv"],
+      ["Todo Internet, con latencia alta o pérdidas", "r_lat"] ] },
+    app: { q: "¿La aplicación es en la nube (SaaS) o un servidor interno?", o: [
+      ["En la nube", "r_saas"],
+      ["Interna", "app2"] ] },
+    app2: { q: "¿Test-NetConnection al puerto del servidor responde?", o: [
+      ["No", "r_puerto"],
+      ["Sí", "r_appsrv"] ] },
+    wifi: { q: "¿Cómo es la señal (RSSI) donde está el usuario?", o: [
+      ["Débil (peor que −70 dBm)", "r_cobertura"],
+      ["Buena (mejor que −65 dBm)", "wifi2"] ] },
+    wifi2: { q: "¿Cuántos clientes hay en ese AP / hay mucha gente cerca?", o: [
+      ["Muchos (&gt; 30) o sala llena", "r_densidad"],
+      ["Pocos", "r_interf"] ] },
+  };
+  const R = {
+    r_dhcp: ["No recibe IP por DHCP", "int", "Comprueba luz del puerto y cable; que el puerto del switch esté en la VLAN correcta; que el ámbito DHCP tenga direcciones libres y el servidor esté activo. Prueba otro cable/puerto."],
+    r_l2: ["No llega a su puerta de enlace", "int", "Problema de capa 1/2: cable, puerto, VLAN, o Wi-Fi no asociado. Revisa errores en el puerto del switch y la VLAN asignada. Comprueba que la IP/máscara son de la red correcta."],
+    r_dns: ["Problema de DNS", "int", "El equipo sale a Internet pero no resuelve nombres. Revisa el DNS configurado (ipconfig /all), que el servidor DNS interno funcione y que tenga reenviadores válidos. Prueba nslookup google.com 1.1.1.1."],
+    r_proxy: ["Bloqueado en el firewall o ruta", "int", "Llega a la puerta de enlace pero no sale. Revisa reglas/registros del firewall para esa IP, proxy configurado, o si el equipo está en cuarentena por el NAC/EDR."],
+    r_navegador: ["Problema del navegador / proxy / certificado", "int", "Prueba otro navegador o modo incógnito; revisa configuración de proxy y certificados de inspección SSL; extensiones; hora del sistema."],
+    r_switch: ["Switch o uplink caído", "int", "Revisa el switch de esa zona: alimentación (¿SAI del IDF?), uplinks de fibra, logs. Si es un stack, mira si cayó un miembro."],
+    r_ap: ["AP caído o sin PoE", "int", "Comprueba en la controladora si el AP está online. Revisa el puerto PoE y el presupuesto PoE del switch."],
+    r_fibra: ["Corte de fibra de la operadora", "ext", "No puedes arreglarlo tú. Llama a la operadora con el número de circuito. Mientras, activa la línea de respaldo (5G) o comparte datos del móvil para lo crítico."],
+    r_isp: ["Caída del servicio de la operadora o del router", "mix", "El firewall no sale a Internet con luces normales: reinicia el router/ONT si es tuyo; revisa la sesión PPPoE/DHCP de la WAN. Si sigue, abre incidencia con la operadora aportando pruebas."],
+    r_lan_core: ["Problema interno del core / firewall", "int", "Internet llega al firewall pero no a la LAN: revisa el enlace firewall-core, el DHCP/DNS central, reglas recién cambiadas. ¿Qué cambió hoy?"],
+    r_satur: ["Línea saturada", "dir", "Identifica quién consume (firewall: top talkers). Si es puntual (backup, actualizaciones), reprograma o limita. Si es crecimiento sostenido (p95 &gt; 70 %), solicita a dirección ampliar caudal o añadir una segunda línea."],
+    r_medir: ["Primero, mide", "int", "Activa gráficas de consumo en el firewall (SNMP/NetFlow) y haz pruebas por cable con speedtest y ping continuo. Sin datos no se puede decidir si es un problema de capacidad."],
+    r_srv: ["Servidor o aplicación interna", "int", "Revisa CPU, RAM y latencia de disco del servidor; red entre usuario y servidor con iperf3; logs de la aplicación; base de datos (bloqueos, índices)."],
+    r_lat: ["Latencia o pérdida en la línea", "mix", "Ejecuta MTR/pathping hacia varios destinos. Si la pérdida empieza dentro de tu red: interno. Si empieza en la operadora: abre incidencia con el MTR. Revisa también bufferbloat (activa SQM/QoS)."],
+    r_saas: ["Comprueba el estado del proveedor", "ext", "Mira la página de estado (Microsoft 365 Service Health, etc.). Si hay incidencia global: comunica a los usuarios y espera. Si no: prueba desde otra red (5G) para descartar tu firewall/proxy."],
+    r_puerto: ["Puerto bloqueado o servicio parado", "int", "Comprueba que el servicio está arrancado en el servidor (escucha en el puerto: netstat -an / ss -ltn) y las reglas del firewall del servidor y entre VLANs."],
+    r_appsrv: ["Fallo de la propia aplicación", "mix", "La red funciona. Revisa logs de la aplicación, credenciales y licencias. Si es software de terceros, abre soporte con el fabricante con los logs."],
+    r_cobertura: ["Cobertura insuficiente", "int", "Añade o reubica un AP, idealmente cableado. No subas la potencia del AP: el portátil oiría al AP pero el AP no al portátil."],
+    r_densidad: ["Demasiados clientes por AP", "int", "Añade APs en la zona con potencia baja, usa canales de 20/40 MHz, empuja clientes a 5/6 GHz, desactiva tasas de datos bajas."],
+    r_interf: ["Interferencia o canal mal elegido", "int", "Analiza la utilización del canal y redes vecinas. Cambia el plan de canales, evita 2,4 GHz, revisa fuentes de interferencia (microondas, cámaras inalámbricas)."],
+  };
+  const WHO = { int: ['who int', 'Interno'], ext: ['who ext', 'Externo'], dir: ['who dir', 'Dirección / compras'], mix: ['who mix', 'Mixto'] };
+  const el = document.getElementById('tree');
+  let path = [];
+  function render(id) {
+    const crumbs = path.map(p => p.label).join(' → ');
+    if (R[id]) {
+      const [t, w, txt] = R[id];
+      el.innerHTML = `<div class="q"><div class="path">${crumbs}</div><div class="ask">${t} <span class="${WHO[w][0]}">${WHO[w][1]}</span></div><div class="ans">${txt}</div><div class="opts" style="margin-top:12px"><button data-back>← Atrás</button><button data-reset>Empezar de nuevo</button></div></div>`;
+    } else {
+      const n = N[id];
+      el.innerHTML = `<div class="q"><div class="path">${crumbs || 'Inicio'}</div><div class="ask">${n.q}</div><div class="opts">${n.o.map((o, i) => `<button data-i="${i}">${o[0]}</button>`).join('')}${path.length ? '<button data-back>← Atrás</button>' : ''}</div></div>`;
+      el.querySelectorAll('[data-i]').forEach(b => b.onclick = () => { const o = n.o[+b.dataset.i]; path.push({ id, label: o[0] }); render(o[1]); });
+    }
+    const back = el.querySelector('[data-back]');
+    if (back) back.onclick = () => { const p = path.pop(); render(p.id); };
+    const reset = el.querySelector('[data-reset]');
+    if (reset) reset.onclick = () => { path = []; render('start'); };
+  }
+  render('start');
+})();
+</script>
+</body>
+</html>

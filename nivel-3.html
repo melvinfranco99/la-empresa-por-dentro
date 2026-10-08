@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N3 Mediana empresa · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="nivel-3" style="--lvl:var(--l3)">
+<main><div class="content">
+
+<section class="hero">
+  <span class="lvl-tag">NIVEL 3</span>
+  <h1>Mediana empresa</h1>
+  <p class="lead">Un edificio de oficinas de varias plantas, o una fábrica con oficinas y naves. Entre 60 y 300 personas. Todo lo crítico va <b>duplicado</b>, hay una pequeña <b>sala de servidores</b>, un <b>departamento de IT</b> con funciones separadas y la seguridad pasa a ser un área propia.</p>
+  <div class="facts">
+    <span class="chip"><b>60–300</b> personas</span>
+    <span class="chip"><b>400–1.500</b> dispositivos</span>
+    <span class="chip"><b>2 operadores</b>, 1–10 Gb</span>
+    <span class="chip">Inversión <b>150–600 k€</b></span>
+    <span class="chip">IT: <b>3–10</b> personas</span>
+  </div>
+</section>
+
+<h2>Perfil</h2>
+<p>Lo nuevo respecto al <a href="nivel-2.html">nivel 2</a>:</p>
+<ul>
+<li><b>Edificio con varias plantas</b>: ya no llega todo a un solo cuarto (límite de 90 m). Aparecen los <b>cuartos de planta</b> unidos con fibra a la sala principal.</li>
+<li><b>Alta disponibilidad (HA)</b>: firewalls en pareja, cores redundantes, clúster de servidores con almacenamiento compartido.</li>
+<li><b>Servicios publicados</b>: web, portal de clientes, B2B, API… Aparece la <b>DMZ</b>.</li>
+<li><b>Organización</b>: helpdesk, sistemas, redes, seguridad, con un responsable (IT Manager / CIO). Procesos ITIL: incidencias, cambios, inventario.</li>
+<li><b>Cumplimiento</b>: ISO 27001, ENS (si se trabaja con la Administración pública), NIS2 si el sector es esencial/importante, auditorías de clientes y aseguradoras.</li>
+</ul>
+
+<h2>Corte del edificio: cableado vertical</h2>
+<figure class="diagram">
+<svg viewBox="0 0 900 500" role="img" aria-label="Sección vertical del edificio con cuartos de planta">
+  <!-- edificio -->
+  <rect x="120" y="30" width="660" height="440" fill="none" stroke="var(--d-stroke)" stroke-width="3"/>
+  <path d="M120 140 H780 M120 250 H780 M120 360 H780" stroke="var(--d-stroke)" stroke-width="2"/>
+  <text x="100" y="90" text-anchor="end" class="b">P3</text>
+  <text x="100" y="200" text-anchor="end" class="b">P2</text>
+  <text x="100" y="310" text-anchor="end" class="b">P1</text>
+  <text x="100" y="420" text-anchor="end" class="b">PB</text>
+  <!-- patinillo -->
+  <rect x="400" y="30" width="40" height="440" class="zonef" style="stroke:var(--d-fiber)"/>
+  <text x="420" y="22" text-anchor="middle" class="s">patinillo vertical</text>
+  <!-- IDFs -->
+  <g>
+    <rect x="450" y="60" width="90" height="60" rx="5" class="bx" style="stroke:var(--l3);stroke-width:2"/><text x="495" y="85" text-anchor="middle" class="b">IDF-3</text><text x="495" y="103" text-anchor="middle" class="s">2× sw 48p</text>
+    <rect x="450" y="170" width="90" height="60" rx="5" class="bx" style="stroke:var(--l3);stroke-width:2"/><text x="495" y="195" text-anchor="middle" class="b">IDF-2</text><text x="495" y="213" text-anchor="middle" class="s">3× sw 48p</text>
+    <rect x="450" y="280" width="90" height="60" rx="5" class="bx" style="stroke:var(--l3);stroke-width:2"/><text x="495" y="305" text-anchor="middle" class="b">IDF-1</text><text x="495" y="323" text-anchor="middle" class="s">3× sw 48p</text>
+  </g>
+  <!-- MDF / sala -->
+  <rect x="450" y="380" width="200" height="75" rx="5" class="bx" style="stroke:var(--l3);stroke-width:3"/>
+  <text x="550" y="405" text-anchor="middle" class="b">MDF + Sala servidores</text>
+  <text x="550" y="423" text-anchor="middle" class="s">core · firewalls · clúster</text>
+  <text x="550" y="439" text-anchor="middle" class="s">SAI · clima · extinción</text>
+  <!-- fibras: dos caminos -->
+  <path d="M465 120 V170 M465 230 V280 M465 340 V380" class="fib" stroke-width="3"/>
+  <path d="M410 90 H450 M410 200 H450 M410 310 H450" class="fib"/>
+  <path d="M410 90 V410 H450" class="fib"/>
+  <path d="M430 60 V470" class="fib" stroke-dasharray="8 4"/>
+  <text x="330" y="235" text-anchor="end" class="s">fibra OS2 12 hilos</text>
+  <text x="330" y="250" text-anchor="end" class="s">doble ruta: cada IDF</text>
+  <text x="330" y="265" text-anchor="end" class="s">tiene 2 enlaces al core</text>
+  <!-- cobre horizontal -->
+  <path d="M540 90 H760 M540 200 H760 M540 310 H760" class="cu" stroke-width="4" opacity=".4"/>
+  <path d="M450 95 H140 M450 205 H140 M450 315 H140" class="cu" stroke-width="4" opacity=".4"/>
+  <text x="650" y="82" text-anchor="middle" class="s">cobre horizontal ≤ 90 m</text>
+  <!-- acometidas -->
+  <path d="M20 430 H120 V430 H450" class="wan"/>
+  <path d="M880 450 H650" class="wan"/>
+  <text x="30" y="420" class="s">ISP A (fachada norte)</text>
+  <text x="870" y="440" text-anchor="end" class="s">ISP B (fachada sur)</text>
+  <!-- generador -->
+  <rect x="680" y="390" width="85" height="55" rx="5" class="bx" style="stroke:var(--warn)"/>
+  <text x="722" y="413" text-anchor="middle" class="s">Grupo</text>
+  <text x="722" y="428" text-anchor="middle" class="s">electrógeno</text>
+</svg>
+<div class="legend">
+  <span><i style="border-color:var(--d-fiber)"></i>Fibra vertical (backbone)</span>
+  <span><i style="border-color:var(--d-cu)"></i>Cobre horizontal</span>
+  <span><i style="border-color:var(--d-wan)"></i>Acometidas por fachadas distintas</span>
+</div>
+<figcaption>Estructura de cableado de un edificio: <b>MDF</b> (Main Distribution Frame, el cuarto principal) en la planta baja o sótano seco, e <b>IDF</b> (Intermediate Distribution Frame) en cada planta, apilados para que la fibra suba recta por el patinillo.</figcaption>
+</figure>
+
+<h3>¿Por qué así?</h3>
+<ul>
+<li><b>Un IDF por planta</b> (o cada 1.000 m² aprox.) porque ningún puesto puede estar a más de 90 m de cable de su switch.</li>
+<li><b>IDFs apilados verticalmente</b>: el recorrido de fibra es corto y recto, y el patinillo es un hueco previsto en el edificio para instalaciones.</li>
+<li><b>Fibra de 12 hilos aunque se usen 4</b>: tender fibra es caro; los hilos sobrantes cubren averías y crecimiento.</li>
+<li><b>Doble ruta</b>: si una obra corta la fibra de un patinillo, la otra mantiene la planta. Cada switch de IDF tiene un uplink a cada core.</li>
+<li><b>Las dos operadoras entran por fachadas distintas</b> y llegan por centrales distintas. Si las dos fibras van por la misma zanja, una excavadora se las lleva a la vez. Hay que pedirlo explícitamente ("diversidad de ruta").</li>
+<li><b>Grupo electrógeno</b>: el SAI aguanta minutos; el generador, horas o días. El SAI solo tiene que cubrir los ≈ 10–30 s que tarda en arrancar.</li>
+</ul>
+
+<h2>Diagrama lógico</h2>
+<figure class="diagram">
+<svg viewBox="0 0 900 560" role="img" aria-label="Red lógica de mediana empresa con DMZ y alta disponibilidad">
+  <ellipse cx="300" cy="35" rx="55" ry="22" class="bx2"/><text x="300" y="40" text-anchor="middle" class="b">ISP A</text>
+  <ellipse cx="600" cy="35" rx="55" ry="22" class="bx2"/><text x="600" y="40" text-anchor="middle" class="b">ISP B</text>
+  <path d="M300 57 V95" class="wan flow"/><path d="M600 57 V95" class="wan flow"/>
+  <path d="M300 95 H600" class="wan" opacity=".4"/>
+  <!-- firewalls HA -->
+  <rect x="250" y="95" width="160" height="60" rx="8" class="bx" style="stroke:var(--l3);stroke-width:2"/>
+  <text x="330" y="120" text-anchor="middle" class="b">NGFW-1 (activo)</text>
+  <text x="330" y="138" text-anchor="middle" class="s">BGP / SD-WAN</text>
+  <rect x="490" y="95" width="160" height="60" rx="8" class="bx" style="stroke:var(--l3);stroke-width:2"/>
+  <text x="570" y="120" text-anchor="middle" class="b">NGFW-2 (pasivo)</text>
+  <text x="570" y="138" text-anchor="middle" class="s">sincronizado</text>
+  <path d="M410 125 H490" class="ln" stroke-dasharray="3 3"/><text x="450" y="118" text-anchor="middle" class="s">HA link</text>
+  <!-- DMZ -->
+  <path d="M250 130 H160" class="cu"/>
+  <rect x="20" y="85" width="140" height="120" rx="8" class="zonef" style="stroke:var(--bad)"/>
+  <text x="90" y="105" text-anchor="middle" class="b">DMZ</text>
+  <text x="90" y="125" text-anchor="middle" class="s">proxy inverso / WAF</text>
+  <text x="90" y="142" text-anchor="middle" class="s">web corporativa</text>
+  <text x="90" y="159" text-anchor="middle" class="s">portal clientes</text>
+  <text x="90" y="176" text-anchor="middle" class="s">relay de correo</text>
+  <text x="90" y="193" text-anchor="middle" class="s">pasarela SFTP</text>
+  <!-- cores -->
+  <path d="M330 155 V210 M570 155 V210 M330 155 L570 210 M570 155 L330 210" class="fib"/>
+  <rect x="250" y="210" width="160" height="56" rx="8" class="bx"/><text x="330" y="235" text-anchor="middle" class="b">Core A</text><text x="330" y="252" text-anchor="middle" class="s">L3 · 25/100G</text>
+  <rect x="490" y="210" width="160" height="56" rx="8" class="bx"/><text x="570" y="235" text-anchor="middle" class="b">Core B</text><text x="570" y="252" text-anchor="middle" class="s">L3 · 25/100G</text>
+  <path d="M410 230 H490 M410 246 H490" class="fib"/><text x="450" y="222" text-anchor="middle" class="s">MLAG / VSX</text>
+  <!-- IDFs -->
+  <g>
+    <rect x="60" y="330" width="110" height="44" rx="6" class="bx"/><text x="115" y="357" text-anchor="middle" class="b">IDF-PB</text>
+    <rect x="190" y="330" width="110" height="44" rx="6" class="bx"/><text x="245" y="357" text-anchor="middle" class="b">IDF-P1</text>
+    <rect x="320" y="330" width="110" height="44" rx="6" class="bx"/><text x="375" y="357" text-anchor="middle" class="b">IDF-P2</text>
+    <rect x="450" y="330" width="110" height="44" rx="6" class="bx"/><text x="505" y="357" text-anchor="middle" class="b">IDF-P3</text>
+    <path d="M115 330 L330 266 M115 330 L570 266" class="fib" opacity=".55"/>
+    <path d="M245 330 L330 266 M245 330 L570 266" class="fib" opacity=".55"/>
+    <path d="M375 330 L330 266 M375 330 L570 266" class="fib" opacity=".55"/>
+    <path d="M505 330 L330 266 M505 330 L570 266" class="fib" opacity=".55"/>
+    <text x="310" y="398" text-anchor="middle" class="s">usuarios · VoIP · Wi-Fi · impresión · cámaras · IoT/OT (VLANs por planta, NAC 802.1X)</text>
+  </g>
+  <!-- CPD -->
+  <path d="M650 238 H700 V300" class="fib"/>
+  <rect x="600" y="300" width="290" height="250" rx="10" class="zonef" style="stroke:var(--l3)"/>
+  <text x="745" y="322" text-anchor="middle" class="b">Sala de servidores</text>
+  <rect x="615" y="335" width="80" height="54" rx="5" class="bx"/><text x="655" y="358" text-anchor="middle" class="b">Host 1</text><text x="655" y="375" text-anchor="middle" class="s">VMs</text>
+  <rect x="705" y="335" width="80" height="54" rx="5" class="bx"/><text x="745" y="358" text-anchor="middle" class="b">Host 2</text><text x="745" y="375" text-anchor="middle" class="s">VMs</text>
+  <rect x="795" y="335" width="80" height="54" rx="5" class="bx"/><text x="835" y="358" text-anchor="middle" class="b">Host 3-4</text><text x="835" y="375" text-anchor="middle" class="s">VMs</text>
+  <path d="M655 389 V420 M745 389 V420 M835 389 V420" class="fib"/>
+  <rect x="615" y="420" width="260" height="30" rx="5" class="bx2"/><text x="745" y="440" text-anchor="middle" class="s">2× switches de almacenamiento 25G (iSCSI/NVMe-oF)</text>
+  <path d="M745 450 V470" class="fib"/>
+  <rect x="615" y="470" width="125" height="50" rx="5" class="bx" style="stroke:var(--l3)"/><text x="677" y="492" text-anchor="middle" class="b">SAN all-flash</text><text x="677" y="508" text-anchor="middle" class="s">2 controladoras</text>
+  <rect x="750" y="470" width="125" height="50" rx="5" class="bx"/><text x="812" y="492" text-anchor="middle" class="b">Backup</text><text x="812" y="508" text-anchor="middle" class="s">inmutable + cinta</text>
+  <!-- DR -->
+  <path d="M570 95 C 700 40 800 60 850 90" class="vpn"/>
+  <rect x="770" y="90" width="120" height="56" rx="8" class="bx2"/>
+  <text x="830" y="113" text-anchor="middle" class="b">DR</text>
+  <text x="830" y="130" text-anchor="middle" class="s">nube o colocation</text>
+  <!-- VPN users -->
+  <path d="M250 110 C150 60 120 40 60 40" class="vpn"/>
+  <text x="70" y="30" class="s">teletrabajo (ZTNA / VPN + MFA)</text>
+</svg>
+<div class="legend">
+  <span><i style="border-color:var(--d-wan)"></i>Internet</span>
+  <span><i style="border-color:var(--d-fiber)"></i>Fibra / 10–100G</span>
+  <span><i class="dash" style="border-color:var(--d-vpn)"></i>Túneles cifrados</span>
+</div>
+<figcaption>Todo lo crítico va de dos en dos y en <b>cruz</b>: cada IDF a los dos cores, cada core a los dos firewalls, cada host a los dos switches de almacenamiento. Cualquier equipo puede apagarse para actualizarlo sin cortar el servicio.</figcaption>
+</figure>
+
+<h3>La DMZ, explicada</h3>
+<p>La <b>DMZ</b> (zona desmilitarizada) es una red aparte donde van los servidores que deben ser accesibles desde Internet. Si un atacante compromete la web, está en la DMZ, y el firewall no le deja pasar a la red interna. Regla de oro: <b>desde Internet se puede llegar a la DMZ; desde la DMZ no se puede iniciar conexión hacia la LAN</b> (salvo puertos muy concretos hacia servidores concretos). Hoy muchas empresas sustituyen la DMZ por servicios en la nube y publican aplicaciones internas con <b>ZTNA</b> o proxies de aplicación (Cloudflare Tunnel, Entra Application Proxy) sin abrir puertos.</p>
+
+<h2>Sala de servidores (CPD pequeño)</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Elemento</th><th>Configuración</th><th>Por qué</th></tr></thead>
+<tbody>
+<tr><td>Racks</td><td>3–6 racks 42–47U, 600–800 × 1.200 mm</td><td>Red, cómputo, almacenamiento y crecimiento.</td></tr>
+<tr><td>Pasillo frío / caliente</td><td>Frontales enfrentados (pasillo frío) y traseras enfrentadas (pasillo caliente), con confinamiento</td><td>Evita mezclar aire caliente con frío: ahorra 20–40 % de energía de climatización.</td></tr>
+<tr><td>Climatización</td><td>2 equipos de precisión (o in-row) en configuración <b>N+1</b></td><td>Si uno falla o se mantiene, el otro basta.</td></tr>
+<tr><td>Electricidad</td><td>Dos SAI (o un SAI modular N+1), PDUs A y B por rack, grupo electrógeno con depósito de 8–24 h</td><td>Dos caminos eléctricos independientes hasta cada servidor.</td></tr>
+<tr><td>Suelo / techo</td><td>Suelo técnico o bandejas aéreas (separadas: energía y datos)</td><td>Orden; aire; seguridad.</td></tr>
+<tr><td>Extinción</td><td>Gas inerte o agente limpio (Novec 1230 / FM-200 / IG-55) + detección precoz por aspiración (VESDA)</td><td>Apaga el fuego sin destruir los equipos. El agua y el polvo no son opción.</td></tr>
+<tr><td>Control</td><td>Acceso con tarjeta, cámaras, sensores de temperatura por rack, de agua bajo suelo, de puerta abierta</td><td>Trazabilidad y alertas.</td></tr>
+</tbody></table></div>
+
+<h3>Cómo se mide la eficiencia: PUE</h3>
+<div class="formula">PUE = Energía total de la sala ÷ Energía consumida por los equipos IT</div>
+<p>Un PUE de 2,0 significa que por cada vatio de servidores se gasta otro en frío, SAI y luz. Una sala pequeña típica está en 1,6–2,2; un CPD moderno, en 1,2–1,4; los hiperescala, en ≈ 1,1. Bajar el PUE de 2,0 a 1,5 en una sala de 20 kW IT ahorra ≈ 87.600 kWh/año (≈ 13.000 € a 0,15 €/kWh).</p>
+
+<h2>Almacenamiento y cómputo</h2>
+<div class="two">
+<div class="card">
+<h4>Clúster tradicional (3 capas)</h4>
+<p class="small">Hosts de cómputo + red de almacenamiento + <b>SAN</b> (cabina con dos controladoras). La cabina aporta snapshots, réplica, deduplicación. Protocolos: iSCSI, Fibre Channel, NVMe/TCP.</p>
+<p class="small"><b>Pros</b>: escalas cómputo y disco por separado. <b>Contras</b>: más piezas, más caro de entrada.</p>
+</div>
+<div class="card">
+<h4>Hiperconvergencia (HCI)</h4>
+<p class="small">Cada nodo tiene CPU, RAM y discos; el software (Ceph en Proxmox, vSAN, Nutanix, Azure Local, S2D) los une en un almacenamiento distribuido. Mínimo 3 nodos.</p>
+<p class="small"><b>Pros</b>: sencillo, crece de nodo en nodo. <b>Contras</b>: para añadir disco, añades nodo completo.</p>
+</div>
+</div>
+<div class="table-wrap"><table>
+<thead><tr><th>Tipo de almacenamiento</th><th>Qué es</th><th>Uso</th></tr></thead>
+<tbody>
+<tr><td><b>Bloque</b> (SAN, iSCSI, FC)</td><td>Discos "en crudo" que el servidor formatea</td><td>Discos de VMs, bases de datos.</td></tr>
+<tr><td><b>Fichero</b> (NAS, SMB, NFS)</td><td>Carpetas compartidas</td><td>Documentos de usuarios, departamentos.</td></tr>
+<tr><td><b>Objeto</b> (S3)</td><td>Ficheros con metadatos accesibles por HTTP</td><td>Backups inmutables, archivos, datos de aplicaciones web.</td></tr>
+</tbody></table></div>
+<p>Para elegir RAID y calcular capacidad útil, usa la <a href="calculadoras.html#raid">calculadora RAID</a>.</p>
+
+<h2>Disponibilidad: el lenguaje de los "nueves"</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Disponibilidad</th><th>Caída permitida al año</th><th>Al mes</th><th>Qué hace falta (orientativo)</th></tr></thead>
+<tbody>
+<tr><td>99 %</td><td class="num">3,65 días</td><td class="num">7,3 h</td><td>Un servidor con buen backup (nivel 1–2).</td></tr>
+<tr><td>99,9 %</td><td class="num">8,76 h</td><td class="num">43,8 min</td><td>Componentes redundantes en una sede (nivel 3).</td></tr>
+<tr><td>99,99 %</td><td class="num">52,6 min</td><td class="num">4,4 min</td><td>Dos CPDs, conmutación automática (nivel 4).</td></tr>
+<tr><td>99,999 %</td><td class="num">5,26 min</td><td class="num">26 s</td><td>Activo-activo multi-región, operación 24/7 (nivel 5).</td></tr>
+</tbody></table></div>
+<p>Los componentes <b>en serie</b> multiplican su disponibilidad (empeora): firewall 99,9 % × switch 99,9 % × servidor 99,9 % = 99,7 %. Los componentes <b>en paralelo</b> (redundantes) la mejoran: dos firewalls de 99 % en HA → 1 − (0,01 × 0,01) = 99,99 %. <a href="calculadoras.html#disponibilidad">Calculadora de disponibilidad</a>.</p>
+
+<h2>Software y servicios</h2>
+<div class="tabs">
+<div class="tab-panel" data-tab="Identidad y acceso">
+<ul>
+<li>AD + Entra ID híbrido, con <b>SSO</b> (inicio de sesión único) por SAML/OIDC en todas las aplicaciones SaaS.</li>
+<li><b>Acceso condicional</b>: solo desde equipos gestionados y cumplidores; MFA resistente a phishing (FIDO2/passkeys) para admins.</li>
+<li><b>Modelo de niveles (tiering)</b>: las cuentas que administran controladores de dominio no inician sesión en PCs de usuario.</li>
+<li><b>PAM</b> básico: bóveda de contraseñas privilegiadas con registro (Delinea, CyberArk, Bitwarden/Keeper Enterprise, o LAPS + PIM de Entra).</li>
+<li><b>NAC</b> (Cisco ISE, Aruba ClearPass, FortiNAC, PacketFence): el puerto de red asigna VLAN según quién/qué se conecta; los desconocidos van a cuarentena.</li>
+</ul>
+</div>
+<div class="tab-panel" data-tab="Operación (ITSM)">
+<ul>
+<li><b>Gestor de tickets</b> con catálogo de servicios: GLPI, Jira Service Management, Freshservice, ServiceNow (más bien N4+).</li>
+<li><b>CMDB / inventario</b>: qué equipos hay, quién los tiene, garantías, licencias, dependencias.</li>
+<li><b>Gestión de cambios</b>: ningún cambio en producción sin aprobar, planificar ventana y plan de vuelta atrás.</li>
+<li><b>Monitorización</b> unificada con paneles (Zabbix, PRTG, Datadog, Grafana + Prometheus) y guardias rotativas.</li>
+<li><b>Automatización</b>: Ansible, PowerShell DSC, Terraform para nube. Despliegue de PCs con Autopilot/Intune.</li>
+</ul>
+</div>
+<div class="tab-panel" data-tab="Seguridad">
+<ul>
+<li><b>SIEM</b> (Microsoft Sentinel, Wazuh, Splunk, Elastic) con un SOC propio o externo (MDR/SOCaaS).</li>
+<li><b>Gestión de vulnerabilidades</b> con SLA de parcheo por criticidad (críticas &lt; 7 días).</li>
+<li><b>Pentest</b> anual externo y tras cambios importantes.</li>
+<li><b>Segmentación</b>: firewall interno entre VLANs (no solo en el perímetro); OT/industrial aislado (modelo Purdue, IEC 62443).</li>
+<li><b>Plan de respuesta a incidentes</b> y ejercicios de simulación (tabletop).</li>
+<li><b>DLP</b> y etiquetado de información (Purview) para datos sensibles.</li>
+</ul>
+</div>
+<div class="tab-panel" data-tab="Datos y continuidad">
+<ul>
+<li><b>Bases de datos con alta disponibilidad</b>: SQL Server Always On, PostgreSQL con Patroni/réplicas, MySQL Group Replication.</li>
+<li><b>Backup</b> 3-2-1-1-0: 3 copias, 2 soportes, 1 fuera, 1 inmutable/offline, 0 errores en las pruebas de restauración.</li>
+<li><b>Cinta LTO</b> para archivo largo y copia offline real (aire entre la copia y la red).</li>
+<li><b>Plan de recuperación ante desastres (DRP)</b>: réplica de VMs críticas a la nube (Azure Site Recovery, Veeam Cloud Connect, Zerto) o a un CPD alquilado. Prueba anual completa.</li>
+</ul>
+</div>
+</div>
+
+<h2>Equipo de IT típico</h2>
+<div class="grid g3">
+<div class="card"><h4>Responsable IT / CIO</h4><p class="small">Presupuesto, proveedores, prioridades con dirección, cumplimiento.</p></div>
+<div class="card"><h4>Soporte / helpdesk (1–3)</h4><p class="small">Primer nivel: usuarios, puestos, altas y bajas, inventario.</p></div>
+<div class="card"><h4>Sistemas (1–3)</h4><p class="small">Servidores, virtualización, backup, M365, directorio.</p></div>
+<div class="card"><h4>Redes y comunicaciones (1–2)</h4><p class="small">Switches, Wi-Fi, firewall, operadoras, telefonía.</p></div>
+<div class="card"><h4>Seguridad (1, a veces CISO externo)</h4><p class="small">Políticas, SIEM, auditorías, concienciación.</p></div>
+<div class="card"><h4>Proveedores</h4><p class="small">Integrador de red, partner Microsoft, mantenimiento de clima/SAI, SOC externo, operadoras.</p></div>
+</div>
+
+<h2>Problemas típicos y quién los arregla</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Quién</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Una planta entera sin red</td><td>Fallo del switch del IDF, fibra cortada, SAI del IDF agotado</td><td><span class="who int">Redes</span></td><td>Con doble uplink y stack no debería pasar. Revisar SAI del IDF (los IDF también necesitan SAI).</td></tr>
+<tr><td>Wi-Fi colapsa en el auditorio durante eventos</td><td>Densidad (200 personas en una sala)</td><td><span class="who int">Redes</span></td><td>APs adicionales con antenas direccionales, canales de 20 MHz, banda de 6 GHz, limitar velocidades mínimas (deshabilitar tasas bajas).</td></tr>
+<tr><td>Las copias no caben en la ventana nocturna</td><td>Crecimiento de datos</td><td><span class="who mix">Sistemas + compras</span></td><td>Backups incrementales "forever" + snapshots de la cabina; red de backup dedicada a 25G; más repositorio.</td></tr>
+<tr><td>La cabina SAN se llena al 85 %</td><td>Crecimiento</td><td><span class="who dir">Compras</span></td><td>Ampliación (meses de plazo). Planificar capacidad cada trimestre con tendencia: <a href="calculadoras.html#crecimiento">calculadora de crecimiento</a>.</td></tr>
+<tr><td>Microcortes en la línea principal</td><td>Problema físico o de enrutamiento en la operadora</td><td><span class="who ext">Operadora</span></td><td>Aportar pruebas (MTR, gráficas de pérdida) y exigir según SLA. SD-WAN mueve el tráfico sensible a la otra línea entretanto.</td></tr>
+<tr><td>Fallo de suministro eléctrico de 3 horas</td><td>Compañía eléctrica</td><td><span class="who ext">Distribuidora eléctrica</span></td><td>Generador arranca solo. Verificar repostaje y pruebas mensuales con carga.</td></tr>
+<tr><td>Fin de soporte de un fabricante (EoL/EoS)</td><td>Ciclo de vida</td><td><span class="who dir">Dirección</span></td><td>Plan de renovación a 5 años (redes 5–7 años, servidores 5, PCs 4–5). Presupuestar con antelación.</td></tr>
+<tr><td>Auditoría: "no hay evidencias de revisión de accesos"</td><td>Proceso inexistente</td><td><span class="who int">IT + RR. HH.</span></td><td>Revisión trimestral de permisos por responsables de área; automatizar con Entra ID Governance o similar.</td></tr>
+</tbody></table></div>
+
+<h2>Presupuesto orientativo (200 personas)</h2>
+<div class="two">
+<div class="card"><h4>Inicial</h4><table><tbody>
+<tr><td>Cableado 450 puntos + fibra vertical</td><td class="num">60.000 €</td></tr>
+<tr><td>Sala (clima, SAI, extinción, racks)</td><td class="num">90.000 €</td></tr>
+<tr><td>Generador</td><td class="num">25.000 €</td></tr>
+<tr><td>Firewalls en HA</td><td class="num">25.000 €</td></tr>
+<tr><td>Cores + 10 switches acceso</td><td class="num">60.000 €</td></tr>
+<tr><td>35 APs + NAC</td><td class="num">35.000 €</td></tr>
+<tr><td>Clúster 4 hosts + SAN</td><td class="num">120.000 €</td></tr>
+<tr><td>Backup (servidor, cinta, licencias)</td><td class="num">35.000 €</td></tr>
+<tr><td>Proyecto e integración</td><td class="num">40.000 €</td></tr>
+<tr><th>Total</th><th class="num">≈ 490.000 €</th></tr>
+</tbody></table></div>
+<div class="card"><h4>Anual</h4><table><tbody>
+<tr><td>Comunicaciones (2× fibra 1–10 Gb, IPs, telefonía)</td><td class="num">15–40 k€</td></tr>
+<tr><td>M365 E3/E5 ×200</td><td class="num">90–140 k€</td></tr>
+<tr><td>Seguridad (EDR, SOC, correo, pentest)</td><td class="num">40–80 k€</td></tr>
+<tr><td>Mantenimientos y soporte</td><td class="num">40–70 k€</td></tr>
+<tr><td>Equipo IT (6 personas)</td><td class="num">300–420 k€</td></tr>
+<tr><th>Total</th><th class="num">≈ 0,5–0,75 M€/año</th></tr>
+</tbody></table></div>
+</div>
+<p class="small muted">Referencia habitual: el gasto IT de una empresa mediana suele estar entre el 2 % y el 6 % de su facturación, según sector.</p>
+
+<h2>Cuándo pasar al nivel 4</h2>
+<ul class="check">
+<li>Se abre la <b>segunda sede</b> (delegación, fábrica, almacén) con personas que dependen de los sistemas centrales.</li>
+<li>Un desastre en el edificio (incendio, inundación) pararía la empresa por semanas: hace falta un <b>segundo CPD</b> real.</li>
+<li>Las aplicaciones de negocio necesitan RTO de minutos, no horas.</li>
+<li>Entrada en sectores regulados o con clientes que exigen continuidad certificada (ISO 22301).</li>
+</ul>
+
+</div></main>
+<script src="assets/app.js"></script>
+</body>
+</html>

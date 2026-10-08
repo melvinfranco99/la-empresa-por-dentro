@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N5 Multinacional global · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="nivel-5" style="--lvl:var(--l5)">
+<main><div class="content">
+
+<section class="hero">
+  <span class="lvl-tag">NIVEL 5</span>
+  <h1>Multinacional global</h1>
+  <p class="lead">Un banco internacional, una marca de ropa con 3.000 tiendas, un fabricante de automóviles, una telco o una gran plataforma digital. Decenas de miles de empleados en decenas de países, millones de clientes conectados a la vez. Aquí la infraestructura se diseña <b>por regiones</b>, se automatiza todo y se asume que <b>algo está fallando siempre</b> en algún sitio.</p>
+  <div class="facts">
+    <span class="chip"><b>5.000–300.000</b> personas</span>
+    <span class="chip"><b>100–5.000</b> sedes</span>
+    <span class="chip"><b>3+ regiones</b> geográficas</span>
+    <span class="chip">Inversión <b>10 M€ – miles de M€</b></span>
+    <span class="chip">IT: <b>cientos a decenas de miles</b></span>
+  </div>
+</section>
+
+<h2>Perfil</h2>
+<p>Lo nuevo respecto al <a href="nivel-4.html">nivel 4</a>:</p>
+<div class="grid">
+<div class="card"><h4>Regiones</h4><p class="small">La infraestructura se replica por región (EMEA, Américas, APAC). Cada una tiene sus CPD/regiones de nube, su salida a Internet y su soporte local.</p></div>
+<div class="card"><h4>Soberanía y regulación</h4><p class="small">RGPD (UE), leyes de localización de datos (China, India, Rusia, Arabia Saudí…), reguladores sectoriales. Dónde se guarda cada dato es una decisión legal.</p></div>
+<div class="card"><h4>Escala</h4><p class="small">Miles de cambios a la semana, cientos de miles de equipos. Nada se hace a mano: plataformas internas, automatización, autoservicio.</p></div>
+<div class="card"><h4>Diseñar para el fallo</h4><p class="small">No se busca que nada falle, sino que cualquier fallo (un servidor, un CPD, una región de nube, un cable submarino) no se note.</p></div>
+</div>
+
+<h2>Mapa global</h2>
+<figure class="diagram">
+<svg viewBox="0 0 900 470" role="img" aria-label="Arquitectura de red global de una multinacional">
+  <!-- continentes simplificados -->
+  <path d="M60 110 Q120 60 230 80 Q280 110 260 170 Q240 230 200 260 Q170 300 150 260 Q90 220 70 170 Z" class="zonef"/>
+  <path d="M200 280 Q250 280 270 330 Q260 400 220 430 Q190 400 190 340 Z" class="zonef"/>
+  <path d="M400 80 Q470 60 520 90 Q510 140 470 160 Q420 160 400 130 Z" class="zonef"/>
+  <path d="M420 180 Q490 170 520 220 Q510 320 460 360 Q420 300 410 240 Z" class="zonef"/>
+  <path d="M530 70 Q680 40 800 90 Q830 150 760 200 Q680 230 600 200 Q540 160 530 110 Z" class="zonef"/>
+  <path d="M740 300 Q800 290 830 330 Q810 370 760 360 Z" class="zonef"/>
+  <!-- hubs regionales -->
+  <g>
+    <circle cx="170" cy="150" r="22" class="bx" style="stroke:var(--l5);stroke-width:3"/><text x="170" y="155" text-anchor="middle" class="b" font-size="11">US-E</text>
+    <circle cx="100" cy="170" r="16" class="bx" style="stroke:var(--l5);stroke-width:2"/><text x="100" y="174" text-anchor="middle" class="b" font-size="10">US-W</text>
+    <circle cx="230" cy="350" r="18" class="bx" style="stroke:var(--l5);stroke-width:2"/><text x="230" y="354" text-anchor="middle" class="b" font-size="10">BR</text>
+    <circle cx="450" cy="110" r="22" class="bx" style="stroke:var(--l5);stroke-width:3"/><text x="450" y="115" text-anchor="middle" class="b" font-size="11">EU</text>
+    <circle cx="420" cy="140" r="14" class="bx" style="stroke:var(--l5);stroke-width:2"/><text x="420" y="144" text-anchor="middle" class="b" font-size="9">ES</text>
+    <circle cx="470" cy="300" r="16" class="bx" style="stroke:var(--l5);stroke-width:2"/><text x="470" y="304" text-anchor="middle" class="b" font-size="10">ZA</text>
+    <circle cx="620" cy="160" r="18" class="bx" style="stroke:var(--l5);stroke-width:2"/><text x="620" y="164" text-anchor="middle" class="b" font-size="10">IN</text>
+    <circle cx="720" cy="190" r="22" class="bx" style="stroke:var(--l5);stroke-width:3"/><text x="720" y="195" text-anchor="middle" class="b" font-size="11">SG</text>
+    <circle cx="780" cy="120" r="18" class="bx" style="stroke:var(--l5);stroke-width:2"/><text x="780" y="124" text-anchor="middle" class="b" font-size="10">JP</text>
+    <circle cx="790" cy="330" r="16" class="bx" style="stroke:var(--l5);stroke-width:2"/><text x="790" y="334" text-anchor="middle" class="b" font-size="10">AU</text>
+  </g>
+  <!-- backbone -->
+  <path d="M192 148 Q320 90 428 110" class="fib" stroke-width="3.5"/>
+  <path d="M472 110 Q600 100 698 186" class="fib" stroke-width="3.5"/>
+  <path d="M742 186 Q770 150 770 138" class="fib" stroke-width="3"/>
+  <path d="M116 170 H148" class="fib"/>
+  <path d="M170 172 Q190 260 222 334" class="fib"/>
+  <path d="M440 132 Q430 200 462 286" class="fib"/>
+  <path d="M470 120 Q560 140 602 158" class="fib"/>
+  <path d="M720 212 Q760 280 782 316" class="fib"/>
+  <path d="M90 186 Q300 470 780 340" class="fib" stroke-dasharray="10 5" opacity=".6"/>
+  <text x="310" y="88" text-anchor="middle" class="s">cable submarino transatlántico</text>
+  <text x="590" y="92" text-anchor="middle" class="s">ruta por Suez / Mar Rojo</text>
+  <text x="430" y="440" text-anchor="middle" class="s">ruta transpacífica (diversidad)</text>
+  <!-- leyenda interna -->
+  <rect x="20" y="20" width="240" height="56" rx="8" class="bx2"/>
+  <circle cx="40" cy="38" r="9" class="bx" style="stroke:var(--l5);stroke-width:3"/><text x="56" y="42" class="s">Hub regional: CPD/región nube + PoP</text>
+  <circle cx="40" cy="60" r="7" class="bx" style="stroke:var(--l5);stroke-width:2"/><text x="56" y="64" class="s">Hub nacional / PoP</text>
+</svg>
+<div class="legend">
+  <span><i style="border-color:var(--d-fiber)"></i>Backbone privado (capacidad alquilada en cables terrestres y submarinos)</span>
+</div>
+<figcaption>Las sedes de cada país se conectan (SD-WAN/SASE) al hub más cercano. Los hubs regionales se unen con un <b>backbone</b> de alta capacidad con rutas diversas: si se corta un cable submarino (pasa varias veces al año), el tráfico se desvía por otra ruta.</figcaption>
+</figure>
+
+<h2>Las piezas de una infraestructura global</h2>
+<div class="tabs">
+<div class="tab-panel" data-tab="Red global">
+<ul>
+<li><b>Backbone WAN</b>: capacidad alquilada (longitudes de onda de 100/400 Gb) en cables terrestres y submarinos, o la red global de un proveedor (Cloud WAN de AWS/Azure/Google, Megaport, Equinix Fabric).</li>
+<li><b>Presencia en puntos neutros</b> (IXP, como DE-CIX, ESpanix, AMS-IX, LINX) y <b>peering</b> directo con operadores y nubes: menos saltos, menos latencia, menos coste.</li>
+<li><b>Número de sistema autónomo (ASN)</b> propio y bloques IP propios (de RIPE, ARIN, APNIC) anunciados por <b>BGP</b>; así se puede cambiar de operador sin cambiar de IPs.</li>
+<li><b>Anycast</b>: la misma IP anunciada desde varias regiones; el usuario llega a la más cercana. Se usa para DNS, CDN y anti-DDoS.</li>
+<li><b>Automatización de red</b>: la configuración vive en Git; los cambios se validan (pruebas, gemelo digital) y se despliegan con pipelines (Ansible, Nornir, NSO, Arista CloudVision, Juniper Apstra).</li>
+</ul>
+</div>
+<div class="tab-panel" data-tab="CPD y nube">
+<ul>
+<li><b>Multi-nube</b> deliberada (por resiliencia, regulación o negociación) o una nube principal con varias regiones y zonas de disponibilidad (AZ).</li>
+<li><b>CPD propios o colocation</b> para cargas con requisitos especiales: mainframe (banca), latencia baja (trading), soberanía, coste a gran escala.</li>
+<li><b>Arquitectura de celdas</b>: el servicio se divide en celdas independientes; un fallo afecta solo a un porcentaje de usuarios (<i>blast radius</i>).</li>
+<li><b>Kubernetes</b> y plataformas internas (Internal Developer Platform) para que miles de desarrolladores desplieguen sin pedir servidores.</li>
+<li><b>Edge</b>: cómputo en fábricas, tiendas o antenas para baja latencia o funcionamiento sin conexión.</li>
+</ul>
+</div>
+<div class="tab-panel" data-tab="Datos">
+<ul>
+<li><b>Bases de datos distribuidas globalmente</b> (Spanner, CockroachDB, Cosmos DB, Aurora Global, YugabyteDB) o particionado por región.</li>
+<li><b>Teorema CAP</b> en la práctica: con una red que puede partirse, hay que elegir entre consistencia inmediata y disponibilidad. Los saldos bancarios eligen consistencia; el carrito de la compra, disponibilidad.</li>
+<li><b>Data lakehouse</b> central (Databricks, Snowflake, BigQuery, Fabric) respetando residencia: los datos personales se procesan en su región; se comparten agregados o anonimizados.</li>
+<li><b>Gobierno del dato</b>: catálogo, linaje, clasificación, responsables de dominio (data mesh).</li>
+</ul>
+</div>
+<div class="tab-panel" data-tab="Seguridad">
+<ul>
+<li><b>Zero Trust</b> completo: ninguna red es de confianza; cada acceso se decide por identidad + estado del dispositivo + contexto.</li>
+<li><b>SOC global "follow the sun"</b>: tres centros en husos horarios distintos cubren 24/7 en horario laboral local.</li>
+<li><b>Threat intelligence</b>, red team propio, programas de bug bounty.</li>
+<li><b>Protección DDoS</b> a escala de terabits (Akamai, Cloudflare, AWS Shield Advanced, scrubbing de la operadora).</li>
+<li><b>HSM</b> y gestión de claves por región (las claves de datos europeos no salen de la UE).</li>
+<li><b>Regulación</b>: DORA (finanzas UE), NIS2, PCI-DSS, SOX, HIPAA, ISO 27001/27701, SOC 2, normativas locales de cada país.</li>
+</ul>
+</div>
+<div class="tab-panel" data-tab="Operación">
+<ul>
+<li><b>SRE</b> (Site Reliability Engineering): objetivos de nivel de servicio (<b>SLO</b>) y "presupuesto de errores". Si un servicio consume su presupuesto, se congelan nuevas funciones hasta estabilizar.</li>
+<li><b>Gestión de incidentes mayores</b>: comandante del incidente, roles fijos, comunicación a clientes, postmortem sin culpables.</li>
+<li><b>Ingeniería del caos</b>: apagar cosas a propósito en producción (de forma controlada) para comprobar que la redundancia funciona.</li>
+<li><b>Ciclo de vida de hardware</b> a escala: miles de portátiles al mes, logística, borrado certificado, reciclaje.</li>
+<li><b>Sostenibilidad</b>: medición de huella de carbono del IT, PUE, compra de energía renovable.</li>
+</ul>
+</div>
+</div>
+
+<h2>Cómo entra un cliente a un servicio global</h2>
+<figure class="diagram">
+<svg viewBox="0 0 900 250" role="img" aria-label="Flujo de una petición de usuario a un servicio global">
+  <rect x="10" y="95" width="100" height="60" rx="8" class="bx"/><text x="60" y="120" text-anchor="middle" class="b">Usuario</text><text x="60" y="138" text-anchor="middle" class="s">Lisboa</text>
+  <path d="M110 125 H160" class="wan flow"/>
+  <rect x="160" y="95" width="110" height="60" rx="8" class="bx"/><text x="215" y="120" text-anchor="middle" class="b">DNS</text><text x="215" y="138" text-anchor="middle" class="s">anycast / GeoDNS</text>
+  <path d="M270 125 H320" class="wan flow"/>
+  <rect x="320" y="95" width="120" height="60" rx="8" class="bx"/><text x="380" y="120" text-anchor="middle" class="b">CDN + WAF</text><text x="380" y="138" text-anchor="middle" class="s">PoP Madrid · anti-DDoS</text>
+  <path d="M440 125 H490" class="fib flow"/>
+  <rect x="490" y="95" width="120" height="60" rx="8" class="bx"/><text x="550" y="120" text-anchor="middle" class="b">Balanceador</text><text x="550" y="138" text-anchor="middle" class="s">global → región EU</text>
+  <path d="M610 125 H660" class="fib flow"/>
+  <rect x="660" y="60" width="230" height="130" rx="10" class="zonef" style="stroke:var(--l5)"/>
+  <text x="775" y="82" text-anchor="middle" class="b">Región EU (3 zonas)</text>
+  <rect x="675" y="95" width="60" height="40" rx="5" class="bx"/><text x="705" y="120" text-anchor="middle" class="s">AZ-a</text>
+  <rect x="745" y="95" width="60" height="40" rx="5" class="bx"/><text x="775" y="120" text-anchor="middle" class="s">AZ-b</text>
+  <rect x="815" y="95" width="60" height="40" rx="5" class="bx"/><text x="845" y="120" text-anchor="middle" class="s">AZ-c</text>
+  <text x="775" y="160" text-anchor="middle" class="s">app en Kubernetes + BBDD replicada</text>
+  <text x="775" y="176" text-anchor="middle" class="s">réplica asíncrona a región US</text>
+  <text x="380" y="190" text-anchor="middle" class="s">El 90 % del contenido estático se sirve desde la CDN sin llegar a la región.</text>
+  <text x="380" y="210" text-anchor="middle" class="s">Si la región EU cae, el DNS/balanceador global envía el tráfico a otra región en segundos–minutos.</text>
+</svg>
+<figcaption>Varias capas de redundancia: anycast en DNS, cientos de PoP de CDN, regiones con 3 zonas de disponibilidad (CPDs separados a unos km) y varias regiones.</figcaption>
+</figure>
+
+<h2>Números a esta escala</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Concepto</th><th>Orden de magnitud</th></tr></thead>
+<tbody>
+<tr><td>Endpoints gestionados</td><td>50.000 – 500.000</td></tr>
+<tr><td>Servidores / VMs / contenedores</td><td>10.000 – millones</td></tr>
+<tr><td>Capacidad de un hub regional</td><td>100 Gb – varios Tb</td></tr>
+<tr><td>Eventos de seguridad al día (SIEM)</td><td>Miles de millones</td></tr>
+<tr><td>Cambios en producción a la semana</td><td>Miles</td></tr>
+<tr><td>Proveedores de IT</td><td>Cientos</td></tr>
+<tr><td>Disponibilidad objetivo de servicios críticos</td><td>99,95 % – 99,999 %</td></tr>
+<tr><td>Gasto IT</td><td>3–10 % de la facturación (más en banca y tecnológicas)</td></tr>
+</tbody></table></div>
+
+<h2>Problemas típicos y quién los arregla</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Quién</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Latencia a Asia se duplica de repente</td><td>Corte de cable submarino; ruta alternativa más larga</td><td><span class="who ext">Consorcio del cable / operadoras</span></td><td>Diversidad de rutas contratada de antemano; mover cargas a la región asiática; la reparación de un cable submarino tarda semanas.</td></tr>
+<tr><td>Una región de nube cae entera</td><td>Incidente del proveedor</td><td><span class="who ext">Proveedor nube</span> + <span class="who int">SRE</span></td><td>Conmutación a otra región (probada en ejercicios). Revisar dependencias ocultas de la región caída (IAM, DNS, colas).</td></tr>
+<tr><td>Una actualización de un proveedor de seguridad tumba miles de equipos</td><td>Fallo de un tercero con privilegios en todos los endpoints</td><td><span class="who mix">Proveedor + IT</span></td><td>Despliegues escalonados también para proveedores, anillos de actualización, procedimiento de recuperación masiva (BitLocker keys accesibles, arranque remoto).</td></tr>
+<tr><td>Prohibición de transferir datos a un país</td><td>Cambio regulatorio</td><td><span class="who dir">Legal + arquitectura</span></td><td>Arquitectura con residencia por región desde el diseño; cifrado con claves locales.</td></tr>
+<tr><td>Ataque DDoS de 2 Tbps</td><td>Extorsión / hacktivismo</td><td><span class="who mix">Proveedor anti-DDoS + SOC</span></td><td>Mitigación en el borde (anycast + scrubbing), nunca en el CPD propio.</td></tr>
+<tr><td>Fusión con otra empresa</td><td>Dos redes, dos directorios, IPs solapadas</td><td><span class="who dir">Dirección + IT</span></td><td>Programa de integración: federación de identidades primero, interconexión con NAT, consolidación progresiva.</td></tr>
+</tbody></table></div>
+
+<div class="callout ok"><span class="t">Y aun así, lo básico sigue siendo lo mismo</span>Una tienda de esta multinacional en un pueblo tiene un equipo SD-WAN, un switch, dos APs y un 5G de respaldo: es un <a href="nivel-1.html">nivel 1</a> conectado a una red gigantesca. Y la mayoría de incidentes graves siguen empezando por algo básico: una contraseña sin MFA, un parche no aplicado, un cambio sin probar o un certificado caducado.</div>
+
+</div></main>
+<script src="assets/app.js"></script>
+</body>
+</html>

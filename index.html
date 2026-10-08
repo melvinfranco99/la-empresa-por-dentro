@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La empresa por dentro</title>
+<meta name="description" content="Guía práctica para informáticos: cómo se compone la infraestructura IT de una empresa, desde una casa hasta una multinacional. Hardware, cableado, redes, software, seguridad y resolución de problemas.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="index">
+<main><div class="content">
+
+<section class="hero">
+  <div class="kicker">Guía práctica de infraestructura IT</div>
+  <h1>La empresa por dentro</h1>
+  <p class="lead">Cómo está montada la informática de una empresa, desde el router de una casa hasta una multinacional con oficinas en cuatro continentes. Qué hardware hay, dónde va, por qué va ahí, qué software lo hace funcionar y qué hacer cuando algo falla.</p>
+  <div class="facts">
+    <span class="chip">6 niveles de empresa</span>
+    <span class="chip">Diagramas de red y físicos</span>
+    <span class="chip">Calculadoras interactivas</span>
+    <span class="chip">Diagnóstico paso a paso</span>
+  </div>
+</section>
+
+<h2>La idea en 30 segundos</h2>
+<p>Toda empresa, por pequeña o grande que sea, resuelve <b>los mismos problemas</b>. Lo que cambia es la <b>escala</b>, la <b>redundancia</b> (cuántas cosas pueden romperse sin que se note) y <b>quién</b> se encarga. Una casa con un router de la operadora y un despacho con 5.000 empleados tienen exactamente las mismas piezas conceptuales:</p>
+
+<figure class="diagram">
+<svg viewBox="0 0 900 300" role="img" aria-label="Anatomía genérica de la red de una empresa">
+  <!-- Internet -->
+  <ellipse cx="80" cy="150" rx="62" ry="40" class="bx2"/>
+  <text x="80" y="146" text-anchor="middle" class="b">Internet</text>
+  <text x="80" y="163" text-anchor="middle" class="s">operadora (ISP)</text>
+  <path d="M142 150 H200" class="wan flow"/>
+  <!-- Router / firewall -->
+  <rect x="200" y="115" width="130" height="70" rx="8" class="bx"/>
+  <text x="265" y="143" text-anchor="middle" class="b">Router +</text>
+  <text x="265" y="160" text-anchor="middle" class="b">Firewall</text>
+  <text x="265" y="200" text-anchor="middle" class="s">1 · Perímetro</text>
+  <path d="M330 150 H400" class="cu flow"/>
+  <!-- Switch -->
+  <rect x="400" y="125" width="120" height="50" rx="8" class="bx"/>
+  <text x="460" y="155" text-anchor="middle" class="b">Switch</text>
+  <text x="460" y="200" text-anchor="middle" class="s">2 · Red interna</text>
+  <!-- ramas -->
+  <path d="M520 140 C560 140 560 60 600 60" class="cu"/>
+  <path d="M520 150 H600" class="cu"/>
+  <path d="M520 160 C560 160 560 240 600 240" class="cu"/>
+  <rect x="600" y="35" width="130" height="50" rx="8" class="bx"/>
+  <text x="665" y="58" text-anchor="middle" class="b">Puesto de trabajo</text>
+  <text x="665" y="74" text-anchor="middle" class="s">PC, portátil, teléfono</text>
+  <rect x="600" y="125" width="130" height="50" rx="8" class="bx"/>
+  <text x="665" y="148" text-anchor="middle" class="b">Punto de acceso</text>
+  <text x="665" y="164" text-anchor="middle" class="s">Wi-Fi</text>
+  <path d="M730 150 C770 150 770 150 800 150" class="wifi"/>
+  <text x="840" y="146" text-anchor="middle" class="s">móviles,</text>
+  <text x="840" y="160" text-anchor="middle" class="s">portátiles</text>
+  <rect x="600" y="215" width="130" height="50" rx="8" class="bx"/>
+  <text x="665" y="238" text-anchor="middle" class="b">Servidor / NAS</text>
+  <text x="665" y="254" text-anchor="middle" class="s">datos y servicios</text>
+  <text x="665" y="285" text-anchor="middle" class="s">3 · Servicios · 4 · Datos</text>
+  <!-- nube -->
+  <path d="M80 110 C80 40 300 20 420 30" class="vpn"/>
+  <rect x="420" y="10" width="130" height="40" rx="20" class="bx2"/>
+  <text x="485" y="35" text-anchor="middle" class="b">Nube (SaaS)</text>
+</svg>
+<div class="legend">
+  <span><i style="border-color:var(--d-wan)"></i>Enlace a Internet</span>
+  <span><i style="border-color:var(--d-cu)"></i>Cable de cobre (Ethernet)</span>
+  <span><i class="dash" style="border-color:var(--d-wifi)"></i>Wi-Fi</span>
+  <span><i class="dash" style="border-color:var(--d-vpn)"></i>Servicio en la nube / túnel</span>
+</div>
+<figcaption>Las seis capas de cualquier empresa. Lo único que cambia de un nivel a otro es cuántas hay de cada una, lo grandes que son y cuánta redundancia llevan.</figcaption>
+</figure>
+
+<div class="grid g3">
+  <div class="card"><h4>1 · Perímetro</h4><p class="small">Por dónde entra y sale Internet. Router, firewall, VPN. Es la puerta de la casa.</p></div>
+  <div class="card"><h4>2 · Red interna</h4><p class="small">Cables, switches y Wi-Fi. Las tuberías por las que van los datos dentro del edificio.</p></div>
+  <div class="card"><h4>3 · Servicios</h4><p class="small">Lo que hace que todo "funcione": DNS, DHCP, usuarios (directorio), correo, impresión, aplicaciones.</p></div>
+  <div class="card"><h4>4 · Datos</h4><p class="small">Dónde vive la información: NAS, servidores de ficheros, bases de datos, nube. Y sus copias de seguridad.</p></div>
+  <div class="card"><h4>5 · Puestos</h4><p class="small">PCs, portátiles, móviles, impresoras, teléfonos. Lo que toca el usuario.</p></div>
+  <div class="card"><h4>6 · Personas y procesos</h4><p class="small">Quién administra, quién paga, qué contratos hay, qué se hace cuando algo cae.</p></div>
+</div>
+
+<h2>Mapa de niveles</h2>
+<p>He dividido las empresas en seis niveles. No es una norma oficial: es la forma más útil de verlo desde el punto de vista técnico, porque cada salto de nivel coincide con un <b>cambio real</b> en cómo se monta la infraestructura.</p>
+
+<div class="ladder">
+  <a href="nivel-0.html" style="--lvl:var(--l0)"><span class="n">N0</span><span><span class="t">Casa / autónomo</span><br><span class="d">1–3 personas. El router de la operadora hace casi todo.</span></span><span class="p">0–1.500 €</span></a>
+  <a href="nivel-1.html" style="--lvl:var(--l1)"><span class="n">N1</span><span><span class="t">Microempresa</span><br><span class="d">3–15 personas en un local. Primer switch, primer NAS, primer firewall de verdad.</span></span><span class="p">3–15 k€</span></a>
+  <a href="nivel-2.html" style="--lvl:var(--l2)"><span class="n">N2</span><span><span class="t">Pequeña empresa</span><br><span class="d">15–60 personas. Rack, VLANs, directorio de usuarios, servidor virtualizado.</span></span><span class="p">25–90 k€</span></a>
+  <a href="nivel-3.html" style="--lvl:var(--l3)"><span class="n">N3</span><span><span class="t">Mediana empresa</span><br><span class="d">60–300 personas, varias plantas. Sala de servidores, todo duplicado, departamento IT.</span></span><span class="p">150–600 k€</span></a>
+  <a href="nivel-4.html" style="--lvl:var(--l4)"><span class="n">N4</span><span><span class="t">Grande multisede</span><br><span class="d">300–5.000 personas en varias ciudades. SD-WAN, CPD principal y de respaldo.</span></span><span class="p">1–10 M€</span></a>
+  <a href="nivel-5.html" style="--lvl:var(--l5)"><span class="n">N5</span><span><span class="t">Multinacional global</span><br><span class="d">5.000+ personas en varios continentes. Backbone propio, multi-nube, SOC 24/7.</span></span><span class="p">10 M€+</span></a>
+</div>
+<p class="small muted">Las cifras son una inversión inicial orientativa en infraestructura IT (sin contar licencias anuales ni sueldos). Sirven para hacerse una idea del orden de magnitud, no como presupuesto.</p>
+
+<h2>Comparativa rápida entre niveles</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th></th><th><span class="lvl-tag" style="--lvl:var(--l0)">N0</span></th><th><span class="lvl-tag" style="--lvl:var(--l1)">N1</span></th><th><span class="lvl-tag" style="--lvl:var(--l2)">N2</span></th><th><span class="lvl-tag" style="--lvl:var(--l3)">N3</span></th><th><span class="lvl-tag" style="--lvl:var(--l4)">N4</span></th><th><span class="lvl-tag" style="--lvl:var(--l5)">N5</span></th></tr></thead>
+<tbody>
+<tr><th>Personas</th><td>1–3</td><td>3–15</td><td>15–60</td><td>60–300</td><td>300–5.000</td><td>5.000+</td></tr>
+<tr><th>Sedes</th><td>1 (casa)</td><td>1 local</td><td>1 oficina</td><td>1–3 edificios</td><td>5–50</td><td>100+ en varios países</td></tr>
+<tr><th>Internet</th><td>Fibra 300 Mb–1 Gb residencial</td><td>Fibra 1 Gb profesional + 4G/5G backup</td><td>Fibra 1 Gb simétrica + 2ª línea</td><td>2 operadores, 1–10 Gb, IP fijas</td><td>SD-WAN, MPLS, fibra dedicada por sede</td><td>Backbone propio, peering, 100 Gb+</td></tr>
+<tr><th>Perímetro</th><td>Router ISP</td><td>Firewall UTM pequeño</td><td>Firewall NGFW</td><td>2 NGFW en alta disponibilidad</td><td>Clústeres NGFW + SASE</td><td>SASE/Zero Trust global, anti-DDoS</td></tr>
+<tr><th>Red interna</th><td>Wi-Fi del router</td><td>Switch 24p + 2–3 AP</td><td>Rack, switches gestionables, VLANs</td><td>Core + acceso por planta, fibra vertical</td><td>Campus por sede, NAC 802.1X</td><td>Fábricas de red automatizadas</td></tr>
+<tr><th>Servidores</th><td>Ninguno</td><td>NAS</td><td>1–2 hosts virtualizados + NAS</td><td>Clúster 3–6 hosts + SAN</td><td>CPD primario + secundario</td><td>CPDs propios + colocation + nube</td></tr>
+<tr><th>Usuarios</th><td>Cuentas personales</td><td>Microsoft 365 / Google Workspace</td><td>Entra ID / AD, MDM</td><td>AD + Entra híbrido, SSO</td><td>IAM centralizado, PAM</td><td>Identidad federada global</td></tr>
+<tr><th>Backup</th><td>Disco externo + nube</td><td>NAS + copia a nube</td><td>Software de backup, regla 3-2-1</td><td>Backup inmutable + réplica</td><td>DR site, RPO de minutos</td><td>Activo-activo multi-región</td></tr>
+<tr><th>Quién lo lleva</th><td>Tú</td><td>Un empleado "manitas" o empresa externa</td><td>1 técnico o MSP</td><td>Departamento IT 3–10</td><td>IT 20–200, NOC</td><td>Miles, SOC/NOC 24/7</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Cómo crece la complejidad</h3>
+<p>No crece en línea recta. Cada vez que se duplica el número de personas, el número de cosas que pueden fallar crece bastante más que el doble, porque aparecen dependencias nuevas entre sistemas.</p>
+<div class="bars">
+  <div class="bar"><span>N0 Casa</span><span class="track"><span class="fill" style="width:2%;background:var(--l0)"></span></span><span class="v">~5 equipos</span></div>
+  <div class="bar"><span>N1 Micro</span><span class="track"><span class="fill" style="width:5%;background:var(--l1)"></span></span><span class="v">~30</span></div>
+  <div class="bar"><span>N2 Pequeña</span><span class="track"><span class="fill" style="width:12%;background:var(--l2)"></span></span><span class="v">~150</span></div>
+  <div class="bar"><span>N3 Mediana</span><span class="track"><span class="fill" style="width:28%;background:var(--l3)"></span></span><span class="v">~800</span></div>
+  <div class="bar"><span>N4 Grande</span><span class="track"><span class="fill" style="width:60%;background:var(--l4)"></span></span><span class="v">~15.000</span></div>
+  <div class="bar"><span>N5 Global</span><span class="track"><span class="fill" style="width:100%;background:var(--l5)"></span></span><span class="v">~200.000+</span></div>
+</div>
+<p class="small muted">Dispositivos conectados aproximados (PCs, móviles, impresoras, cámaras, IoT, servidores, máquinas virtuales…). Escala logarítmica visual.</p>
+
+<h2>Cómo leer cada nivel</h2>
+<p>Todas las páginas de nivel siguen la misma estructura, así puedes compararlas:</p>
+<ol>
+  <li><b>Perfil</b>: qué tipo de empresa es y qué necesita.</li>
+  <li><b>Plano físico</b>: dónde está cada aparato en el local y por dónde van los cables.</li>
+  <li><b>Diagrama lógico</b>: cómo viajan los datos (redes, VLANs, túneles).</li>
+  <li><b>Hardware</b>: qué hay, dónde, por qué, y cuánto cuesta.</li>
+  <li><b>Cableado</b>: tipo de cable, distancias, normas.</li>
+  <li><b>Software y servicios</b>: sistema de usuarios, firewall, VPN, bases de datos, backup…</li>
+  <li><b>Seguridad</b>: lo mínimo que tiene que estar hecho.</li>
+  <li><b>Problemas típicos</b>: qué falla, quién lo arregla (<span class="who int">interno</span>, <span class="who ext">externo</span>, <span class="who dir">dirección/compras</span>) y cómo.</li>
+  <li><b>Cuándo subir de nivel</b>: las señales de que te has quedado pequeño.</li>
+</ol>
+
+<div class="callout">
+<span class="t">Si empiezas de cero</span>
+Lee primero <a href="fundamentos.html">Fundamentos</a> (cables, IP, VLANs, DNS, Wi-Fi). Todo lo demás se apoya en eso. Luego recorre los niveles en orden: cada uno da por sabido el anterior y solo explica lo nuevo.
+</div>
+
+<h2>Lo que nunca cambia</h2>
+<p>Diez reglas que valen igual para una casa que para un banco:</p>
+<div class="grid">
+  <div class="card"><b>1. Si no está en tres sitios, no existe.</b><p class="small">Regla 3-2-1 de backup: 3 copias, en 2 soportes distintos, 1 fuera del edificio.</p></div>
+  <div class="card"><b>2. Documenta antes de que haga falta.</b><p class="small">Contraseñas en gestor, esquema de red, contratos con teléfonos de soporte.</p></div>
+  <div class="card"><b>3. Etiqueta los cables.</b><p class="small">Los dos extremos. Siempre. Te ahorrará horas.</p></div>
+  <div class="card"><b>4. El cable gana al Wi-Fi.</b><p class="small">Todo lo que no se mueve (PC fijo, impresora, servidor, AP) va por cable.</p></div>
+  <div class="card"><b>5. MFA en todo.</b><p class="small">El 2º factor de autenticación bloquea la inmensa mayoría de robos de cuenta.</p></div>
+  <div class="card"><b>6. Actualiza.</b><p class="small">Firmware del router, del NAS, del firewall, sistemas operativos. La mayoría de ataques usan fallos ya parcheados.</p></div>
+  <div class="card"><b>7. Un SAI para lo crítico.</b><p class="small">Un corte de luz de 1 segundo puede corromper un disco o una base de datos.</p></div>
+  <div class="card"><b>8. Separa redes.</b><p class="small">Invitados, cámaras e impresoras no deben ver los PCs de contabilidad.</p></div>
+  <div class="card"><b>9. Mide antes de comprar.</b><p class="small">"Internet va lento" casi nunca se arregla contratando más megas. Diagnostica primero.</p></div>
+  <div class="card"><b>10. Saber qué no es tuyo.</b><p class="small">Distingue qué arreglas tú y qué depende de la operadora, el fabricante o la dirección.</p></div>
+</div>
+
+</div></main>
+<script src="assets/app.js"></script>
+</body>
+</html>

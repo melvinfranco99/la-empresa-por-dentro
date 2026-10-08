@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N2 Pequeña empresa · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="nivel-2" style="--lvl:var(--l2)">
+<main><div class="content">
+
+<section class="hero">
+  <span class="lvl-tag">NIVEL 2</span>
+  <h1>Pequeña empresa</h1>
+  <p class="lead">Una ingeniería, una distribuidora, un despacho de abogados con 40 personas, una empresa de software o una planta industrial pequeña. Una oficina de una planta (o dos), entre 15 y 60 personas. Aparece el <b>cuarto técnico</b>, el <b>rack de suelo</b>, los <b>servidores virtualizados</b> y el directorio de usuarios.</p>
+  <div class="facts">
+    <span class="chip"><b>15–60</b> personas</span>
+    <span class="chip"><b>80–250</b> dispositivos</span>
+    <span class="chip"><b>2 fibras</b> de operadores distintos</span>
+    <span class="chip">Inversión <b>25–90 k€</b></span>
+    <span class="chip">IT: <b>1 técnico</b> y/o MSP</span>
+  </div>
+</section>
+
+<h2>Perfil</h2>
+<p>Lo nuevo respecto al <a href="nivel-1.html">nivel 1</a>:</p>
+<div class="grid g3">
+<div class="card"><h4>Aplicaciones locales</h4><p class="small">ERP con base de datos SQL, software CAD con licencias flotantes, servidor de ficheros con permisos por departamento. Necesitan servidores.</p></div>
+<div class="card"><h4>Departamentos</h4><p class="small">Administración, comercial, producción, dirección… cada uno con permisos distintos. Hace falta un directorio de usuarios y grupos.</p></div>
+<div class="card"><h4>Coste del parón</h4><p class="small">Una hora sin sistemas con 40 personas paradas a 30 €/h = 1.200 € + ventas perdidas. Ya compensa duplicar lo crítico.</p></div>
+</div>
+
+<h2>Plano físico</h2>
+<figure class="diagram">
+<svg viewBox="0 0 900 470" role="img" aria-label="Plano de oficina de pequeña empresa">
+  <rect x="20" y="20" width="860" height="430" rx="4" fill="none" stroke="var(--d-stroke)" stroke-width="4"/>
+  <!-- divisiones -->
+  <path d="M20 160 H200 M260 160 H330 M330 20 V160" stroke="var(--d-stroke)" stroke-width="3"/>
+  <path d="M700 20 V140 M700 190 V300 M700 300 H880" stroke="var(--d-stroke)" stroke-width="3"/>
+  <path d="M20 340 H140 M190 340 H260 V450" stroke="var(--d-stroke)" stroke-width="3"/>
+  <text x="175" y="45" text-anchor="middle" class="s">DIRECCIÓN / SALA REUNIONES</text>
+  <text x="515" y="45" text-anchor="middle" class="s">OPEN SPACE (30 puestos)</text>
+  <text x="790" y="45" text-anchor="middle" class="s">ADMINISTRACIÓN</text>
+  <text x="790" y="330" text-anchor="middle" class="s">RECEPCIÓN</text>
+  <text x="140" y="365" text-anchor="middle" class="s">CUARTO TÉCNICO</text>
+  <!-- cuarto técnico -->
+  <rect x="40" y="375" width="200" height="60" rx="4" class="zonef" style="stroke:var(--l2)"/>
+  <rect x="55" y="385" width="50" height="42" rx="3" class="bx" style="stroke:var(--l2);stroke-width:2.5"/>
+  <text x="80" y="410" text-anchor="middle" class="b" font-size="11">RACK</text>
+  <rect x="115" y="385" width="50" height="42" rx="3" class="bx"/>
+  <text x="140" y="404" text-anchor="middle" class="s" font-size="10">Aire</text>
+  <text x="140" y="417" text-anchor="middle" class="s" font-size="10">acond.</text>
+  <rect x="175" y="385" width="50" height="42" rx="3" class="bx" style="stroke:var(--warn)"/>
+  <text x="200" y="410" text-anchor="middle" class="s" font-size="10">SAI</text>
+  <!-- acometidas -->
+  <path d="M20 400 H55" class="wan"/>
+  <path d="M80 450 V427" class="wan"/>
+  <text x="24" y="392" class="s" font-size="10">ISP A</text>
+  <text x="86" y="447" class="s" font-size="10">ISP B</text>
+  <!-- bandejas -->
+  <path d="M80 385 V320 H860" class="cu" stroke-width="6" opacity=".3"/>
+  <path d="M80 320 V70 H860" class="cu" stroke-width="6" opacity=".3"/>
+  <path d="M330 320 V70 M520 320 V70 M700 320 V70" class="cu" stroke-width="4" opacity=".25"/>
+  <text x="470" y="314" text-anchor="middle" class="s">bandeja principal por falso techo (cobre Cat 6A) · ~60 cables</text>
+  <!-- puestos -->
+  <g fill="none">
+    <rect x="370" y="90" width="120" height="40" class="bx2"/><rect x="550" y="90" width="120" height="40" class="bx2"/>
+    <rect x="370" y="160" width="120" height="40" class="bx2"/><rect x="550" y="160" width="120" height="40" class="bx2"/>
+    <rect x="370" y="230" width="120" height="40" class="bx2"/><rect x="550" y="230" width="120" height="40" class="bx2"/>
+    <rect x="730" y="90" width="120" height="40" class="bx2"/><rect x="730" y="200" width="120" height="40" class="bx2"/>
+    <rect x="60" y="80" width="120" height="50" class="bx2"/>
+  </g>
+  <text x="430" y="114" text-anchor="middle" class="s">5 puestos</text><text x="610" y="114" text-anchor="middle" class="s">5 puestos</text>
+  <text x="430" y="184" text-anchor="middle" class="s">5 puestos</text><text x="610" y="184" text-anchor="middle" class="s">5 puestos</text>
+  <text x="430" y="254" text-anchor="middle" class="s">5 puestos</text><text x="610" y="254" text-anchor="middle" class="s">5 puestos</text>
+  <text x="790" y="114" text-anchor="middle" class="s">4 puestos</text><text x="790" y="224" text-anchor="middle" class="s">4 puestos</text>
+  <text x="120" y="110" text-anchor="middle" class="s">mesa + pantalla</text>
+  <!-- APs -->
+  <g>
+    <circle cx="430" cy="145" r="13" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/>
+    <circle cx="610" cy="215" r="13" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/>
+    <circle cx="790" cy="160" r="13" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/>
+    <circle cx="175" cy="135" r="13" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/>
+    <circle cx="790" cy="390" r="13" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/>
+    <circle cx="470" cy="390" r="13" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/>
+  </g>
+  <text x="470" y="420" text-anchor="middle" class="s">AP office</text>
+  <text x="790" y="420" text-anchor="middle" class="s">AP recepción</text>
+  <!-- impresoras -->
+  <rect x="520" y="370" width="70" height="30" rx="3" class="bx"/><text x="555" y="390" text-anchor="middle" class="s" font-size="10">Impresoras</text>
+  <rect x="300" y="370" width="70" height="30" rx="3" class="bx"/><text x="335" y="390" text-anchor="middle" class="s" font-size="10">Office</text>
+</svg>
+<div class="legend">
+  <span><i style="border-color:var(--d-wan)"></i>Dos acometidas de operadoras distintas, por caminos distintos</span>
+  <span><i style="border-color:var(--d-wifi)"></i>APs (círculos) en techo</span>
+</div>
+<figcaption>Aparece el <b>cuarto técnico</b>: una sala pequeña (4–8 m²) cerrada con llave, con aire acondicionado y circuito eléctrico propio.</figcaption>
+</figure>
+
+<h3>El cuarto técnico: requisitos</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Aspecto</th><th>Requisito</th><th>Por qué</th></tr></thead>
+<tbody>
+<tr><td>Ubicación</td><td>Centro del edificio, lejos de baños/cocina y de fachadas de cristal</td><td>Minimiza distancias de cable (máx. 90 m a cualquier puesto). Humedad y sol son enemigos.</td></tr>
+<tr><td>Climatización</td><td>Split dedicado (no el del edificio, que se apaga los fines de semana). 18–27 °C (ASHRAE)</td><td>2 servidores + switches + SAI generan 1–3 kW de calor. Sin frío, en 1–2 h se superan los 40 °C.</td></tr>
+<tr><td>Electricidad</td><td>Circuito propio con su magnetotérmico y diferencial superinmunizado; toma de tierra revisada</td><td>Que nadie lo apague por error; que el SAI no dispare el diferencial.</td></tr>
+<tr><td>Seguridad física</td><td>Puerta con llave o control de acceso; registro de quién entra</td><td>Requisito de cualquier norma (ISO 27001, ENS).</td></tr>
+<tr><td>Monitorización</td><td>Sensor de temperatura y humedad con alerta (SNMP o en el SAI)</td><td>Que el aire se rompa un viernes por la tarde y lo sepas el viernes.</td></tr>
+<tr><td>Incendios</td><td>Detector de humo; extintor de CO₂ (nunca de polvo ni agua)</td><td>El polvo destruye la electrónica tanto como el fuego.</td></tr>
+</tbody></table></div>
+
+<h2>Diagrama lógico</h2>
+<figure class="diagram">
+<svg viewBox="0 0 900 480" role="img" aria-label="Red lógica de pequeña empresa">
+  <ellipse cx="200" cy="40" rx="60" ry="24" class="bx2"/><text x="200" y="45" text-anchor="middle" class="b">ISP A</text>
+  <ellipse cx="420" cy="40" rx="60" ry="24" class="bx2"/><text x="420" y="45" text-anchor="middle" class="b">ISP B</text>
+  <path d="M200 64 V100 H290 V110" class="wan flow"/>
+  <path d="M420 64 V100 H330 V110" class="wan flow"/>
+  <rect x="230" y="110" width="160" height="60" rx="8" class="bx" style="stroke:var(--l2);stroke-width:2"/>
+  <text x="310" y="135" text-anchor="middle" class="b">Firewall NGFW</text>
+  <text x="310" y="153" text-anchor="middle" class="s">SD-WAN · VPN · IPS · SSL insp.</text>
+  <path d="M310 170 V210" class="cu" stroke-width="4"/>
+  <text x="318" y="195" class="s">2× 10 Gb (LACP)</text>
+  <rect x="200" y="210" width="220" height="56" rx="8" class="bx"/>
+  <text x="310" y="234" text-anchor="middle" class="b">Switch core L3 (stack de 2)</text>
+  <text x="310" y="252" text-anchor="middle" class="s">enrutamiento entre VLANs · 10 Gb</text>
+  <!-- acceso -->
+  <path d="M230 266 V310" class="fib"/>
+  <path d="M390 266 V310" class="fib"/>
+  <rect x="150" y="310" width="150" height="46" rx="8" class="bx"/><text x="225" y="331" text-anchor="middle" class="b">Acceso 48p PoE</text><text x="225" y="347" text-anchor="middle" class="s">puestos + APs</text>
+  <rect x="320" y="310" width="150" height="46" rx="8" class="bx"/><text x="395" y="331" text-anchor="middle" class="b">Acceso 48p PoE</text><text x="395" y="347" text-anchor="middle" class="s">puestos + teléfonos</text>
+  <path d="M225 356 V390 M395 356 V390" class="cu"/>
+  <text x="310" y="405" text-anchor="middle" class="s">PCs · teléfonos IP · APs · impresoras · cámaras</text>
+  <!-- servidores -->
+  <path d="M420 238 H520" class="cu" stroke-width="4"/>
+  <rect x="520" y="130" width="360" height="300" rx="10" class="zonef" style="stroke:var(--l3)"/>
+  <text x="700" y="152" text-anchor="middle" class="b">VLAN Servidores</text>
+  <rect x="540" y="170" width="150" height="120" rx="6" class="bx"/>
+  <text x="615" y="190" text-anchor="middle" class="b">Host 1</text>
+  <text x="615" y="208" text-anchor="middle" class="m">VM DC1 (AD/DNS)</text>
+  <text x="615" y="224" text-anchor="middle" class="m">VM Ficheros</text>
+  <text x="615" y="240" text-anchor="middle" class="m">VM ERP + SQL</text>
+  <text x="615" y="256" text-anchor="middle" class="m">VM Impresión</text>
+  <text x="615" y="278" text-anchor="middle" class="s">hipervisor</text>
+  <rect x="710" y="170" width="150" height="120" rx="6" class="bx"/>
+  <text x="785" y="190" text-anchor="middle" class="b">Host 2</text>
+  <text x="785" y="208" text-anchor="middle" class="m">VM DC2 (AD/DNS)</text>
+  <text x="785" y="224" text-anchor="middle" class="m">VM Apps / RDS</text>
+  <text x="785" y="240" text-anchor="middle" class="m">VM Monitorización</text>
+  <text x="785" y="256" text-anchor="middle" class="m">(capacidad libre)</text>
+  <text x="785" y="278" text-anchor="middle" class="s">réplica cruzada</text>
+  <path d="M690 230 H710" class="ln" stroke-dasharray="3 3"/>
+  <rect x="540" y="310" width="150" height="56" rx="6" class="bx"/>
+  <text x="615" y="333" text-anchor="middle" class="b">Servidor backup</text>
+  <text x="615" y="351" text-anchor="middle" class="s">Veeam + repositorio</text>
+  <rect x="710" y="310" width="150" height="56" rx="6" class="bx"/>
+  <text x="785" y="333" text-anchor="middle" class="b">NAS</text>
+  <text x="785" y="351" text-anchor="middle" class="s">copia inmutable</text>
+  <text x="700" y="400" text-anchor="middle" class="s">→ copia off-site a la nube (S3 inmutable)</text>
+  <!-- nube -->
+  <path d="M310 110 C330 70 600 60 660 80" class="vpn"/>
+  <rect x="640" y="60" width="210" height="40" rx="20" class="bx2"/>
+  <text x="745" y="85" text-anchor="middle" class="b">M365 / Entra ID (híbrido)</text>
+</svg>
+<div class="legend">
+  <span><i style="border-color:var(--d-wan)"></i>Internet</span>
+  <span><i style="border-color:var(--d-fiber)"></i>Fibra / DAC 10 Gb</span>
+  <span><i style="border-color:var(--d-cu)"></i>Cobre</span>
+  <span><i class="dash" style="border-color:var(--d-vpn)"></i>Sincronización con la nube</span>
+</div>
+<figcaption>Arquitectura de dos capas (<b>core</b> + <b>acceso</b>). Los servidores físicos ejecutan máquinas virtuales; cada servicio crítico (controlador de dominio) está duplicado en hosts distintos.</figcaption>
+</figure>
+
+<h3>¿Por qué virtualizar?</h3>
+<p>En vez de un servidor físico por aplicación (5 servidores casi parados), se compran 2 servidores potentes y se ejecutan 8–15 <b>máquinas virtuales</b> (VMs). Ventajas: menos hardware, consumo y espacio; si un host falla, sus VMs arrancan en el otro; copias de seguridad de la VM completa; crear un servidor nuevo en minutos.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Hipervisor</th><th>Licencia</th><th>Cuándo elegirlo</th></tr></thead>
+<tbody>
+<tr><td><b>Proxmox VE</b></td><td>Libre (soporte opcional ~115–1.000 €/año/CPU)</td><td>Coste bajo, gran comunidad, clúster y Ceph incluidos. Muy usado tras los cambios de licencia de VMware.</td></tr>
+<tr><td><b>Microsoft Hyper-V</b></td><td>Incluido en Windows Server</td><td>Entornos 100 % Microsoft. Windows Server Datacenter da VMs Windows ilimitadas por host.</td></tr>
+<tr><td><b>VMware vSphere</b></td><td>Suscripción por núcleo (cara desde la compra por Broadcom)</td><td>Si ya existe y se domina; ecosistema muy maduro.</td></tr>
+<tr><td>Nutanix / Azure Local / XCP-ng</td><td>Variable</td><td>Hiperconvergencia (cómputo + almacenamiento en los mismos nodos), más propio del nivel 3.</td></tr>
+</tbody></table></div>
+
+<h2>Rack del cuarto técnico</h2>
+<div class="two">
+<figure class="diagram" style="margin:0">
+<svg viewBox="0 0 320 560" role="img" aria-label="Rack 42U pequeña empresa">
+  <rect x="40" y="10" width="240" height="540" rx="6" class="bx2"/>
+  <g>
+  <rect x="55" y="22" width="210" height="14" class="bx"/><text x="160" y="33" text-anchor="middle" class="s" font-size="10">Bandeja ONTs (ISP A + ISP B)</text>
+  <rect x="55" y="40" width="210" height="14" class="bx" style="stroke:var(--l2)"/><text x="160" y="51" text-anchor="middle" class="s" font-size="10">Firewall NGFW</text>
+  <rect x="55" y="62" width="210" height="14" class="bx"/><text x="160" y="73" text-anchor="middle" class="s" font-size="10">Patch panel 1 (P01–P24)</text>
+  <rect x="55" y="78" width="210" height="14" class="bx" style="stroke:var(--d-cu)"/><text x="160" y="89" text-anchor="middle" class="s" font-size="10">Switch acceso 1 · 48p PoE</text>
+  <rect x="55" y="94" width="210" height="14" class="bx"/><text x="160" y="105" text-anchor="middle" class="s" font-size="10">Patch panel 2 (P25–P48)</text>
+  <rect x="55" y="112" width="210" height="14" class="bx"/><text x="160" y="123" text-anchor="middle" class="s" font-size="10">Patch panel 3 (P49–P72)</text>
+  <rect x="55" y="128" width="210" height="14" class="bx" style="stroke:var(--d-cu)"/><text x="160" y="139" text-anchor="middle" class="s" font-size="10">Switch acceso 2 · 48p PoE</text>
+  <rect x="55" y="144" width="210" height="14" class="bx"/><text x="160" y="155" text-anchor="middle" class="s" font-size="10">Patch panel 4 (P73–P96)</text>
+  <rect x="55" y="166" width="210" height="14" class="bx" style="stroke:var(--d-fiber)"/><text x="160" y="177" text-anchor="middle" class="s" font-size="10">Core L3 #1 · 24× 10G SFP+</text>
+  <rect x="55" y="182" width="210" height="14" class="bx" style="stroke:var(--d-fiber)"/><text x="160" y="193" text-anchor="middle" class="s" font-size="10">Core L3 #2 (stack)</text>
+  <rect x="55" y="204" width="210" height="40" class="bx2" stroke-dasharray="4 3"/><text x="160" y="228" text-anchor="middle" class="s" font-size="10">reserva crecimiento (≈ 6U)</text>
+  <rect x="55" y="250" width="210" height="28" class="bx" style="stroke:var(--l3)"/><text x="160" y="268" text-anchor="middle" class="s" font-size="10">Host virtualización 1 (2U)</text>
+  <rect x="55" y="282" width="210" height="28" class="bx" style="stroke:var(--l3)"/><text x="160" y="300" text-anchor="middle" class="s" font-size="10">Host virtualización 2 (2U)</text>
+  <rect x="55" y="314" width="210" height="28" class="bx" style="stroke:var(--l3)"/><text x="160" y="332" text-anchor="middle" class="s" font-size="10">Servidor backup (2U)</text>
+  <rect x="55" y="346" width="210" height="28" class="bx" style="stroke:var(--l3)"/><text x="160" y="364" text-anchor="middle" class="s" font-size="10">NAS rack (2U)</text>
+  <rect x="55" y="378" width="210" height="14" class="bx"/><text x="160" y="389" text-anchor="middle" class="s" font-size="10">KVM / consola</text>
+  <rect x="55" y="400" width="210" height="40" class="bx2" stroke-dasharray="4 3"/><text x="160" y="424" text-anchor="middle" class="s" font-size="10">reserva</text>
+  <rect x="55" y="450" width="210" height="40" class="bx" style="stroke:var(--warn)"/><text x="160" y="474" text-anchor="middle" class="s" font-size="10">SAI online 5 kVA (3U)</text>
+  <rect x="55" y="494" width="210" height="40" class="bx" style="stroke:var(--warn)"/><text x="160" y="518" text-anchor="middle" class="s" font-size="10">Baterías extendidas (3U)</text>
+  </g>
+  <rect x="22" y="40" width="12" height="500" rx="3" class="bx" style="stroke:var(--warn)"/>
+  <rect x="286" y="40" width="12" height="500" rx="3" class="bx" style="stroke:var(--warn)"/>
+  <text x="14" y="300" class="s" font-size="9" transform="rotate(-90 14 300)">PDU A</text>
+  <text x="310" y="300" class="s" font-size="9" transform="rotate(-90 310 300)">PDU B</text>
+</svg>
+<figcaption>Rack de 42U, 800 mm ancho × 1.000 mm fondo. Dos PDUs verticales: los servidores tienen dos fuentes de alimentación, una a cada PDU.</figcaption>
+</figure>
+<div>
+<h4>Detalles que marcan la diferencia</h4>
+<ul class="small">
+<li><b>Rack de 800 mm de ancho</b> (no 600): deja canales laterales para el cableado vertical.</li>
+<li><b>Patch panel – switch – patch panel</b> alternados: latiguillos de 30 cm, sin "spaghetti".</li>
+<li><b>Colores de latiguillo</b> con significado: azul usuarios, amarillo voz, rojo enlaces críticos, verde APs, negro gestión…</li>
+<li><b>Fuentes redundantes</b> en servidores y core: una a la PDU A y otra a la PDU B.</li>
+<li><b>Flujo de aire</b>: frontal frío → trasero caliente. Paneles ciegos en los huecos para que el aire caliente no vuelva por delante.</li>
+<li><b>Gestión fuera de banda</b>: los servidores tienen una tarjeta de gestión (iDRAC, iLO, XCC, IPMI) en la VLAN de gestión. Permite encenderlos, ver la pantalla e instalar el SO en remoto.</li>
+</ul>
+</div>
+</div>
+
+<h2>Hardware</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Equipo</th><th>Configuración típica</th><th>Por qué</th><th class="num">Coste</th></tr></thead>
+<tbody>
+<tr><td><b>Firewall NGFW</b></td><td>FortiGate 70G/90G, Palo Alto PA-410/440, Sophos XGS 2100, Check Point 1600</td><td>Inspección SSL, control de aplicaciones, IPS, SD-WAN con 2 líneas, VPN para 60 usuarios. Mirar el dato de "throughput con protección de amenazas", no el máximo.</td><td class="num">1.500–5.000 € + 800–3.000 €/año</td></tr>
+<tr><td><b>Core L3 ×2 en stack</b></td><td>24–32 puertos 10G SFP+, 2× 25/40G de stack</td><td>Enrutamiento entre VLANs a velocidad de cable; si uno muere, el otro sigue.</td><td class="num">2× 2.000–6.000 €</td></tr>
+<tr><td><b>Switches de acceso</b></td><td>48p 1G (o 2,5G mGig para APs) PoE+, 4 uplinks 10G</td><td>Un puerto por roseta; uplink de fibra/DAC a los dos cores.</td><td class="num">1.200–4.000 €/u</td></tr>
+<tr><td><b>APs</b> ×6–10</td><td>Wi-Fi 6E/7, gestionados en nube o controladora</td><td>Densidad: ≈ 1 AP cada 20–30 usuarios.</td><td class="num">300–900 €/u</td></tr>
+<tr><td><b>Hosts de virtualización</b> ×2</td><td>1–2 CPU 16–32 núcleos, 256–512 GB RAM, SSD NVMe en RAID, 2× 10/25G</td><td>Ejecutan todas las VMs. Con 2, cada uno debe poder con toda la carga (regla N+1).</td><td class="num">8.000–20.000 €/u</td></tr>
+<tr><td>Servidor de backup</td><td>Discos grandes (8× 16 TB RAID 6), Veeam / Proxmox Backup Server</td><td>Repositorio "hardened" (Linux inmutable) aislado del dominio.</td><td class="num">5.000–10.000 €</td></tr>
+<tr><td><b>SAI online</b> 5–6 kVA</td><td>Doble conversión, módulo de baterías extra, tarjeta de red</td><td>Autonomía 20–30 min y apagado ordenado automático de hosts.</td><td class="num">3.000–6.000 €</td></tr>
+<tr><td>Climatización</td><td>Split inverter 3–5 kW frío, ideal 2 unidades alternas</td><td>Ver <a href="calculadoras.html#btu">cálculo de frigorías</a>.</td><td class="num">1.500–4.000 €</td></tr>
+<tr><td>Rack 42U + PDUs + organizadores</td><td>800×1000, PDUs medidas</td><td>Orden y capacidad de crecimiento.</td><td class="num">1.500–3.000 €</td></tr>
+</tbody></table></div>
+
+<h3>Cálculo de sobresuscripción (oversubscription)</h3>
+<p>Un switch de acceso de 48 puertos a 1 Gb tiene 48 Gb de "capacidad de usuarios" pero sube al core con, por ejemplo, 2× 10 Gb = 20 Gb:</p>
+<div class="formula">Ratio = 48 × 1 Gb ÷ 20 Gb = 2,4 : 1</div>
+<p>En acceso de oficina se considera correcto hasta <b>20:1</b>, porque los usuarios nunca transmiten todos a la vez al máximo. En el CPD, entre servidores, se busca 1:1 a 3:1.</p>
+
+<h2>Cableado</h2>
+<ul>
+<li>Horizontal: <b>Cat 6A</b> certificado, 2 rosetas por puesto, 1 punto por AP (2 si es Wi-Fi 7), puntos en salas para pantallas y videoconferencia.</li>
+<li>Dentro del rack: <b>DAC</b> 10/25G entre core, servidores y firewall; Cat 6A cortos para el resto.</li>
+<li>Si hay una segunda planta o una nave: <b>fibra OS2</b> de 12 hilos entre racks (aunque hoy uses 2).</li>
+<li>Documentación: plano con la ubicación de cada roseta + hoja de puertos + diagrama lógico + inventario. Herramientas: NetBox, draw.io, o al menos una hoja de cálculo mantenida.</li>
+</ul>
+
+<h2>Software y servicios</h2>
+<div class="tabs">
+<div class="tab-panel" data-tab="Identidad">
+<p><b>Active Directory local</b> (2 controladores de dominio en hosts distintos) sincronizado con <b>Entra ID</b> mediante Entra Connect / Cloud Sync = identidad híbrida. Un solo usuario y contraseña para Windows, correo, VPN, Wi-Fi corporativo y aplicaciones.</p>
+<ul>
+<li><b>GPOs</b> (directivas de grupo) / Intune: configuración automática de equipos, mapeo de unidades e impresoras, políticas de contraseña, BitLocker.</li>
+<li><b>Grupos por departamento</b> → permisos de carpetas (modelo AGDLP: usuarios en grupos globales, globales en grupos locales de dominio, permisos al grupo local).</li>
+<li><b>LAPS</b>: contraseña de administrador local distinta y rotativa en cada PC.</li>
+<li><b>Wi-Fi 802.1X</b>: autenticación con usuario/certificado contra NPS/RADIUS.</li>
+</ul>
+<p>Si la empresa es "solo nube" (sin aplicaciones locales), se puede prescindir de AD y usar solo Entra ID + Intune.</p>
+</div>
+<div class="tab-panel" data-tab="Bases de datos">
+<p>El ERP o CRM local suele usar <b>Microsoft SQL Server</b> (Standard por núcleo o Express si es pequeño), <b>PostgreSQL</b> o <b>MySQL/MariaDB</b>.</p>
+<ul>
+<li>VM dedicada, discos separados para datos, logs y tempdb (en SQL Server).</li>
+<li>Backup nativo de la base de datos (completo diario + diferencial + log cada 15 min) <b>además</b> del backup de la VM. Así puedes restaurar a un minuto concreto.</li>
+<li>Mantenimiento: reindexado y estadísticas semanales (scripts de Ola Hallengren son el estándar de facto).</li>
+<li>Nunca exponer el puerto de la base de datos a Internet.</li>
+</ul>
+</div>
+<div class="tab-panel" data-tab="Seguridad">
+<ul>
+<li><b>EDR</b> en todos los equipos (Defender for Business/Endpoint, CrowdStrike, SentinelOne, Sophos Intercept X). Idealmente con servicio <b>MDR</b>: alguien vigila 24/7 las alertas.</li>
+<li><b>Gestión de parches</b>: WSUS/Intune/RMM para Windows y terceros (navegadores, Adobe, Java…).</li>
+<li><b>Filtrado de correo</b> avanzado (Defender for Office, Proofpoint, Mimecast…).</li>
+<li><b>Escaneo de vulnerabilidades</b> mensual (OpenVAS/Greenbone, Nessus, Defender Vulnerability Mgmt).</li>
+<li><b>Registro centralizado</b> de logs (Wazuh, Graylog, o el SIEM del MDR).</li>
+</ul>
+</div>
+<div class="tab-panel" data-tab="Monitorización">
+<p>Herramienta de monitorización que avise <b>antes</b> de que el usuario llame: Zabbix, PRTG, Checkmk, LibreNMS, o el RMM del proveedor (NinjaOne, Datto, N-able).</p>
+<p>Qué vigilar: disponibilidad de servidores y servicios, espacio en disco, estado RAID, temperatura del cuarto, estado del SAI y baterías, consumo de cada enlace a Internet, caducidad de certificados y licencias, éxito de los backups.</p>
+</div>
+<div class="tab-panel" data-tab="Backup">
+<pre><code>Diario         VMs completas (incremental) ──► repositorio local inmutable (14–30 días)
+Cada 15 min    Log de SQL ─────────────────► repositorio local
+Diario         Copia ──────────────────────► nube S3 con Object Lock (inmutable 30–90 días)
+Diario         M365 / Google ──────────────► backup SaaS
+Mensual        Archivo largo plazo ────────► nube fría (12 meses+)
+Trimestral     PRUEBA DE RESTAURACIÓN documentada</code></pre>
+<p><b>RPO</b> (cuántos datos puedo perder) y <b>RTO</b> (cuánto tardo en volver): deben acordarse con dirección. Típico aquí: RPO 15 min para ERP, 24 h para ficheros; RTO 4–8 h.</p>
+</div>
+</div>
+
+<h2>Problemas típicos y quién los arregla</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Quién</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>El ERP va lento a primera hora</td><td>Todos entran a la vez; SQL sin índices o falta RAM; disco lento</td><td><span class="who int">Interno</span> + proveedor ERP</td><td>Medir CPU/RAM/latencia de disco de la VM. Mantenimiento de índices. Ampliar RAM de la VM.</td></tr>
+<tr><td>Usuario sin red tras moverlo de mesa</td><td>Puerto en VLAN equivocada o desactivado</td><td><span class="who int">Interno</span></td><td>Mapa de puertos. O mejor: 802.1X/NAC que asigna la VLAN según el usuario.</td></tr>
+<tr><td>Bucle de red: todo se cae de golpe</td><td>Alguien conecta un cable entre dos rosetas o un switch doméstico</td><td><span class="who int">Interno</span></td><td>Activar <b>STP</b> (RSTP/MSTP), <b>BPDU Guard</b> y storm control en puertos de usuario.</td></tr>
+<tr><td>Internet satura a las 9:00 y a las 15:00</td><td>Actualizaciones de Windows, OneDrive, Teams en masa</td><td><span class="who int">Interno</span></td><td>QoS en el firewall; Delivery Optimization; caché de actualizaciones; escalonar.</td></tr>
+<tr><td>El consumo real supera el 70 % de la línea en horas pico de forma continuada</td><td>Crecimiento</td><td><span class="who dir">Dirección / compras</span></td><td>Ampliar capacidad (1 → 2,5/10 Gb) o repartir tráfico entre las 2 líneas con SD-WAN.</td></tr>
+<tr><td>Temperatura del cuarto a 35 °C</td><td>Aire acondicionado averiado</td><td><span class="who ext">Mantenedor clima</span></td><td>Contrato de mantenimiento con respuesta en horas. Segunda unidad en alternancia.</td></tr>
+<tr><td>Disco del RAID en estado "degradado"</td><td>Disco fallido</td><td><span class="who mix">Interno + fabricante</span></td><td>Sustituir en caliente con la garantía (contrato NBD/4h). No esperar: un segundo fallo = pérdida de datos en RAID 5.</td></tr>
+<tr><td>Ransomware en un PC</td><td>Phishing / vulnerabilidad</td><td><span class="who int">Interno</span> + MDR / forense</td><td>Aislar el equipo (el EDR lo hace en un clic), revisar movimiento lateral, restaurar desde backup inmutable, notificar si procede (AEPD/INCIBE-CERT).</td></tr>
+</tbody></table></div>
+
+<h2>Presupuesto orientativo (40 personas)</h2>
+<div class="two">
+<div class="card"><h4>Inicial</h4><table><tbody>
+<tr><td>Cableado 96 puntos + certificación</td><td class="num">8.000 €</td></tr>
+<tr><td>Cuarto técnico (clima, eléctrico, rack)</td><td class="num">7.000 €</td></tr>
+<tr><td>Firewall NGFW (×1, o ×2 en HA)</td><td class="num">3.500–7.000 €</td></tr>
+<tr><td>Core ×2 + acceso ×2</td><td class="num">10.000 €</td></tr>
+<tr><td>8 APs</td><td class="num">4.000 €</td></tr>
+<tr><td>2 hosts + servidor backup</td><td class="num">30.000 €</td></tr>
+<tr><td>SAI online</td><td class="num">4.500 €</td></tr>
+<tr><td>Licencias (Windows Server, Veeam, hipervisor)</td><td class="num">6.000 €</td></tr>
+<tr><td>Proyecto / instalación</td><td class="num">8.000 €</td></tr>
+<tr><th>Total</th><th class="num">≈ 80.000 €</th></tr>
+</tbody></table></div>
+<div class="card"><h4>Mensual</h4><table><tbody>
+<tr><td>2 fibras profesionales + IPs</td><td class="num">200–500 €</td></tr>
+<tr><td>M365 E3/Business Premium ×40</td><td class="num">850–1.300 €</td></tr>
+<tr><td>EDR + MDR</td><td class="num">300–600 €</td></tr>
+<tr><td>Backup nube</td><td class="num">100–250 €</td></tr>
+<tr><td>Mantenimientos y soporte de fabricante</td><td class="num">400 €</td></tr>
+<tr><td>Técnico IT (coste empresa)</td><td class="num">3.000–4.000 €</td></tr>
+<tr><th>Total</th><th class="num">≈ 5–7 k€/mes</th></tr>
+</tbody></table></div>
+</div>
+
+<h2>Cuándo pasar al nivel 3</h2>
+<ul class="check">
+<li>Más de 60–80 personas, o el edificio tiene varias plantas o naves.</li>
+<li>Más de 96–144 puntos de red: no caben en un solo cuarto técnico respetando los 90 m.</li>
+<li>Los dos hosts ya no dan abasto o hay que duplicar también el almacenamiento.</li>
+<li>Una sola persona de IT ya no puede cubrir vacaciones, guardias y proyectos.</li>
+<li>Dirección pide disponibilidad "siempre" (fabricación 24/7, comercio online, atención al cliente).</li>
+</ul>
+
+</div></main>
+<script src="assets/app.js"></script>
+</body>
+</html>

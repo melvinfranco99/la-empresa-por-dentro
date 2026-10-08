@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N4 Grande multisede · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="nivel-4" style="--lvl:var(--l4)">
+<main><div class="content">
+
+<section class="hero">
+  <span class="lvl-tag">NIVEL 4</span>
+  <h1>Grande empresa multisede</h1>
+  <p class="lead">Una cadena de tiendas, una aseguradora con oficinas en 30 ciudades, un grupo industrial con 5 fábricas, un hospital con centros de salud asociados. Entre 300 y 5.000 personas repartidas en muchas sedes. El reto ya no es el edificio, sino <b>conectar sedes entre sí</b> y mantener el servicio aunque se pierda un CPD entero.</p>
+  <div class="facts">
+    <span class="chip"><b>300–5.000</b> personas</span>
+    <span class="chip"><b>5–50+</b> sedes</span>
+    <span class="chip"><b>2 CPD</b> + nube</span>
+    <span class="chip">Inversión <b>1–10 M€</b></span>
+    <span class="chip">IT: <b>20–200</b> + NOC/SOC</span>
+  </div>
+</section>
+
+<h2>Perfil</h2>
+<p>Lo nuevo respecto al <a href="nivel-3.html">nivel 3</a>:</p>
+<div class="grid">
+<div class="card"><h4>La WAN</h4><p class="small">La red que une las sedes. Antes eran líneas MPLS caras de una operadora; hoy casi siempre es <b>SD-WAN</b> sobre varias conexiones a Internet.</p></div>
+<div class="card"><h4>Dos CPD</h4><p class="small">Un CPD principal y otro secundario a una distancia segura (o colocation + nube). Si el principal arde, el negocio sigue.</p></div>
+<div class="card"><h4>Estandarización</h4><p class="small">Con 40 sedes no puedes configurar cada una a mano. "Sede tipo" con plantillas y despliegue sin técnico in situ (zero-touch).</p></div>
+<div class="card"><h4>Especialización</h4><p class="small">Arquitectura, redes, sistemas, nube, seguridad, bases de datos, puesto de trabajo, desarrollo, NOC, SOC, gestión de proveedores.</p></div>
+</div>
+
+<h2>Mapa de la red</h2>
+<figure class="diagram">
+<svg viewBox="0 0 900 540" role="img" aria-label="Topología WAN de empresa multisede">
+  <!-- Internet nube central -->
+  <ellipse cx="450" cy="270" rx="140" ry="80" class="bx2"/>
+  <text x="450" y="258" text-anchor="middle" class="b">Internet + SD-WAN overlay</text>
+  <text x="450" y="278" text-anchor="middle" class="s">túneles IPsec automáticos</text>
+  <text x="450" y="296" text-anchor="middle" class="s">entre todas las sedes</text>
+  <!-- DC1 -->
+  <rect x="40" y="40" width="200" height="120" rx="10" class="bx" style="stroke:var(--l4);stroke-width:2.5"/>
+  <text x="140" y="65" text-anchor="middle" class="b">CPD 1 (principal)</text>
+  <text x="140" y="85" text-anchor="middle" class="s">Madrid · colocation Tier III</text>
+  <text x="140" y="103" text-anchor="middle" class="s">clúster · SAN · BBDD</text>
+  <text x="140" y="121" text-anchor="middle" class="s">hub SD-WAN · firewalls</text>
+  <text x="140" y="139" text-anchor="middle" class="s">2 operadoras + 10G</text>
+  <!-- DC2 -->
+  <rect x="660" y="40" width="200" height="120" rx="10" class="bx" style="stroke:var(--l4);stroke-width:2.5"/>
+  <text x="760" y="65" text-anchor="middle" class="b">CPD 2 (respaldo)</text>
+  <text x="760" y="85" text-anchor="middle" class="s">otra ciudad, &gt; 50 km</text>
+  <text x="760" y="103" text-anchor="middle" class="s">réplica síncrona/asíncrona</text>
+  <text x="760" y="121" text-anchor="middle" class="s">hub SD-WAN secundario</text>
+  <text x="760" y="139" text-anchor="middle" class="s">2 operadoras + 10G</text>
+  <path d="M240 90 H660" class="fib" stroke-width="3.5"/>
+  <text x="450" y="80" text-anchor="middle" class="s">enlace dedicado entre CPDs (fibra oscura / lambda / L2 de operadora)</text>
+  <!-- Nube -->
+  <rect x="360" y="410" width="180" height="70" rx="35" class="bx2" style="stroke:var(--d-vpn);stroke-width:2"/>
+  <text x="450" y="440" text-anchor="middle" class="b">Nube pública</text>
+  <text x="450" y="458" text-anchor="middle" class="s">Azure / AWS / GCP</text>
+  <path d="M140 160 C140 400 300 460 360 450" class="fib" stroke-dasharray="10 4"/>
+  <path d="M760 160 C760 400 600 460 540 450" class="fib" stroke-dasharray="10 4"/>
+  <text x="200" y="420" class="s">ExpressRoute / Direct Connect</text>
+  <!-- SaaS -->
+  <rect x="380" y="140" width="140" height="40" rx="20" class="bx2"/>
+  <text x="450" y="165" text-anchor="middle" class="b">SaaS + SSE</text>
+  <path d="M450 180 V190" class="ln"/>
+  <!-- conexiones a internet de CPDs -->
+  <path d="M220 160 L340 225" class="wan"/>
+  <path d="M680 160 L560 225" class="wan"/>
+  <!-- sedes -->
+  <g>
+    <rect x="20" y="230" width="140" height="56" rx="8" class="bx"/><text x="90" y="253" text-anchor="middle" class="b">Sede central</text><text x="90" y="271" text-anchor="middle" class="s">1.200 personas</text>
+    <path d="M160 258 H310" class="wan"/>
+    <rect x="20" y="320" width="140" height="56" rx="8" class="bx"/><text x="90" y="343" text-anchor="middle" class="b">Fábrica</text><text x="90" y="361" text-anchor="middle" class="s">red OT aislada</text>
+    <path d="M160 348 C250 348 280 320 330 305" class="wan"/>
+    <rect x="740" y="230" width="140" height="56" rx="8" class="bx"/><text x="810" y="253" text-anchor="middle" class="b">Delegación ×12</text><text x="810" y="271" text-anchor="middle" class="s">20–80 personas</text>
+    <path d="M740 258 H590" class="wan"/>
+    <rect x="740" y="320" width="140" height="56" rx="8" class="bx"/><text x="810" y="343" text-anchor="middle" class="b">Tiendas ×40</text><text x="810" y="361" text-anchor="middle" class="s">3–10 personas</text>
+    <path d="M740 348 C650 348 620 320 570 305" class="wan"/>
+    <rect x="20" y="430" width="140" height="56" rx="8" class="bx"/><text x="90" y="453" text-anchor="middle" class="b">Teletrabajo</text><text x="90" y="471" text-anchor="middle" class="s">ZTNA desde casa</text>
+    <path d="M160 458 C250 440 300 340 340 320" class="vpn"/>
+  </g>
+</svg>
+<div class="legend">
+  <span><i style="border-color:var(--d-wan)"></i>Conexiones a Internet de cada sede</span>
+  <span><i style="border-color:var(--d-fiber)"></i>Enlaces privados de alta capacidad</span>
+  <span><i class="dash" style="border-color:var(--d-vpn)"></i>Acceso remoto / SSE</span>
+</div>
+<figcaption>Topología <b>hub-and-spoke con SD-WAN</b>: cada sede ("spoke") tiene 2 conexiones a Internet de tecnologías distintas y crea túneles cifrados con los dos CPD ("hubs") y, si hace falta, directamente con otras sedes. El tráfico a SaaS sale directo a Internet desde cada sede, pasando por el servicio de seguridad en la nube (SSE).</figcaption>
+</figure>
+
+<h3>MPLS vs SD-WAN vs VPN tradicional</h3>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th>MPLS (operadora)</th><th>VPN IPsec manual</th><th>SD-WAN</th></tr></thead>
+<tbody>
+<tr><th>Qué es</th><td>Red privada de la operadora con calidad garantizada</td><td>Túneles cifrados sobre Internet configurados a mano</td><td>Túneles sobre varias líneas, gestionados centralmente, eligiendo la mejor línea por aplicación en tiempo real</td></tr>
+<tr><th>Coste</th><td>Alto (3–10× por Mbps)</td><td>Bajo</td><td>Medio (equipos + licencias), líneas baratas</td></tr>
+<tr><th>Calidad</th><td>SLA de latencia y pérdida</td><td>"Lo que dé Internet"</td><td>Mide latencia/pérdida/jitter de cada línea y mueve las apps críticas a la mejor</td></tr>
+<tr><th>Despliegue</th><td>Semanas–meses por sede</td><td>Manual, propenso a errores</td><td>Zero-touch: llega el equipo, se enchufa, descarga su configuración</td></tr>
+<tr><th>Hoy</th><td>Solo para casos con requisitos estrictos (o como una de las líneas del SD-WAN)</td><td>Pocas sedes o enlace con un partner</td><td><b>Estándar</b></td></tr>
+</tbody></table></div>
+<p>Fabricantes habituales: Fortinet, Cisco (Catalyst SD-WAN / Meraki), Palo Alto Prisma SD-WAN, HPE Aruba EdgeConnect, VMware VeloCloud (Arista), Versa, Cato Networks (SASE nativo).</p>
+
+<h2>La sede tipo (plantilla)</h2>
+<p>Cada delegación se construye <b>igual</b>, con el mismo hardware, el mismo esquema de VLANs y direccionamiento derivado del número de sede. Así cualquier técnico entiende cualquier sede.</p>
+<figure class="diagram">
+<svg viewBox="0 0 900 260" role="img" aria-label="Sede tipo de una empresa multisede">
+  <ellipse cx="70" cy="70" rx="55" ry="26" class="bx2"/><text x="70" y="68" text-anchor="middle" class="b">Fibra</text><text x="70" y="84" text-anchor="middle" class="s">operador X</text>
+  <ellipse cx="70" cy="180" rx="55" ry="26" class="bx2"/><text x="70" y="178" text-anchor="middle" class="b">5G</text><text x="70" y="194" text-anchor="middle" class="s">operador Y</text>
+  <path d="M125 70 C170 70 170 115 200 115" class="wan"/>
+  <path d="M125 180 C170 180 170 140 200 140" class="wan" stroke-dasharray="6 4"/>
+  <rect x="200" y="95" width="150" height="70" rx="8" class="bx" style="stroke:var(--l4);stroke-width:2"/>
+  <text x="275" y="120" text-anchor="middle" class="b">Equipo SD-WAN</text>
+  <text x="275" y="138" text-anchor="middle" class="s">firewall + router</text>
+  <text x="275" y="154" text-anchor="middle" class="s">(×2 en sedes grandes)</text>
+  <path d="M350 130 H410" class="cu" stroke-width="3"/>
+  <rect x="410" y="105" width="130" height="50" rx="8" class="bx"/><text x="475" y="128" text-anchor="middle" class="b">Switch PoE</text><text x="475" y="145" text-anchor="middle" class="s">24/48p</text>
+  <path d="M540 120 H600 M540 140 H600" class="cu"/>
+  <rect x="600" y="20" width="280" height="220" rx="10" class="zonef"/>
+  <text x="740" y="42" text-anchor="middle" class="b">Sede nº 27 → 10.27.0.0/16</text>
+  <text x="615" y="70" class="m">10.27.10.0/24  gestión</text>
+  <text x="615" y="92" class="m">10.27.30.0/24  usuarios</text>
+  <text x="615" y="114" class="m">10.27.40.0/24  voz</text>
+  <text x="615" y="136" class="m">10.27.50.0/24  impresión</text>
+  <text x="615" y="158" class="m">10.27.60.0/24  cámaras / IoT</text>
+  <text x="615" y="180" class="m">10.27.70.0/24  TPV / PCI</text>
+  <text x="615" y="202" class="m">172.27.0.0/22  invitados</text>
+  <text x="615" y="226" class="s">el segundo octeto = número de sede</text>
+  <text x="275" y="200" text-anchor="middle" class="s">sin servidores locales</text>
+  <text x="275" y="216" text-anchor="middle" class="s">(todo en CPD o nube)</text>
+</svg>
+<figcaption>Direccionamiento jerárquico: con ver una IP sabes de qué sede y de qué tipo de equipo es. Además permite <b>resumir rutas</b>: el CPD solo necesita una ruta <code>10.27.0.0/16</code> por sede.</figcaption>
+</figure>
+
+<h3>Dimensionar el ancho de banda de una sede</h3>
+<p>Regla práctica a partir de perfiles de uso concurrente:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Actividad</th><th class="num">Consumo por usuario activo</th></tr></thead>
+<tbody>
+<tr><td>Ofimática y web SaaS</td><td class="num">0,5–1 Mbps</td></tr>
+<tr><td>Videollamada HD (Teams/Zoom/Meet)</td><td class="num">1,5–4 Mbps (subida y bajada)</td></tr>
+<tr><td>Escritorio remoto / VDI</td><td class="num">0,3–2 Mbps</td></tr>
+<tr><td>Voz IP</td><td class="num">≈ 0,1 Mbps</td></tr>
+<tr><td>Cámara de seguridad enviando al CPD (1080p H.265)</td><td class="num">1–4 Mbps por cámara</td></tr>
+</tbody></table></div>
+<div class="formula">Ancho de banda ≈ Σ (usuarios × concurrencia × consumo) × 1,3 de margen</div>
+<p>Ejemplo: 40 personas, 30 % en videollamada (3 Mbps) y el resto en ofimática (1 Mbps) → (12 × 3 + 28 × 1) × 1,3 ≈ 83 Mbps. Con fibra de 300 Mb sobra; el 5G de respaldo de 100 Mb también aguanta. <a href="calculadoras.html#ancho">Calculadora de ancho de banda</a>.</p>
+
+<h2>Física de la WAN: por qué la distancia importa</h2>
+<p>La luz en fibra viaja a ≈ 200.000 km/s → <b>5 µs por km</b>, ≈ <b>1 ms de ida y vuelta por cada 100 km</b> de fibra (y las fibras no van en línea recta: añade un 30–50 %).</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Trayecto</th><th class="num">RTT típico</th></tr></thead>
+<tbody>
+<tr><td>Madrid – Barcelona</td><td class="num">10–15 ms</td></tr>
+<tr><td>Madrid – Frankfurt</td><td class="num">25–35 ms</td></tr>
+<tr><td>Madrid – Nueva York</td><td class="num">80–95 ms</td></tr>
+<tr><td>Madrid – São Paulo</td><td class="num">150–190 ms</td></tr>
+<tr><td>Madrid – Singapur</td><td class="num">160–230 ms</td></tr>
+</tbody></table></div>
+
+<h3>El producto ancho de banda × retardo (BDP)</h3>
+<p>Una conexión TCP solo puede tener "en vuelo" una cantidad de datos limitada (la ventana). Por eso, con mucha latencia, una sola descarga <b>no llena la línea</b> aunque sea enorme:</p>
+<div class="formula">Velocidad máx. de 1 conexión TCP ≈ Ventana ÷ RTT</div>
+<p>Ejemplo: ventana de 64 KB y RTT de 100 ms → 65.536 × 8 ÷ 0,1 ≈ <b>5,2 Mbps</b>, aunque tengas 1 Gbps. Con escalado de ventana (los sistemas modernos lo usan) se llega a varios MB de ventana, pero cualquier pérdida de paquetes la reduce drásticamente. Fórmula de Mathis (TCP Reno, aproximada):</p>
+<div class="formula">Velocidad ≲ (MSS ÷ RTT) × (1,22 ÷ √pérdida)</div>
+<p>Con MSS 1.460 B, RTT 100 ms y 0,1 % de pérdida: (1.460 × 8 / 0,1) × (1,22 / 0,0316) ≈ <b>4,5 Mbps</b>. Conclusión práctica: <b>en enlaces lejanos importan más la latencia y la pérdida que los megas</b>. Soluciones: optimizadores WAN, transferencias en paralelo, algoritmos como BBR, acercar los datos (caché, réplica local) o sincronizar fuera de horario.</p>
+
+<h2>Los dos CPD y la continuidad</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Modelo</th><th>Cómo funciona</th><th>RTO</th><th>RPO</th><th>Coste</th></tr></thead>
+<tbody>
+<tr><td>Backup off-site</td><td>Copias en otro sitio; en desastre se compran equipos y se restaura</td><td>Días–semanas</td><td>24 h</td><td>€</td></tr>
+<tr><td>Pilot light / DR en nube</td><td>Réplica de datos a la nube; VMs apagadas que se encienden en desastre</td><td>1–8 h</td><td>Minutos</td><td>€€</td></tr>
+<tr><td>Activo-pasivo (warm standby)</td><td>CPD 2 con todo replicado y listo; conmutación manual o semi</td><td>15 min – 2 h</td><td>Segundos–minutos</td><td>€€€</td></tr>
+<tr><td>Activo-activo</td><td>Los dos CPD sirven a la vez; si uno cae el otro absorbe todo</td><td>~0</td><td>~0</td><td>€€€€</td></tr>
+</tbody></table></div>
+<ul>
+<li><b>Réplica síncrona</b> (cada escritura se confirma en ambos CPD): RPO = 0, pero exige latencia &lt; 5 ms entre CPD (≈ 100 km máx.).</li>
+<li><b>Réplica asíncrona</b>: sin límite de distancia, se pierden los últimos segundos/minutos.</li>
+<li><b>Colocation</b>: en vez de construir el CPD, se alquila espacio (racks o jaulas) en un centro de datos profesional (Equinix, Digital Realty/Interxion, Data4, Nostrum, Global Switch…). Certificación <b>Tier III</b> (Uptime Institute): mantenible sin parar, 99,982 %.</li>
+</ul>
+
+<h2>Nube híbrida</h2>
+<p>En este nivel casi todas las empresas tienen parte en CPD propio/alquilado y parte en nube pública. La clave es hacerlo con orden:</p>
+<ul>
+<li><b>Landing zone</b>: estructura base de la nube (suscripciones/cuentas por entorno, red hub-spoke, políticas, identidades, logs centralizados) antes de desplegar nada.</li>
+<li><b>Conectividad privada</b>: Azure ExpressRoute, AWS Direct Connect, Google Interconnect. Latencia estable y tráfico de salida más barato que por Internet.</li>
+<li><b>FinOps</b>: la nube se paga por uso; sin etiquetas, presupuestos y alertas la factura se dispara. Ojo con el tráfico de salida (<i>egress</i>), los discos huérfanos y las instancias sobredimensionadas.</li>
+<li><b>Infraestructura como código</b>: Terraform/OpenTofu, Bicep, CloudFormation. Nada creado a mano en producción.</li>
+</ul>
+
+<h2>Software y servicios clave</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Área</th><th>Qué se usa</th><th>Ejemplos</th></tr></thead>
+<tbody>
+<tr><td>Enrutamiento</td><td>BGP con las operadoras y entre CPD; OSPF dentro de cada campus</td><td>—</td></tr>
+<tr><td>DNS / DHCP / IPAM</td><td>Gestión centralizada de direcciones, DNS interno redundante</td><td>Infoblox, EfficientIP, BlueCat, Windows + NetBox</td></tr>
+<tr><td>Balanceo de carga</td><td>Reparte peticiones entre servidores, termina TLS, WAF</td><td>F5 BIG-IP, Citrix NetScaler, HAProxy, NGINX, balanceadores de la nube</td></tr>
+<tr><td>SASE / SSE</td><td>Seguridad en la nube para usuarios estén donde estén: proxy web (SWG), CASB, ZTNA, DLP</td><td>Zscaler, Netskope, Palo Alto Prisma Access, Cloudflare One, Cato, Microsoft Entra Internet Access</td></tr>
+<tr><td>Identidad</td><td>IAM + IGA (altas/bajas automáticas desde RR. HH.) + PAM</td><td>Entra ID, Okta, SailPoint, CyberArk, Delinea</td></tr>
+<tr><td>Puesto</td><td>Gestión unificada de endpoints, VDI para externos</td><td>Intune, SCCM, Workspace ONE, Citrix, Azure Virtual Desktop</td></tr>
+<tr><td>Bases de datos</td><td>Clústeres HA, réplicas al CPD 2, data warehouse</td><td>Oracle RAC/Data Guard, SQL Server AG, PostgreSQL, Snowflake/BigQuery/Fabric</td></tr>
+<tr><td>Observabilidad</td><td>Métricas, logs, trazas, NOC con paneles</td><td>Datadog, Dynatrace, Grafana stack, Splunk, Elastic, LogicMonitor</td></tr>
+<tr><td>Seguridad</td><td>SOC 24/7 (propio o externo), SIEM + SOAR, EDR/XDR, gestión de exposición</td><td>Sentinel, Splunk ES, CrowdStrike, Defender XDR, Tenable, Qualys</td></tr>
+<tr><td>ITSM</td><td>Incidencias, cambios, CMDB, catálogo</td><td>ServiceNow, Jira SM, Ivanti</td></tr>
+</tbody></table></div>
+
+<h2>Problemas típicos y quién los arregla</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Quién</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Una tienda sin sistema de cobro</td><td>Fibra caída y el 5G no tiene cobertura dentro del local</td><td><span class="who mix">NOC + operadora</span></td><td>Antena 5G exterior; verificar cobertura antes de abrir la sede; tercera vía (satélite LEO, p. ej. Starlink) en sedes críticas.</td></tr>
+<tr><td>El ERP va lento desde la delegación de Canarias</td><td>Latencia (~40 ms) + aplicación "charlatana" (miles de consultas por pantalla)</td><td><span class="who int">Arquitectura + desarrollo</span></td><td>Publicar la app vía VDI/RDS en el CPD (solo viaja la pantalla) o rediseñar. Más megas no ayudan.</td></tr>
+<tr><td>Copias al CPD 2 se retrasan</td><td>Enlace entre CPD saturado</td><td><span class="who dir">Compras</span> + operadora</td><td>Ampliar enlace (10 → 100 Gb), deduplicación/compresión en la réplica.</td></tr>
+<tr><td>Abrir una sede nueva tarda 3 meses</td><td>Plazo de alta de la fibra profesional</td><td><span class="who ext">Operadora</span></td><td>Pedir la línea en cuanto se firma el local; arrancar con 5G mientras.</td></tr>
+<tr><td>La factura de nube sube un 40 %</td><td>Recursos sin apagar, tráfico de salida, falta de reservas</td><td><span class="who int">FinOps / nube</span></td><td>Etiquetado obligatorio, apagado automático de entornos de prueba, instancias reservadas / savings plans, revisar arquitectura de datos.</td></tr>
+<tr><td>Un cambio de firewall deja sin servicio a 30 sedes</td><td>Cambio sin pruebas</td><td><span class="who int">Redes</span></td><td>CAB (comité de cambios), despliegue escalonado (1 sede piloto → 10 % → 100 %), plan de vuelta atrás, configuración como código con revisión.</td></tr>
+<tr><td>Ciberataque que cifra un CPD</td><td>Compromiso de identidad privilegiada</td><td><span class="who mix">SOC + DFIR externo + dirección</span></td><td>Plan de respuesta, aislamiento, entorno de recuperación limpio (<i>clean room</i>), backup inmutable y aislado (<i>vault</i>), comunicación a autoridades (NIS2: 24 h aviso temprano).</td></tr>
+</tbody></table></div>
+
+<h2>Organización</h2>
+<div class="grid g3">
+<div class="card"><h4>Gobierno</h4><p class="small">CIO, CISO, arquitectura empresarial, PMO, gestión de proveedores y contratos.</p></div>
+<div class="card"><h4>Infraestructura</h4><p class="small">Redes (LAN/WAN/Wi-Fi), sistemas, almacenamiento, nube, CPD.</p></div>
+<div class="card"><h4>Operación</h4><p class="small">NOC 24/7 (o 8×5 + guardias), service desk multinivel, soporte en sedes (técnicos itinerantes o partner).</p></div>
+<div class="card"><h4>Seguridad</h4><p class="small">SOC, gestión de identidades, cumplimiento (ISO 27001, ENS, NIS2, PCI-DSS si hay tarjetas, DORA si es financiero).</p></div>
+<div class="card"><h4>Aplicaciones</h4><p class="small">ERP, CRM, desarrollo propio, integración (APIs, ESB), datos/BI.</p></div>
+<div class="card"><h4>Proveedores</h4><p class="small">Operadoras con contrato marco, integradores, outsourcing de partes (service desk, SOC, gestión de puesto).</p></div>
+</div>
+
+<h2>Cuándo pasar al nivel 5</h2>
+<ul class="check">
+<li>Presencia en <b>varios países/continentes</b> con requisitos de latencia y de soberanía del dato (los datos de clientes europeos deben quedarse en la UE, etc.).</li>
+<li>Servicios digitales para millones de clientes (banca online, e-commerce, plataformas).</li>
+<li>Necesidad de operar <b>24/7 sin ventanas de mantenimiento</b>.</li>
+<li>El volumen hace rentable tener red propia, contratos directos con fabricantes y equipos de ingeniería propios.</li>
+</ul>
+
+</div></main>
+<script src="assets/app.js"></script>
+</body>
+</html>

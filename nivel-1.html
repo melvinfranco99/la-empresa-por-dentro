@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N1 Microempresa · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="nivel-1" style="--lvl:var(--l1)">
+<main><div class="content">
+
+<section class="hero">
+  <span class="lvl-tag">NIVEL 1</span>
+  <h1>Microempresa</h1>
+  <p class="lead">Una asesoría, una clínica dental, un estudio de arquitectura, una agencia o una tienda con trastienda. Un único local con 3 a 15 personas. Es el momento de dejar el router de la operadora como único "cerebro" y montar un pequeño armario de comunicaciones.</p>
+  <div class="facts">
+    <span class="chip"><b>3–15</b> personas</span>
+    <span class="chip"><b>20–50</b> dispositivos</span>
+    <span class="chip">Fibra <b>1 Gb</b> + <b>5G</b> respaldo</span>
+    <span class="chip">Inversión <b>3–15 k€</b></span>
+    <span class="chip">IT: <b>externo</b> o empleado "manitas"</span>
+  </div>
+</section>
+
+<h2>Perfil</h2>
+<p>Lo nuevo respecto al <a href="nivel-0.html">nivel 0</a>: <b>varias personas comparten</b> archivos, impresora y conexión; hay <b>clientes que entran</b> al local (Wi-Fi de invitados); y si se cae Internet, <b>todo el negocio se para</b>. Además aparecen obligaciones legales (RGPD, en algunos sectores normativa específica).</p>
+<div class="callout"><span class="t">Cambio de mentalidad</span>A partir de aquí los equipos son de la <b>empresa</b>, no de las personas. Cuando alguien se va, su portátil y sus cuentas se quedan. Eso implica gestionar usuarios de forma centralizada.</div>
+
+<h2>Plano físico</h2>
+<figure class="diagram">
+<svg viewBox="0 0 900 470" role="img" aria-label="Plano de un local de microempresa">
+  <rect x="20" y="20" width="860" height="430" rx="4" fill="none" stroke="var(--d-stroke)" stroke-width="4"/>
+  <path d="M600 20 V200 M600 250 V450" stroke="var(--d-stroke)" stroke-width="4"/>
+  <path d="M600 200 H880" stroke="var(--d-stroke)" stroke-width="4"/>
+  <path d="M20 330 H200 M260 330 H400" stroke="var(--d-stroke)" stroke-width="4"/>
+  <path d="M400 330 V450" stroke="var(--d-stroke)" stroke-width="4"/>
+  <text x="300" y="45" text-anchor="middle" class="s">ZONA DE TRABAJO (open space)</text>
+  <text x="740" y="45" text-anchor="middle" class="s">DESPACHO / REUNIONES</text>
+  <text x="740" y="230" text-anchor="middle" class="s">RECEPCIÓN / TIENDA</text>
+  <text x="210" y="355" text-anchor="middle" class="s">ALMACÉN / OFFICE</text>
+  <text x="500" y="355" text-anchor="middle" class="s">ASEO</text>
+
+  <!-- armario comunicaciones -->
+  <rect x="40" y="370" width="110" height="65" rx="5" class="bx" style="stroke:var(--l1);stroke-width:2.5"/>
+  <text x="95" y="392" text-anchor="middle" class="b">Rack pared</text>
+  <text x="95" y="408" text-anchor="middle" class="s">9–12U</text>
+  <text x="95" y="424" text-anchor="middle" class="s">(firewall, switch,</text>
+  <text x="95" y="438" text-anchor="middle" class="s">NAS, SAI)</text>
+  <path d="M20 400 H40" class="wan"/>
+  <text x="22" y="392" class="s" font-size="10">fibra</text>
+
+  <!-- canaleta / falso techo troncal -->
+  <path d="M95 370 V300 H580" class="cu" stroke-width="5" opacity=".35"/>
+  <path d="M95 300 V80 H580" class="cu" stroke-width="5" opacity=".35"/>
+  <path d="M580 300 H720 V250" class="cu" stroke-width="5" opacity=".35"/>
+  <path d="M580 80 H720 V120" class="cu" stroke-width="5" opacity=".35"/>
+  <text x="330" y="294" text-anchor="middle" class="s">bandeja por falso techo → todos los cables vuelven al rack</text>
+
+  <!-- puestos -->
+  <g>
+    <rect x="130" y="120" width="60" height="34" rx="4" class="bx2"/><text x="160" y="142" text-anchor="middle" class="s">PC</text>
+    <rect x="210" y="120" width="60" height="34" rx="4" class="bx2"/><text x="240" y="142" text-anchor="middle" class="s">PC</text>
+    <rect x="290" y="120" width="60" height="34" rx="4" class="bx2"/><text x="320" y="142" text-anchor="middle" class="s">PC</text>
+    <rect x="370" y="120" width="60" height="34" rx="4" class="bx2"/><text x="400" y="142" text-anchor="middle" class="s">PC</text>
+    <rect x="130" y="200" width="60" height="34" rx="4" class="bx2"/><text x="160" y="222" text-anchor="middle" class="s">PC</text>
+    <rect x="210" y="200" width="60" height="34" rx="4" class="bx2"/><text x="240" y="222" text-anchor="middle" class="s">PC</text>
+    <rect x="290" y="200" width="60" height="34" rx="4" class="bx2"/><text x="320" y="222" text-anchor="middle" class="s">PC</text>
+    <rect x="370" y="200" width="60" height="34" rx="4" class="bx2"/><text x="400" y="222" text-anchor="middle" class="s">PC</text>
+    <path d="M160 80 V120 M240 80 V120 M320 80 V120 M400 80 V120" class="cu"/>
+    <path d="M160 300 V234 M240 300 V234 M320 300 V234 M400 300 V234" class="cu"/>
+  </g>
+  <!-- impresora -->
+  <rect x="470" y="240" width="90" height="40" rx="4" class="bx"/><text x="515" y="264" text-anchor="middle" class="s">Multifunción</text>
+  <path d="M515 280 V300" class="cu"/>
+  <!-- APs -->
+  <circle cx="300" cy="175" r="16" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><text x="300" y="179" text-anchor="middle" class="b" font-size="10">AP</text>
+  <circle cx="300" cy="175" r="130" fill="none" stroke="var(--d-wifi)" stroke-dasharray="3 6" opacity=".6"/>
+  <circle cx="740" cy="200" r="16" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><text x="740" y="204" text-anchor="middle" class="b" font-size="10">AP</text>
+  <circle cx="740" cy="200" r="120" fill="none" stroke="var(--d-wifi)" stroke-dasharray="3 6" opacity=".6"/>
+  <!-- despacho / reuniones -->
+  <rect x="680" y="120" width="80" height="34" rx="4" class="bx2"/><text x="720" y="142" text-anchor="middle" class="s">Pantalla sala</text>
+  <!-- recepción -->
+  <rect x="680" y="300" width="80" height="34" rx="4" class="bx2"/><text x="720" y="322" text-anchor="middle" class="s">TPV / PC</text>
+  <path d="M720 250 V300" class="cu"/>
+  <!-- cámaras -->
+  <rect x="845" y="415" width="22" height="16" rx="3" class="bx" style="stroke:var(--warn)"/>
+  <rect x="35" y="35" width="22" height="16" rx="3" class="bx" style="stroke:var(--warn)"/>
+  <text x="810" y="440" class="s" font-size="10">cámara</text>
+  <text x="62" y="47" class="s" font-size="10">cámara</text>
+</svg>
+<div class="legend">
+  <span><i style="border-color:var(--d-wan)"></i>Fibra operadora</span>
+  <span><i style="border-color:var(--d-cu)"></i>Cable Cat 6A</span>
+  <span><i class="dash" style="border-color:var(--d-wifi)"></i>Cobertura AP</span>
+  <span><i style="border-color:var(--warn)"></i>Cámaras PoE</span>
+</div>
+<figcaption>Topología en estrella: cada roseta del local tiene su propio cable hasta el rack. Los APs van en el techo, alimentados por PoE desde el switch.</figcaption>
+</figure>
+
+<h3>¿Por qué así?</h3>
+<ul>
+<li><b>Rack de pared en un sitio discreto pero accesible</b> (almacén, office, bajo la escalera). No en el aseo (humedad) ni en recepción (cualquiera puede tocarlo). Debe tener <b>enchufe dedicado</b> y algo de ventilación; un rack cerrado en un cuarto sin aire puede superar 40 °C en verano.</li>
+<li><b>Cada puesto, 2 rosetas</b>: PC + teléfono IP o un dispositivo extra. El cable cuesta poco; tirar uno nuevo después cuesta mucho.</li>
+<li><b>APs en el techo</b>, uno cada ≈ 150–250 m² diáfanos o uno por zona separada por paredes gruesas. Alimentados por <b>PoE</b>: no hace falta enchufe en el techo.</li>
+<li><b>Impresora por cable</b>, siempre. Las impresoras Wi-Fi son una fuente inagotable de incidencias.</li>
+</ul>
+
+<h3>Interior del rack</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>U</th><th>Equipo</th><th>Notas</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Bandeja: ONT + router 5G</td><td>La ONT es de la operadora. Se coloca en una bandeja.</td></tr>
+<tr><td>2</td><td>Firewall UTM</td><td>Formato sobremesa en bandeja o 1U.</td></tr>
+<tr><td>3</td><td>Patch panel 24 puertos Cat 6A</td><td>Etiquetado: P01…P24.</td></tr>
+<tr><td>4</td><td>Pasacables</td><td>Latiguillos de 0,5 m entre panel y switch.</td></tr>
+<tr><td>5</td><td>Switch 24p gestionable PoE+</td><td>2 puertos SFP+ para crecer.</td></tr>
+<tr><td>6</td><td>Regleta 8 tomas</td><td>Conectada al SAI.</td></tr>
+<tr><td>7–8</td><td>NAS 2–4 bahías en bandeja</td><td>O en el suelo junto al rack si no cabe.</td></tr>
+<tr><td>9–10</td><td>SAI 1.000–1.500 VA rack 2U</td><td>Con tarjeta de red o USB al NAS para apagado ordenado.</td></tr>
+</tbody></table></div>
+
+<h2>Diagrama lógico</h2>
+<figure class="diagram">
+<svg viewBox="0 0 900 340" role="img" aria-label="Red lógica de microempresa">
+  <ellipse cx="70" cy="90" rx="55" ry="32" class="bx2"/><text x="70" y="95" text-anchor="middle" class="b">ISP 1</text>
+  <ellipse cx="70" cy="230" rx="55" ry="32" class="bx2"/><text x="70" y="228" text-anchor="middle" class="b">ISP 2</text><text x="70" y="244" text-anchor="middle" class="s">5G</text>
+  <path d="M125 90 H170 C190 90 190 150 220 150" class="wan flow"/>
+  <path d="M125 230 H170 C190 230 190 175 220 175" class="wan" stroke-dasharray="6 5" opacity=".7"/>
+  <text x="150" y="80" class="s">fibra 1 Gb</text>
+  <text x="140" y="270" class="s">respaldo</text>
+  <rect x="220" y="120" width="150" height="90" rx="8" class="bx" style="stroke:var(--l1);stroke-width:2"/>
+  <text x="295" y="145" text-anchor="middle" class="b">Firewall UTM</text>
+  <text x="295" y="162" text-anchor="middle" class="s">dual WAN · VPN</text>
+  <text x="295" y="178" text-anchor="middle" class="s">DHCP · filtro web</text>
+  <text x="295" y="194" text-anchor="middle" class="s">IPS · antivirus</text>
+  <path d="M370 165 H430" class="cu" stroke-width="4"/>
+  <text x="400" y="155" text-anchor="middle" class="s">trunk</text>
+  <rect x="430" y="140" width="110" height="50" rx="8" class="bx"/>
+  <text x="485" y="170" text-anchor="middle" class="b">Switch PoE</text>
+  <path d="M540 150 C580 150 580 50 620 50" class="cu" style="stroke:#2563eb"/>
+  <path d="M540 160 C580 160 580 130 620 130" class="cu" style="stroke:#16a34a"/>
+  <path d="M540 170 C580 170 580 210 620 210" class="cu" style="stroke:#ea580c"/>
+  <path d="M540 180 C580 180 580 290 620 290" class="cu" style="stroke:#dc2626"/>
+  <rect x="620" y="25" width="260" height="50" rx="8" class="bx2"/><text x="630" y="45" class="b">VLAN 10 · Oficina 10.1.10.0/24</text><text x="630" y="63" class="s">PCs, portátiles, Wi-Fi "Empresa"</text>
+  <rect x="620" y="105" width="260" height="50" rx="8" class="bx2"/><text x="630" y="125" class="b">VLAN 20 · Servicios 10.1.20.0/24</text><text x="630" y="143" class="s">NAS, impresora, TPV</text>
+  <rect x="620" y="185" width="260" height="50" rx="8" class="bx2"/><text x="630" y="205" class="b">VLAN 30 · Cámaras 10.1.30.0/24</text><text x="630" y="223" class="s">Sin Internet. Solo NAS/NVR</text>
+  <rect x="620" y="265" width="260" height="50" rx="8" class="bx2"/><text x="630" y="285" class="b">VLAN 99 · Invitados 172.20.0.0/22</text><text x="630" y="303" class="s">Solo Internet, 50 Mbps máx.</text>
+  <path d="M295 120 C295 40 420 20 480 30" class="vpn"/>
+  <text x="400" y="18" text-anchor="middle" class="s">VPN teletrabajo (WireGuard / IPsec / SSL)</text>
+</svg>
+<figcaption>Primer nivel con <b>VLANs</b>. Con un firewall UTM y un switch gestionable sencillo ya se puede separar la oficina, los servicios, las cámaras y los invitados.</figcaption>
+</figure>
+
+<h2>Hardware</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Equipo</th><th>Ejemplos de gama</th><th>Por qué</th><th class="num">Coste</th></tr></thead>
+<tbody>
+<tr><td><b>Firewall UTM</b></td><td>Fortinet FortiGate 40F/50G, Sophos XGS 88/107, WatchGuard T25/T45, Ubiquiti UCG, pfSense/OPNsense en mini PC</td><td>Dual WAN con conmutación automática, VPN, VLANs, filtrado web, antivirus de perímetro, informes.</td><td class="num">300–900 € + licencia 150–500 €/año</td></tr>
+<tr><td><b>Switch 24p gestionable PoE+</b></td><td>Aruba Instant On 1930, Ubiquiti USW Pro, TP-Link Omada, Cisco CBS350, Netgear</td><td>VLANs, PoE para APs y cámaras, ver errores por puerto.</td><td class="num">300–700 €</td></tr>
+<tr><td><b>2–3 APs Wi-Fi 6/6E/7</b></td><td>Ubiquiti, Aruba Instant On, TP-Link Omada, Meraki Go</td><td>Gestión centralizada (app/nube), roaming, red de invitados con portal.</td><td class="num">120–350 €/u</td></tr>
+<tr><td><b>Router 5G de respaldo</b></td><td>Teltonika, Zyxel, Huawei</td><td>Segunda conexión por otra tecnología y otro operador.</td><td class="num">150–400 € + 15–30 €/mes</td></tr>
+<tr><td><b>NAS 4 bahías</b></td><td>Synology DS925+ / DS1825+, QNAP</td><td>Carpetas compartidas con permisos, copia de los PCs, grabación de cámaras, réplica a la nube.</td><td class="num">600–1.000 € + 4 discos</td></tr>
+<tr><td>Discos NAS 4× 8 TB en RAID 5/SHR</td><td>Seagate IronWolf, WD Red Plus, Toshiba N300</td><td>Discos preparados para 24/7. ~24 TB útiles, aguanta 1 disco roto.</td><td class="num">4× 180 €</td></tr>
+<tr><td><b>Rack de pared 9–12U</b> + patch panel + latiguillos</td><td>—</td><td>Orden, ventilación, seguridad física (con llave).</td><td class="num">200–400 €</td></tr>
+<tr><td><b>SAI 1.500 VA line-interactive</b></td><td>APC Smart-UPS, Eaton 5P, Salicru</td><td>15–20 min para el rack; apagado ordenado del NAS.</td><td class="num">400–800 €</td></tr>
+<tr><td>Instalación de cableado (20–30 puntos)</td><td>Instalador homologado</td><td>Cat 6A certificado, rosetas, canalización.</td><td class="num">60–120 €/punto</td></tr>
+<tr><td>PCs / portátiles</td><td>Gama business</td><td>Garantía 3 años in situ; misma marca/modelo simplifica el soporte.</td><td class="num">700–1.500 €/u</td></tr>
+<tr><td>Grabador + 2–4 cámaras PoE (opcional)</td><td>Hikvision, Dahua, Axis, Ubiquiti Protect</td><td>Seguridad del local. Ojo con RGPD: cartel informativo obligatorio.</td><td class="num">400–1.200 €</td></tr>
+</tbody></table></div>
+
+<h2>Cableado</h2>
+<ul>
+<li><b>Cat 6A</b> U/FTP o F/UTP, cubierta LSZH. La diferencia de precio con Cat 6 es pequeña frente a la mano de obra y te prepara para APs de 2,5/5/10 Gb.</li>
+<li>Por <b>falso techo</b> en bandeja o por canaleta perimetral. Nunca suelto sobre las placas del techo ni grapado.</li>
+<li>Todo termina en el patch panel. <b>Etiquetado idéntico</b> en roseta y panel (ej. <code>P07</code>).</li>
+<li>Un <b>mapa de puertos</b> en una hoja de cálculo: puerto del panel → roseta → ubicación → puerto del switch → VLAN.</li>
+<li>La fibra de la operadora llega al rack (pide que la ONT se instale ahí desde el primer día).</li>
+</ul>
+
+<h2>Software y servicios</h2>
+<div class="tabs">
+<div class="tab-panel" data-tab="Identidad y puestos">
+<p><b>Microsoft 365 Business Premium</b> (≈ 20–22 €/usuario/mes) es la opción "todo en uno" más habitual porque incluye:</p>
+<ul>
+<li><b>Entra ID</b> (antes Azure AD): cuentas de usuario centralizadas, MFA obligatorio, acceso condicional.</li>
+<li><b>Intune</b>: gestión de dispositivos (MDM). Instalar apps, forzar cifrado, borrar en remoto un portátil robado.</li>
+<li><b>Defender for Business</b>: antivirus EDR (detecta comportamientos, no solo firmas).</li>
+<li>Exchange, Teams, SharePoint, OneDrive.</li>
+</ul>
+<p>Alternativa: Google Workspace Business Plus + un MDM. En entornos Mac: Jamf / Kandji / Mosyle.</p>
+<p>Ya <b>no hace falta un servidor de dominio</b> (Active Directory local) para 15 personas: los PCs se unen a Entra ID directamente.</p>
+</div>
+<div class="tab-panel" data-tab="Archivos">
+<p>Dos estrategias válidas (o mixta):</p>
+<div class="two">
+<div class="card"><h4>Todo en la nube</h4><p class="small">SharePoint / Google Drive con bibliotecas por departamento. Acceso desde cualquier sitio. Requiere buena conexión. Hacer backup del propio M365 (no lo hace Microsoft por ti a largo plazo).</p></div>
+<div class="card"><h4>NAS local + sincronización</h4><p class="small">Archivos grandes (planos, vídeo, fotografía) en el NAS con acceso SMB rápido en LAN. Réplica cifrada a la nube (Synology C2, Backblaze B2, S3 compatible).</p></div>
+</div>
+</div>
+<div class="tab-panel" data-tab="Red y seguridad">
+<ul>
+<li><b>Firewall</b>: reglas por VLAN, filtrado web por categorías, bloqueo por país, IPS, inspección antivirus.</li>
+<li><b>VPN</b>: del firewall para teletrabajo (WireGuard o IPsec/IKEv2; SSL-VPN si no hay alternativa) con MFA. O una solución ZTNA (Tailscale, Cloudflare Access, Twingate).</li>
+<li><b>DNS filtrado</b>: Cloudflare Gateway, Cisco Umbrella, NextDNS, Quad9. Bloquea phishing antes de que cargue.</li>
+<li><b>Controlador Wi-Fi</b>: en la nube del fabricante o en el firewall.</li>
+</ul>
+</div>
+<div class="tab-panel" data-tab="Backup">
+<pre><code>PCs ─────► OneDrive/Drive (sincronización, NO es backup)
+M365 ────► Backup SaaS (Veeam, Acronis, Synology ActiveBackup)  ← copia 2
+NAS ─────► Instantáneas (snapshots) inmutables cada hora       ← copia local rápida
+NAS ─────► Nube cifrada fuera del local (B2, C2, S3)            ← copia 3, off-site
+Disco USB ► mensual, desconectado y guardado fuera              ← copia offline</code></pre>
+<p><b>Probar la restauración</b> cada trimestre. Un backup que no se ha restaurado nunca es una esperanza, no un backup.</p>
+</div>
+<div class="tab-panel" data-tab="Otros">
+<ul>
+<li><b>Telefonía</b>: centralita virtual en la nube (VoIP) o Teams Phone. Teléfonos IP con PoE o softphone.</li>
+<li><b>Software de gestión</b>: ERP/CRM SaaS (Holded, Odoo, Sage, A3, Salesforce Essentials…).</li>
+<li><b>Monitorización</b>: el propio portal del fabricante (Ubiquiti, Omada, Meraki) avisa por correo si cae un equipo.</li>
+<li><b>Gestor de contraseñas de equipo</b>: Bitwarden Teams / 1Password Business con bóvedas compartidas.</li>
+</ul>
+</div>
+</div>
+
+<h2>Seguridad mínima</h2>
+<ul class="check">
+<li>Todo lo del nivel 0, y además:</li>
+<li><b>MFA obligatorio por política</b> (no opcional) para todas las cuentas.</li>
+<li>Cuentas de administrador separadas de las de uso diario.</li>
+<li>Wi-Fi de empresa con <b>WPA3</b>; si hay rotación de personal, WPA2/3-Enterprise con usuario individual (RADIUS en el firewall o en la nube).</li>
+<li>Invitados y cámaras en VLANs aisladas.</li>
+<li>Rack cerrado con llave.</li>
+<li>Formación anual anti-phishing (15 minutos y simulaciones).</li>
+<li>Procedimiento de alta/baja de empleados (checklist).</li>
+<li>Registro de actividades de tratamiento (RGPD) y cláusulas con proveedores.</li>
+</ul>
+
+<h2>Problemas típicos y quién los arregla</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Quién</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Se cae Internet varias veces al mes</td><td>Línea residencial sin SLA</td><td><span class="who dir">Dirección</span></td><td>Contratar fibra <b>profesional</b> con SLA de reparación (4–8 h) + respaldo 5G de otro operador. El firewall conmuta solo.</td></tr>
+<tr><td>Wi-Fi lento en la sala de reuniones</td><td>Un AP para demasiada gente, o AP lejos</td><td><span class="who int">Interno</span></td><td>AP adicional en la sala por cable. Revisar canales y ancho de canal.</td></tr>
+<tr><td>El NAS va lento al abrir planos</td><td>Red a 1 Gb saturada, discos mecánicos, RAM</td><td><span class="who mix">Interno + compra</span></td><td>Caché SSD en el NAS, enlace de 10 Gb NAS-switch, más RAM.</td></tr>
+<tr><td>Una impresora "desaparece"</td><td>IP cambia por DHCP</td><td><span class="who int">Interno</span></td><td>Reserva DHCP o IP fija. Instalar por IP, no por descubrimiento.</td></tr>
+<tr><td>Al llover, se cae la conexión</td><td>Humedad en la acometida o caja de la operadora</td><td><span class="who ext">Operadora</span></td><td>Abrir avería indicando el patrón (fechas/horas). Pedir revisión de la caja terminal.</td></tr>
+<tr><td>El SAI pita y se apaga todo en un corte de 2 min</td><td>Baterías agotadas (vida útil 3–5 años)</td><td><span class="who mix">Interno + compra</span></td><td>Sustituir baterías. Programar autotest mensual del SAI.</td></tr>
+<tr><td>Un empleado ha caído en un phishing</td><td>Credenciales robadas</td><td><span class="who int">Interno</span> (+ MSP)</td><td>Bloquear sesión, cambiar contraseña, revisar reglas de reenvío en su buzón, revisar registros de acceso. Si hay datos personales afectados: notificar a la AEPD en 72 h.</td></tr>
+<tr><td>Necesitamos 20 nuevas tomas de red</td><td>Crecimiento</td><td><span class="who ext">Instalador</span></td><td>Encargar a instalador con certificación. Pedir informe de certificación de cada punto.</td></tr>
+</tbody></table></div>
+
+<h2>Presupuesto orientativo (10 personas)</h2>
+<div class="two">
+<div class="card"><h4>Inicial</h4><table><tbody>
+<tr><td>Cableado 24 puntos + rack</td><td class="num">2.500 €</td></tr>
+<tr><td>Firewall + licencia 1er año</td><td class="num">900 €</td></tr>
+<tr><td>Switch PoE 24p</td><td class="num">500 €</td></tr>
+<tr><td>3 APs</td><td class="num">600 €</td></tr>
+<tr><td>NAS + discos</td><td class="num">1.700 €</td></tr>
+<tr><td>SAI</td><td class="num">600 €</td></tr>
+<tr><td>Router 5G</td><td class="num">250 €</td></tr>
+<tr><td>Puesta en marcha (MSP)</td><td class="num">1.500 €</td></tr>
+<tr><th>Total infraestructura</th><th class="num">≈ 8.500 €</th></tr>
+<tr><td class="muted">+ 10 portátiles</td><td class="num muted">≈ 11.000 €</td></tr>
+</tbody></table></div>
+<div class="card"><h4>Mensual</h4><table><tbody>
+<tr><td>Fibra profesional 1 Gb + IP fija</td><td class="num">60–120 €</td></tr>
+<tr><td>Línea 5G respaldo</td><td class="num">20–30 €</td></tr>
+<tr><td>M365 Business Premium ×10</td><td class="num">≈ 210 €</td></tr>
+<tr><td>Backup nube (≈ 5 TB)</td><td class="num">30–60 €</td></tr>
+<tr><td>Licencias firewall prorrateadas</td><td class="num">25 €</td></tr>
+<tr><td>Soporte MSP</td><td class="num">300–800 €</td></tr>
+<tr><th>Total</th><th class="num">≈ 650–1.250 €/mes</th></tr>
+</tbody></table></div>
+</div>
+
+<h2>Cuándo pasar al nivel 2</h2>
+<ul class="check">
+<li>Más de 15–20 puestos y el switch de 24 se queda corto.</li>
+<li>Aparecen aplicaciones que deben ejecutarse en local (ERP con base de datos propia, software técnico con licencia de red, servidor de impresión, contabilidad en SQL Server).</li>
+<li>Hay departamentos con permisos distintos y el NAS se vuelve difícil de gestionar.</li>
+<li>Alguien dedica más de un día a la semana a "temas de informática".</li>
+<li>Un cliente grande o una certificación (ISO 27001, ENS, TISAX, auditoría de seguros) os pide controles de seguridad formales.</li>
+</ul>
+
+</div></main>
+<script src="assets/app.js"></script>
+</body>
+</html>

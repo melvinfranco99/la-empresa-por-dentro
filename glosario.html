@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glosario IT · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="glosario">
+<main><div class="content">
+
+<section class="hero">
+  <div class="kicker">Referencia</div>
+  <h1>Glosario</h1>
+  <p class="lead">Las siglas y términos que aparecen en la guía, explicados en una línea. Escribe para filtrar.</p>
+</section>
+
+<div class="filter" data-filter-for="glos">
+  <input type="search" placeholder="Buscar término…" autofocus>
+  <button data-tag="all" class="on">Todos</button>
+  <button data-tag="red">Red</button>
+  <button data-tag="srv">Sistemas</button>
+  <button data-tag="seg">Seguridad</button>
+  <button data-tag="fis">Físico</button>
+  <button data-tag="org">Gestión</button>
+</div>
+<div class="table-wrap"><table id="glos">
+<thead><tr><th>Término</th><th>Qué es</th></tr></thead>
+<tbody>
+<tr data-tags="red"><td><b>802.1Q</b></td><td>Estándar para etiquetar tramas con su número de VLAN en un enlace trunk.</td></tr>
+<tr data-tags="red seg"><td><b>802.1X</b></td><td>Autenticación de un dispositivo antes de darle acceso a la red (cable o Wi-Fi), normalmente contra un servidor RADIUS.</td></tr>
+<tr data-tags="srv"><td><b>AD (Active Directory)</b></td><td>Directorio de Microsoft local: usuarios, grupos, equipos y políticas de un dominio Windows.</td></tr>
+<tr data-tags="red"><td><b>Anycast</b></td><td>Misma IP anunciada desde varios lugares; cada usuario llega al más cercano.</td></tr>
+<tr data-tags="red"><td><b>AP (Access Point)</b></td><td>Punto de acceso Wi-Fi.</td></tr>
+<tr data-tags="red"><td><b>ASN</b></td><td>Número de sistema autónomo: identifica una red propia en Internet que anuncia sus rutas por BGP.</td></tr>
+<tr data-tags="srv"><td><b>AZ (Availability Zone)</b></td><td>Zona de disponibilidad: uno o varios CPD independientes dentro de una región de nube.</td></tr>
+<tr data-tags="red"><td><b>BDP</b></td><td>Producto ancho de banda × retardo: cuántos datos caben "en vuelo" en un enlace.</td></tr>
+<tr data-tags="red"><td><b>BGP</b></td><td>Protocolo de enrutamiento entre redes de Internet y entre operadoras.</td></tr>
+<tr data-tags="red"><td><b>Bufferbloat</b></td><td>Latencia disparada cuando el router acumula demasiados paquetes en cola al saturarse la línea.</td></tr>
+<tr data-tags="seg"><td><b>CASB</b></td><td>Control de uso de aplicaciones en la nube (qué SaaS se usan, qué datos se suben).</td></tr>
+<tr data-tags="red"><td><b>CDN</b></td><td>Red de distribución de contenidos: copias en servidores cerca del usuario.</td></tr>
+<tr data-tags="red"><td><b>CIDR</b></td><td>Notación /n para indicar el tamaño de una red (p. ej. /24 = 256 direcciones).</td></tr>
+<tr data-tags="org"><td><b>CMDB</b></td><td>Base de datos de configuración: inventario de equipos, servicios y sus relaciones.</td></tr>
+<tr data-tags="fis"><td><b>Colocation</b></td><td>Alquiler de espacio, energía y frío en un centro de datos de terceros para tus propios equipos.</td></tr>
+<tr data-tags="fis srv"><td><b>CPD</b></td><td>Centro de Proceso de Datos (data center).</td></tr>
+<tr data-tags="fis"><td><b>DAC</b></td><td>Cable de cobre con transceptores integrados para conexiones cortas de 10–100 Gb dentro del rack.</td></tr>
+<tr data-tags="srv"><td><b>DC (Domain Controller)</b></td><td>Servidor que ejecuta Active Directory.</td></tr>
+<tr data-tags="red"><td><b>DHCP</b></td><td>Servicio que asigna automáticamente IP, máscara, puerta de enlace y DNS.</td></tr>
+<tr data-tags="red seg"><td><b>DMZ</b></td><td>Red intermedia para servidores expuestos a Internet, separada de la red interna.</td></tr>
+<tr data-tags="red"><td><b>DNS</b></td><td>Traduce nombres (empresa.com) a direcciones IP.</td></tr>
+<tr data-tags="seg"><td><b>DLP</b></td><td>Prevención de fuga de datos: detecta y bloquea el envío de información sensible.</td></tr>
+<tr data-tags="org seg"><td><b>DORA</b></td><td>Reglamento europeo de resiliencia operativa digital para el sector financiero.</td></tr>
+<tr data-tags="org"><td><b>DRP</b></td><td>Plan de recuperación ante desastres.</td></tr>
+<tr data-tags="seg"><td><b>EDR / XDR</b></td><td>Antivirus moderno que detecta comportamientos y permite responder (aislar, investigar). XDR lo extiende a correo, identidad, red y nube.</td></tr>
+<tr data-tags="srv seg"><td><b>Entra ID</b></td><td>Directorio de identidades en la nube de Microsoft (antes Azure AD).</td></tr>
+<tr data-tags="org"><td><b>FinOps</b></td><td>Práctica de controlar y optimizar el gasto en nube.</td></tr>
+<tr data-tags="red seg"><td><b>Firewall / NGFW</b></td><td>Filtra el tráfico entre redes. El de nueva generación entiende aplicaciones, usuarios y amenazas.</td></tr>
+<tr data-tags="srv"><td><b>GPO</b></td><td>Directiva de grupo de Active Directory para configurar equipos y usuarios.</td></tr>
+<tr data-tags="srv"><td><b>HA (alta disponibilidad)</b></td><td>Diseño con redundancia para que un fallo no interrumpa el servicio.</td></tr>
+<tr data-tags="srv"><td><b>HCI</b></td><td>Hiperconvergencia: cómputo y almacenamiento en los mismos nodos, unidos por software.</td></tr>
+<tr data-tags="srv"><td><b>Hipervisor</b></td><td>Software que ejecuta máquinas virtuales (Proxmox, Hyper-V, vSphere…).</td></tr>
+<tr data-tags="seg"><td><b>HSM</b></td><td>Hardware dedicado a guardar claves criptográficas de forma segura.</td></tr>
+<tr data-tags="org seg"><td><b>IAM / IGA</b></td><td>Gestión de identidades y accesos / gobierno de identidades (altas, bajas, revisiones).</td></tr>
+<tr data-tags="fis"><td><b>ICT</b></td><td>Infraestructura Común de Telecomunicaciones de los edificios en España.</td></tr>
+<tr data-tags="fis red"><td><b>IDF / MDF</b></td><td>Cuarto de comunicaciones de planta / cuarto principal del edificio.</td></tr>
+<tr data-tags="srv"><td><b>iDRAC / iLO / IPMI</b></td><td>Tarjeta de gestión remota de un servidor, independiente del sistema operativo.</td></tr>
+<tr data-tags="red"><td><b>IPAM</b></td><td>Gestión centralizada del direccionamiento IP.</td></tr>
+<tr data-tags="seg"><td><b>IPS / IDS</b></td><td>Sistema de prevención / detección de intrusiones.</td></tr>
+<tr data-tags="red"><td><b>IXP</b></td><td>Punto neutro de intercambio donde muchas redes se interconectan.</td></tr>
+<tr data-tags="red"><td><b>Jitter</b></td><td>Variación de la latencia. Crítico en voz y vídeo.</td></tr>
+<tr data-tags="red"><td><b>LACP</b></td><td>Agrega varios enlaces físicos en uno lógico para más capacidad y redundancia.</td></tr>
+<tr data-tags="seg"><td><b>LAPS</b></td><td>Solución de Microsoft que rota la contraseña de administrador local de cada equipo.</td></tr>
+<tr data-tags="fis"><td><b>LSZH</b></td><td>Cubierta de cable libre de halógenos y de baja emisión de humos.</td></tr>
+<tr data-tags="red"><td><b>Latencia / RTT</b></td><td>Tiempo que tarda un paquete en ir y volver.</td></tr>
+<tr data-tags="red"><td><b>MAC</b></td><td>Dirección física de una tarjeta de red (capa 2).</td></tr>
+<tr data-tags="seg"><td><b>MDM</b></td><td>Gestión de dispositivos móviles y portátiles (Intune, Jamf…).</td></tr>
+<tr data-tags="seg"><td><b>MDR</b></td><td>Servicio externo que vigila y responde 24/7 a las alertas de seguridad.</td></tr>
+<tr data-tags="seg"><td><b>MFA</b></td><td>Autenticación multifactor: contraseña + algo que tienes (móvil, llave).</td></tr>
+<tr data-tags="red"><td><b>MLAG / VSX / vPC</b></td><td>Técnicas para que dos switches actúen como uno ante los equipos conectados, sin bucles.</td></tr>
+<tr data-tags="red"><td><b>MPLS</b></td><td>Red privada de operadora con calidad garantizada para unir sedes.</td></tr>
+<tr data-tags="org"><td><b>MSP</b></td><td>Proveedor de servicios gestionados: empresa externa que lleva la IT de otras.</td></tr>
+<tr data-tags="red"><td><b>MTR</b></td><td>Herramienta que combina ping y traceroute para ver pérdida y latencia por salto.</td></tr>
+<tr data-tags="srv"><td><b>N+1</b></td><td>Tener una unidad más de las necesarias para soportar el fallo de una.</td></tr>
+<tr data-tags="seg red"><td><b>NAC</b></td><td>Control de acceso a red: decide qué puede conectarse y a qué VLAN va.</td></tr>
+<tr data-tags="srv"><td><b>NAS</b></td><td>Almacenamiento conectado a red: comparte carpetas (SMB/NFS).</td></tr>
+<tr data-tags="red"><td><b>NAT</b></td><td>Traducción de direcciones privadas a la IP pública.</td></tr>
+<tr data-tags="org seg"><td><b>NIS2</b></td><td>Directiva europea de ciberseguridad para sectores esenciales e importantes.</td></tr>
+<tr data-tags="org"><td><b>NOC / SOC</b></td><td>Centro de operaciones de red / de seguridad.</td></tr>
+<tr data-tags="fis red"><td><b>ONT</b></td><td>Terminal óptico de la operadora que convierte la fibra en Ethernet.</td></tr>
+<tr data-tags="red"><td><b>OSPF</b></td><td>Protocolo de enrutamiento dinámico dentro de una organización.</td></tr>
+<tr data-tags="red"><td><b>OT</b></td><td>Tecnología operacional: redes y sistemas industriales (PLC, SCADA).</td></tr>
+<tr data-tags="seg"><td><b>PAM</b></td><td>Gestión de accesos privilegiados (cuentas de administrador).</td></tr>
+<tr data-tags="fis"><td><b>Patch panel</b></td><td>Panel del rack donde terminan los cables que vienen de las rosetas.</td></tr>
+<tr data-tags="fis"><td><b>PDU</b></td><td>Regleta de rack, a menudo medida o gestionable.</td></tr>
+<tr data-tags="red"><td><b>Peering</b></td><td>Interconexión directa entre dos redes para intercambiar tráfico.</td></tr>
+<tr data-tags="fis"><td><b>PoE</b></td><td>Alimentación eléctrica por el cable de red.</td></tr>
+<tr data-tags="fis"><td><b>PUE</b></td><td>Eficiencia energética de un CPD: energía total / energía IT.</td></tr>
+<tr data-tags="red"><td><b>QoS</b></td><td>Calidad de servicio: priorizar tráfico (voz antes que descargas).</td></tr>
+<tr data-tags="seg red"><td><b>RADIUS</b></td><td>Protocolo/servidor de autenticación para Wi-Fi, VPN y 802.1X.</td></tr>
+<tr data-tags="srv"><td><b>RAID</b></td><td>Combinación de discos para capacidad, rendimiento y tolerancia a fallos. No es backup.</td></tr>
+<tr data-tags="srv org"><td><b>RPO / RTO</b></td><td>Datos que puedes perder (RPO) / tiempo para volver a funcionar (RTO).</td></tr>
+<tr data-tags="fis"><td><b>Rack / U</b></td><td>Armario estándar de 19". 1U = 44,45 mm de altura.</td></tr>
+<tr data-tags="fis"><td><b>SAI / UPS</b></td><td>Sistema de alimentación ininterrumpida.</td></tr>
+<tr data-tags="srv"><td><b>SAN</b></td><td>Red y cabina de almacenamiento por bloques para servidores.</td></tr>
+<tr data-tags="seg red"><td><b>SASE / SSE</b></td><td>Seguridad y red entregadas desde la nube (proxy web, CASB, ZTNA, SD-WAN).</td></tr>
+<tr data-tags="fis"><td><b>SFP / SFP+ / QSFP</b></td><td>Módulos transceptores enchufables para fibra o cobre de 1/10/100+ Gb.</td></tr>
+<tr data-tags="seg"><td><b>SIEM / SOAR</b></td><td>Plataforma que centraliza y correlaciona logs de seguridad / automatiza respuestas.</td></tr>
+<tr data-tags="org"><td><b>SLA / SLO</b></td><td>Acuerdo de nivel de servicio (contractual) / objetivo de nivel de servicio (interno).</td></tr>
+<tr data-tags="red"><td><b>SD-WAN</b></td><td>Red WAN definida por software que usa varias líneas y elige la mejor por aplicación.</td></tr>
+<tr data-tags="org"><td><b>SRE</b></td><td>Ingeniería de fiabilidad: operar servicios con prácticas de software y SLOs.</td></tr>
+<tr data-tags="seg"><td><b>SSO</b></td><td>Inicio de sesión único para muchas aplicaciones.</td></tr>
+<tr data-tags="red"><td><b>STP / RSTP</b></td><td>Protocolo que evita bucles en redes de switches.</td></tr>
+<tr data-tags="red"><td><b>Switch L2 / L3</b></td><td>Conmuta tramas en una red / además enruta entre redes (VLANs).</td></tr>
+<tr data-tags="fis"><td><b>Tier I–IV</b></td><td>Clasificación de disponibilidad de CPD del Uptime Institute.</td></tr>
+<tr data-tags="red"><td><b>Trunk</b></td><td>Enlace entre switches/firewall que transporta varias VLANs etiquetadas.</td></tr>
+<tr data-tags="seg"><td><b>UTM</b></td><td>Firewall "todo en uno" para pymes (antivirus, filtro web, VPN, IPS).</td></tr>
+<tr data-tags="srv"><td><b>VDI / RDS</b></td><td>Escritorios virtuales que se ejecutan en el CPD; al usuario solo le llega la pantalla.</td></tr>
+<tr data-tags="red"><td><b>VLAN</b></td><td>Red virtual: separa tráfico dentro del mismo switch.</td></tr>
+<tr data-tags="srv"><td><b>VM</b></td><td>Máquina virtual.</td></tr>
+<tr data-tags="red seg"><td><b>VPN</b></td><td>Túnel cifrado sobre Internet para unir sedes o conectar usuarios remotos.</td></tr>
+<tr data-tags="seg"><td><b>WAF</b></td><td>Firewall de aplicaciones web: protege webs de inyecciones y ataques HTTP.</td></tr>
+<tr data-tags="red"><td><b>WAN</b></td><td>Red de área amplia: lo que une sedes distantes.</td></tr>
+<tr data-tags="seg"><td><b>Zero Trust / ZTNA</b></td><td>Modelo en el que ninguna red es de confianza; acceso por aplicación según identidad y estado del equipo.</td></tr>
+<tr data-tags="srv org"><td><b>3-2-1</b></td><td>Regla de backup: 3 copias, 2 soportes, 1 fuera. Variante 3-2-1-1-0: + 1 inmutable, 0 errores.</td></tr>
+</tbody></table></div>
+
+</div></main>
+<script src="assets/app.js"></script>
+</body>
+</html>

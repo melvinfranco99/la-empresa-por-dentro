@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N0 Casa y autónomo · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="nivel-0" style="--lvl:var(--l0)">
+<main><div class="content">
+
+<section class="hero">
+  <span class="lvl-tag">NIVEL 0</span>
+  <h1>Casa / autónomo</h1>
+  <p class="lead">Un autónomo, un pequeño despacho en casa, un fotógrafo, un asesor o una tienda online de una persona. El router de la operadora hace de todo y casi no hay "infraestructura". Pero ya hay datos que perder y clientes que dependen de ti.</p>
+  <div class="facts">
+    <span class="chip"><b>1–3</b> personas</span>
+    <span class="chip"><b>3–10</b> dispositivos</span>
+    <span class="chip">Fibra <b>300 Mb–1 Gb</b></span>
+    <span class="chip">Inversión <b>0–1.500 €</b></span>
+    <span class="chip">IT: <b>tú mismo</b></span>
+  </div>
+</section>
+
+<h2>Perfil</h2>
+<p>Lo que define este nivel es que <b>no hay red "de empresa"</b>: se usa la misma conexión que la familia. Casi todo el software es en la nube (correo, facturación, almacenamiento). El objetivo no es montar infraestructura, sino <b>no perder datos</b>, <b>no perder la conexión</b> el día que más la necesitas y <b>no ser hackeado</b>.</p>
+<div class="grid g3">
+  <div class="card"><h4>Necesita</h4><ul class="small"><li>Internet estable</li><li>Correo profesional con dominio propio</li><li>Copia de seguridad</li><li>Facturación / contabilidad</li></ul></div>
+  <div class="card"><h4>No necesita</h4><ul class="small"><li>Servidores</li><li>Rack</li><li>Firewall dedicado</li><li>Directorio de usuarios</li></ul></div>
+  <div class="card"><h4>Riesgo principal</h4><ul class="small"><li>Robo de cuenta de correo</li><li>Ransomware en el único PC</li><li>Portátil robado sin cifrar</li><li>Disco que muere sin copia</li></ul></div>
+</div>
+
+<h2>Plano físico</h2>
+<figure class="diagram">
+<svg viewBox="0 0 900 430" role="img" aria-label="Plano de una vivienda con despacho">
+  <!-- paredes -->
+  <rect x="20" y="20" width="860" height="390" rx="4" fill="none" stroke="var(--d-stroke)" stroke-width="4"/>
+  <path d="M380 20 V250 M380 300 V410" stroke="var(--d-stroke)" stroke-width="4"/>
+  <path d="M620 20 V170 M620 220 V410" stroke="var(--d-stroke)" stroke-width="4"/>
+  <path d="M20 250 H300" stroke="var(--d-stroke)" stroke-width="4"/>
+  <text x="200" y="50" text-anchor="middle" class="s">SALÓN</text>
+  <text x="500" y="50" text-anchor="middle" class="s">PASILLO / COCINA</text>
+  <text x="750" y="50" text-anchor="middle" class="s">DESPACHO</text>
+  <text x="160" y="280" text-anchor="middle" class="s">DORMITORIO</text>
+  <!-- entrada fibra -->
+  <path d="M20 120 H70" class="wan"/>
+  <text x="26" y="110" class="s">fibra</text>
+  <rect x="70" y="100" width="70" height="40" rx="5" class="bx"/>
+  <text x="105" y="125" text-anchor="middle" class="b">ONT</text>
+  <path d="M140 120 H180" class="cu"/>
+  <rect x="180" y="95" width="110" height="50" rx="6" class="bx" style="stroke:var(--l0);stroke-width:2"/>
+  <text x="235" y="117" text-anchor="middle" class="b">Router ISP</text>
+  <text x="235" y="133" text-anchor="middle" class="s">+ Wi-Fi + DHCP</text>
+  <!-- tv -->
+  <rect x="70" y="190" width="70" height="30" rx="4" class="bx2"/><text x="105" y="210" text-anchor="middle" class="s">Smart TV</text>
+  <path d="M200 145 C190 180 160 200 140 205" class="cu"/>
+  <!-- cable al despacho por rodapié -->
+  <path d="M290 125 H360 C370 125 370 140 380 140 H600 C612 140 612 140 640 140 H700 V200" class="cu" stroke-width="3"/>
+  <text x="500" y="132" text-anchor="middle" class="s">cable Cat 6 por rodapié/canaleta (~15 m)</text>
+  <!-- despacho -->
+  <rect x="650" y="200" width="110" height="40" rx="5" class="bx"/>
+  <text x="705" y="225" text-anchor="middle" class="b">Switch 5p</text>
+  <path d="M705 240 V290" class="cu"/>
+  <rect x="650" y="290" width="110" height="46" rx="5" class="bx"/>
+  <text x="705" y="310" text-anchor="middle" class="b">PC / portátil</text>
+  <text x="705" y="326" text-anchor="middle" class="s">dock + monitor</text>
+  <path d="M760 220 H810 V290" class="cu"/>
+  <rect x="780" y="290" width="80" height="46" rx="5" class="bx"/>
+  <text x="820" y="310" text-anchor="middle" class="b">Impresora</text>
+  <text x="820" y="326" text-anchor="middle" class="s">o NAS</text>
+  <rect x="650" y="355" width="110" height="34" rx="5" class="bx2" style="stroke:var(--warn)"/>
+  <text x="705" y="377" text-anchor="middle" class="s">SAI pequeño</text>
+  <!-- mesh -->
+  <circle cx="500" cy="330" r="22" class="bx" style="stroke:var(--d-wifi);stroke-width:2"/>
+  <text x="500" y="335" text-anchor="middle" class="b" font-size="11">Mesh</text>
+  <path d="M500 140 V308" class="cu" stroke-dasharray="2 4"/>
+  <text x="508" y="230" class="s">backhaul</text>
+  <circle cx="235" cy="120" r="120" fill="none" stroke="var(--d-wifi)" stroke-dasharray="3 6" opacity=".7"/>
+  <circle cx="500" cy="330" r="110" fill="none" stroke="var(--d-wifi)" stroke-dasharray="3 6" opacity=".7"/>
+  <text x="470" y="400" class="s">cobertura Wi-Fi</text>
+</svg>
+<div class="legend">
+  <span><i style="border-color:var(--d-wan)"></i>Fibra operadora</span>
+  <span><i style="border-color:var(--d-cu)"></i>Cable Ethernet</span>
+  <span><i class="dash" style="border-color:var(--d-wifi)"></i>Cobertura Wi-Fi</span>
+</div>
+<figcaption>El router suele estar donde la operadora instaló la fibra (salón), lejos del despacho. La solución: llevar <b>un cable</b> al despacho y poner un nodo Wi-Fi mesh para el resto de la casa.</figcaption>
+</figure>
+
+<h3>¿Por qué cada cosa está donde está?</h3>
+<ul>
+<li><b>ONT y router en el salón</b>: es donde entra la fibra de la operadora. Moverlo exige que la operadora vuelva a tender fibra (o una roseta óptica). A veces vale la pena pedirlo en la instalación.</li>
+<li><b>Cable al despacho</b>: el PC de trabajo y la videollamada son lo crítico. Cable = latencia estable y velocidad completa. Si no se puede tirar cable, la alternativa por orden de preferencia: <b>mesh con backhaul por cable</b> &gt; <b>MoCA</b> (por coaxial de antena) &gt; <b>mesh inalámbrico</b> &gt; <b>PLC</b> (por la red eléctrica; muy variable) &gt; repetidor Wi-Fi barato.</li>
+<li><b>Switch pequeño en la mesa</b>: un solo cable llega al despacho; el switch lo reparte a PC, impresora y NAS.</li>
+<li><b>SAI pequeño</b>: para el router + PC de sobremesa. Un microcorte no te tumba la videollamada con el cliente.</li>
+</ul>
+
+<h2>Diagrama lógico</h2>
+<figure class="diagram">
+<svg viewBox="0 0 900 230" role="img" aria-label="Red lógica de nivel 0">
+  <ellipse cx="80" cy="110" rx="60" ry="36" class="bx2"/><text x="80" y="115" text-anchor="middle" class="b">Internet</text>
+  <path d="M140 110 H210" class="wan flow"/>
+  <rect x="210" y="70" width="170" height="80" rx="8" class="bx" style="stroke:var(--l0);stroke-width:2"/>
+  <text x="295" y="95" text-anchor="middle" class="b">Router ISP</text>
+  <text x="295" y="113" text-anchor="middle" class="m">IP pública dinámica</text>
+  <text x="295" y="129" text-anchor="middle" class="m">NAT · DHCP · DNS</text>
+  <text x="295" y="145" text-anchor="middle" class="m">192.168.1.1</text>
+  <path d="M380 110 H460" class="cu"/>
+  <rect x="460" y="20" width="200" height="190" rx="10" class="zonef"/>
+  <text x="560" y="40" text-anchor="middle" class="b">LAN 192.168.1.0/24</text>
+  <text x="560" y="70" text-anchor="middle" class="s">PC trabajo · .20 (reservada)</text>
+  <text x="560" y="90" text-anchor="middle" class="s">Impresora · .30 (reservada)</text>
+  <text x="560" y="110" text-anchor="middle" class="s">NAS · .40 (reservada)</text>
+  <text x="560" y="130" text-anchor="middle" class="s">Móviles · .100–.199 (DHCP)</text>
+  <text x="560" y="150" text-anchor="middle" class="s">TV, consola, familia…</text>
+  <rect x="700" y="60" width="180" height="100" rx="10" class="zonef" style="stroke:var(--warn)"/>
+  <text x="790" y="85" text-anchor="middle" class="b">Wi-Fi invitados</text>
+  <text x="790" y="105" text-anchor="middle" class="s">aislado de la LAN</text>
+  <text x="790" y="122" text-anchor="middle" class="s">enchufes, bombillas,</text>
+  <text x="790" y="138" text-anchor="middle" class="s">visitas, IoT</text>
+  <path d="M380 95 C 520 -10, 700 0, 760 60" class="ln" stroke-dasharray="4 4"/>
+</svg>
+<figcaption>Una sola red para todo, salvo una mejora gratuita: usar la red de <b>invitados</b> del router para los dispositivos IoT (bombillas, enchufes, cámaras chinas) y las visitas.</figcaption>
+</figure>
+
+<h2>Hardware</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Equipo</th><th>Dónde</th><th>Por qué</th><th class="num">Coste</th></tr></thead>
+<tbody>
+<tr><td><b>ONT + router de la operadora</b></td><td>Donde entra la fibra</td><td>Incluido en la cuota. Suficiente en este nivel.</td><td class="num">0 €</td></tr>
+<tr><td>Router propio (opcional)</td><td>Detrás de la ONT</td><td>Más control, mejores actualizaciones y Wi-Fi. Requiere poner el de la operadora en modo "bridge" o configurar la VLAN de la operadora.</td><td class="num">100–300 €</td></tr>
+<tr><td>Kit mesh Wi-Fi 6/7 (2–3 nodos)</td><td>Uno junto al router, otros repartidos</td><td>Cubrir toda la casa con una sola red y roaming.</td><td class="num">150–500 €</td></tr>
+<tr><td>Switch 5–8 puertos no gestionable</td><td>Mesa del despacho</td><td>Multiplicar el único cable que llega.</td><td class="num">20–40 €</td></tr>
+<tr><td>Portátil profesional</td><td>—</td><td>Gama "business" (garantía in situ, TPM, BIOS gestionable).</td><td class="num">800–1.800 €</td></tr>
+<tr><td>Disco externo USB (2× rotados)</td><td>Uno en casa, otro fuera</td><td>Copia local. Rotarlos protege contra ransomware e incendios.</td><td class="num">2× 70 €</td></tr>
+<tr><td>NAS de 2 bahías (opcional)</td><td>Despacho, por cable</td><td>Archivos grandes (foto/vídeo), copias automáticas de todos los equipos.</td><td class="num">250–600 € + discos</td></tr>
+<tr><td>SAI 600–850 VA</td><td>Bajo la mesa</td><td>Router + PC + monitor aguantan 5–10 min un corte.</td><td class="num">60–120 €</td></tr>
+<tr><td>Router 4G/5G o "tethering" del móvil</td><td>—</td><td>Plan B si cae la fibra.</td><td class="num">0–150 €</td></tr>
+</tbody></table></div>
+
+<h2>Cableado</h2>
+<p>Cable <b>Cat 6</b> ya hecho (latiguillo largo de 15–20 m) por el rodapié, o canaleta adhesiva. Si la casa tiene tubos de telecomunicaciones (las viviendas nuevas en España tienen <b>ICT</b>, con registro de terminación de red), aprovéchalos y pon una roseta RJ45 en cada habitación: casi todos los pisos construidos después de 2011 tienen preinstalación con cable de pares hasta cada estancia.</p>
+
+<h2>Software y servicios</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Necesidad</th><th>Solución típica</th><th>Coste</th><th>Notas</th></tr></thead>
+<tbody>
+<tr><td>Correo, calendario, ofimática</td><td>Microsoft 365 Business Basic/Standard o Google Workspace</td><td class="num">6–15 €/usuario/mes</td><td>Correo con <b>dominio propio</b> (tunombre.es). Nunca el Gmail personal para clientes.</td></tr>
+<tr><td>Dominio y DNS</td><td>Registrador (Cloudflare, OVH, DonDominio…)</td><td class="num">10–20 €/año</td><td>Configurar SPF, DKIM y DMARC o tus correos irán a spam.</td></tr>
+<tr><td>Almacenamiento</td><td>OneDrive / Google Drive</td><td>Incluido</td><td><b>Sincronizar no es backup</b>: si borras o te cifran, se sincroniza el desastre. Tiene papelera y versiones (30–90 días).</td></tr>
+<tr><td>Copia de seguridad</td><td>Backup de equipo a disco + nube (Backblaze, Acronis, Veeam Agent, Time Machine)</td><td class="num">0–10 €/mes</td><td>Regla 3-2-1.</td></tr>
+<tr><td>Contraseñas</td><td>Bitwarden, 1Password, KeePassXC</td><td class="num">0–4 €/mes</td><td>Una contraseña distinta por servicio.</td></tr>
+<tr><td>Antivirus</td><td>Microsoft Defender (incluido) / macOS XProtect</td><td>0 €</td><td>Suficiente si el sistema está actualizado.</td></tr>
+<tr><td>Facturación</td><td>SaaS (Holded, Quipu, Contasimple…)</td><td class="num">10–30 €/mes</td><td>Requisitos legales de facturación (VeriFactu en España).</td></tr>
+<tr><td>Acceso remoto</td><td>No abrir puertos. Si hace falta, Tailscale / ZeroTier / VPN del router</td><td>0 €</td><td>Nunca abrir el RDP (3389) a Internet.</td></tr>
+</tbody></table></div>
+
+<h2>Seguridad mínima</h2>
+<ul class="check">
+<li><b>MFA</b> (segundo factor) en correo, banco, registrador del dominio y gestor de contraseñas. Mejor app de autenticación o llave física que SMS.</li>
+<li>Cambiar la contraseña de administración del router y la del Wi-Fi que vienen de serie. WPA2-AES o WPA3.</li>
+<li>Desactivar <b>WPS</b> y <b>UPnP</b> en el router.</li>
+<li>Cifrado de disco: <b>BitLocker</b> (Windows Pro) o <b>FileVault</b> (Mac). Guarda la clave de recuperación fuera del portátil.</li>
+<li>Actualizaciones automáticas activadas en todo, incluido el NAS.</li>
+<li>Usuario normal (no administrador) para el trabajo diario.</li>
+<li>Equipo de trabajo ≠ equipo de los niños.</li>
+</ul>
+
+<h2>Problemas típicos y quién los arregla</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Quién</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Internet lento solo en el despacho</td><td>Wi-Fi débil por distancia/paredes</td><td><span class="who int">Tú</span></td><td>Cable, o nodo mesh. Mide con cable junto al router para comparar.</td></tr>
+<tr><td>Lento en todos los equipos, también por cable</td><td>Alguien satura (descargas, backup a la nube, actualizaciones) o la línea</td><td><span class="who mix">Tú / ISP</span></td><td>Mira en el router quién consume. Si con todo apagado y por cable no llegas al 80 % de lo contratado, reclama a la operadora.</td></tr>
+<tr><td>Sin Internet, luz LOS roja en la ONT</td><td>Corte de fibra</td><td><span class="who ext">Operadora</span></td><td>Llamar a la operadora. Mientras: compartir datos del móvil.</td></tr>
+<tr><td>Videollamadas se cortan, descargas bien</td><td>Latencia/jitter en Wi-Fi, o "bufferbloat" del router</td><td><span class="who int">Tú</span></td><td>Cable. Activar SQM/QoS en el router si lo permite. Test: <code>waveform bufferbloat test</code>.</td></tr>
+<tr><td>Los correos que envío llegan a spam</td><td>Falta SPF/DKIM/DMARC</td><td><span class="who int">Tú</span></td><td>Añadir los registros DNS que indica Microsoft/Google.</td></tr>
+<tr><td>Se necesita subir vídeos de 50 GB a clientes</td><td>Subida asimétrica o insuficiente</td><td><span class="who dir">Contratar</span></td><td>Pasar a fibra simétrica de 1 Gb (o más). 50 GB a 100 Mbps = ~67 min; a 1 Gbps = ~7 min.</td></tr>
+<tr><td>Portátil robado</td><td>—</td><td><span class="who int">Tú</span></td><td>Si estaba cifrado: cambiar contraseñas, revocar sesiones en M365/Google, restaurar copia. Si no estaba cifrado: además, posible brecha RGPD.</td></tr>
+</tbody></table></div>
+
+<h2>Presupuesto orientativo</h2>
+<div class="two">
+<div class="card"><h4>Inicial</h4><table><tbody>
+<tr><td>Portátil</td><td class="num">1.100 €</td></tr>
+<tr><td>Mesh 2 nodos</td><td class="num">200 €</td></tr>
+<tr><td>Switch + cable</td><td class="num">40 €</td></tr>
+<tr><td>2 discos externos</td><td class="num">140 €</td></tr>
+<tr><td>SAI</td><td class="num">90 €</td></tr>
+<tr><th>Total</th><th class="num">≈ 1.570 €</th></tr>
+</tbody></table></div>
+<div class="card"><h4>Mensual</h4><table><tbody>
+<tr><td>Fibra 1 Gb</td><td class="num">30–50 €</td></tr>
+<tr><td>Microsoft 365 / Workspace</td><td class="num">6–13 €</td></tr>
+<tr><td>Backup nube</td><td class="num">5–10 €</td></tr>
+<tr><td>Gestor de contraseñas</td><td class="num">0–4 €</td></tr>
+<tr><th>Total</th><th class="num">≈ 45–75 €/mes</th></tr>
+</tbody></table></div>
+</div>
+
+<h2>Cuándo pasar al nivel 1</h2>
+<ul class="check">
+<li>Contratas a la primera persona y trabajáis en el mismo sitio.</li>
+<li>Os mudáis a un local u oficina.</li>
+<li>Necesitáis compartir carpetas y una impresora entre varios.</li>
+<li>Un día sin Internet cuesta más dinero que una segunda línea al año.</li>
+<li>Manejas datos de clientes sensibles (salud, legal, financiero) y debes demostrar medidas de seguridad.</li>
+</ul>
+
+</div></main>
+<script src="assets/app.js"></script>
+</body>
+</html>
