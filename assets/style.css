@@ -343,3 +343,51 @@ footer.site { margin-top: 4rem; padding-top: 1.4rem; border-top: 1px solid var(-
 
 /* paths de paredes sin clase: nunca rellenos */
 figure.diagram svg path:not([class]) { fill: none; }
+
+/* ---------- Simulador de radio ---------- */
+.sim { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; margin: 1.2rem 0; box-shadow: var(--shadow); }
+.sim-bar { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; margin-bottom: 10px; }
+.sim-bar label { display: flex; flex-direction: column; font-size: 12px; color: var(--fg-2); gap: 3px; }
+.sim-bar label.chk { flex-direction: row; align-items: center; gap: 5px; font-size: 13px; padding-bottom: 6px; }
+.sim-bar select, .sim-editor select, .sim-editor input[type=number] { font: inherit; font-size: 13.5px; padding: 5px 7px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); }
+.sim-tools { display: flex; flex-wrap: wrap; gap: 4px; }
+.sim-tools button { font: inherit; font-size: 13px; padding: 6px 10px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg-3); color: var(--fg); cursor: pointer; }
+.sim-tools button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.sim-canvas { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; touch-action: none; }
+.sim-canvas canvas { display: block; width: 100%; cursor: crosshair; }
+.sim-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--fg-2); margin: 8px 0; }
+.sim-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.sim-legend .sep { width: 100%; height: 0; }
+i.sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 4px; }
+i.ln { display: inline-block; width: 18px; border-top: 3px solid; }
+.sim-lower { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 6px; }
+@media (max-width: 900px) { .sim-lower { grid-template-columns: 1fr; } }
+.sim-spec canvas { display: block; width: 100%; border: 1px solid var(--line); border-radius: 8px; margin-top: 4px; }
+.sim-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
+.sim-kpis div { background: var(--bg-3); border-radius: 8px; padding: 6px 8px; text-align: center; }
+.sim-kpis b { display: block; font-size: 18px; font-variant-numeric: tabular-nums; }
+.sim-kpis span { font-size: 11px; color: var(--fg-3); }
+.sim-editor { margin-top: 10px; padding: 10px 12px; background: var(--bg-3); border-radius: 8px; }
+.sim-ed-row { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 13.5px; }
+.sim-ed-row label { display: inline-flex; align-items: center; gap: 6px; }
+table.tight th, table.tight td { padding: 4px 8px; font-size: 12.5px; }
+.mono { font-family: var(--mono); }
+canvas.chart { display: block; width: 100%; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-2); }
+.rng { display: flex; flex-direction: column; font-size: 13px; color: var(--fg-2); gap: 2px; }
+.rng input[type=range] { width: 100%; }
+.rng b { font-family: var(--mono); color: var(--fg); font-weight: 600; }
+.here { position: relative; }
+.ladder a.here { box-shadow: 0 0 0 2px var(--lvl); }
+.ladder a .you { font-family: var(--mono); font-size: 11px; font-weight: 800; color: #fff; background: var(--lvl); border-radius: 5px; padding: 1px 6px; margin-left: 6px; }
+.verdict { display: inline-block; font-size: 12px; font-weight: 700; padding: 1px 8px; border-radius: 5px; }
+.verdict.ok { background: var(--ok-soft); color: var(--ok); }
+.verdict.no { background: var(--bad-soft); color: var(--bad); }
+.verdict.mid { background: var(--warn-soft); color: var(--warn); }
+.path-viz { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0; font-size: 13px; }
+.path-viz .hop { background: var(--bg-3); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
+.path-viz .hop.block { border-color: var(--bad); background: var(--bad-soft); }
+.path-viz .arr { color: var(--fg-3); }
+.matrix td, .matrix th { text-align: center; padding: 4px; font-size: 12px; }
+.matrix td input { width: 16px; height: 16px; }
+.addr-bar { display: flex; height: 26px; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); margin: 8px 0; }
+.addr-bar span { display: block; height: 100%; border-right: 2px solid var(--bg-2); }

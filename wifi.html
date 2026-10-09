@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wi-Fi a fondo · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="wifi" style="--lvl:var(--l1)">
+<main><div class="content">
+
+<section class="hero">
+  <div class="kicker">Profundizar</div>
+  <h1>Wi-Fi a fondo</h1>
+  <p class="lead">Ondas, potencia, dBm, canales, 2,4 / 5 / 6 GHz, DFS, paredes, vecinos, roaming y herramientas como inSSIDer o Acrylic. Todo lo necesario para diseñar una red inalámbrica desde cero y entender por qué falla. Con gráficas que puedes tocar.</p>
+  <div class="facts">
+    <span class="chip">Base: <a href="fundamentos.html#s9-wi-fi-sin-mitos">Fundamentos → Wi-Fi</a></span>
+    <span class="chip">Práctica: <a href="laboratorio.html">Laboratorio</a></span>
+    <span class="chip">Caso real: <a href="mi-empresa.html">Mi empresa</a></span>
+  </div>
+</section>
+
+<h2>1. Qué es una onda de radio</h2>
+<p>El Wi-Fi es <b>luz invisible</b>: radiación electromagnética como la luz o el microondas, pero de baja frecuencia. Una antena hace oscilar electrones miles de millones de veces por segundo y eso crea una onda que viaja a la velocidad de la luz (c ≈ 300.000 km/s).</p>
+<div class="formula">λ = c ÷ f &nbsp;&nbsp;→&nbsp;&nbsp; 2,4 GHz: λ ≈ 12,5 cm &nbsp;·&nbsp; 5 GHz: λ ≈ 6 cm &nbsp;·&nbsp; 6 GHz: λ ≈ 5 cm</div>
+<div class="grid g3">
+<div class="card"><h4>Frecuencia (f)</h4><p class="small">Cuántas oscilaciones por segundo. Se mide en hercios. 2,4 GHz = 2.400 millones por segundo.</p></div>
+<div class="card"><h4>Longitud de onda (λ)</h4><p class="small">Distancia entre dos crestas. Más frecuencia → onda más corta → <b>atraviesa peor</b> las paredes y se atenúa más con la distancia.</p></div>
+<div class="card"><h4>Amplitud y fase</h4><p class="small">Amplitud: lo "alta" que es la onda (potencia). Fase: en qué punto del ciclo está. El Wi-Fi codifica los datos cambiando amplitud y fase (QAM).</p></div>
+</div>
+
+<h3>Ondas que se suman: interferencia y multitrayecto</h3>
+<p>Cuando dos ondas de la misma frecuencia coinciden en un punto, <b>se suman</b>. Si están en fase se refuerzan (interferencia constructiva); si están desfasadas 180°, se anulan (destructiva). Esto pasa constantemente dentro de un edificio: la señal llega directa y también rebotada en paredes, techos y muebles (<b>multitrayecto</b>). Por eso mover el portátil 5 cm puede cambiar la señal varios dB. Juega con los parámetros:</p>
+<div class="calc">
+  <div class="row">
+    <div class="rng">Frecuencia onda A (relativa) <b id="wA-f">1,00</b><input type="range" id="w-fa" min="0.5" max="3" step="0.05" value="1"></div>
+    <div class="rng">Frecuencia onda B (relativa) <b id="wB-f">1,00</b><input type="range" id="w-fb" min="0.5" max="3" step="0.05" value="1"></div>
+    <div class="rng">Amplitud B (rebote) <b id="wB-a">0,70</b><input type="range" id="w-ab" min="0" max="1" step="0.05" value="0.7"></div>
+    <div class="rng">Desfase de B <b id="wB-p">0°</b><input type="range" id="w-pb" min="0" max="360" step="5" value="0"></div>
+  </div>
+  <canvas class="chart" id="waves" aria-label="Gráfica de suma de ondas"></canvas>
+  <div class="legend"><span><i style="border-color:#2a78d6"></i>Onda A (directa)</span><span><i style="border-color:#eb6834"></i>Onda B (rebote / otro emisor)</span><span><i style="border-color:var(--fg)"></i>Suma que recibe la antena</span></div>
+  <div class="out" id="w-out"></div>
+</div>
+<ul class="small">
+<li><b>Misma frecuencia, desfase 180°, amplitud B = 1</b> → la suma es cero: un "punto muerto" (desvanecimiento por multitrayecto).</li>
+<li><b>Frecuencias ligeramente distintas</b> → aparecen pulsaciones (batidos): la señal crece y se apaga periódicamente. Es lo que pasa con dos canales solapados.</li>
+<li>Los equipos modernos usan <b>varias antenas (MIMO)</b> separadas unos centímetros: si una cae en un punto muerto, la otra no. Y el OFDM reparte los datos en cientos de subportadoras para que un desvanecimiento solo afecte a unas pocas.</li>
+</ul>
+
+<h3>Qué le pasa a la onda en el camino</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Fenómeno</th><th>Qué es</th><th>Ejemplo en la oficina</th></tr></thead>
+<tbody>
+<tr><td><b>Atenuación</b></td><td>La onda pierde fuerza al atravesar materiales.</td><td>Muros de hormigón, forjados, cristal con capa metálica.</td></tr>
+<tr><td><b>Reflexión</b></td><td>Rebota en superficies grandes y lisas.</td><td>Metal, cristal, suelos. Crea multitrayecto.</td></tr>
+<tr><td><b>Absorción</b></td><td>El material se "come" la energía (la convierte en calor).</td><td>Agua → <b>personas</b> (somos 60 % agua), plantas, acuarios. Una sala llena atenúa 3–6 dB más.</td></tr>
+<tr><td><b>Difracción</b></td><td>La onda "dobla" esquinas y bordes.</td><td>Algo de señal detrás de un pilar.</td></tr>
+<tr><td><b>Dispersión</b></td><td>Se esparce al chocar con objetos pequeños e irregulares.</td><td>Estanterías metálicas, rejillas, falsos techos.</td></tr>
+<tr><td><b>Zona de Fresnel</b></td><td>Volumen en forma de balón alrededor de la línea entre emisor y receptor que debe estar despejado.</td><td>En enlaces entre edificios: árboles o grúas en medio degradan el enlace aunque "se vea".</td></tr>
+</tbody></table></div>
+
+<h2>2. Potencia, dB y dBm sin miedo</h2>
+<p>La potencia de radio va desde vatios (el AP emite) hasta billonésimas de milivatio (lo que llega al móvil). Para no manejar números con 12 ceros se usa una escala <b>logarítmica</b>: el <b>dBm</b> (decibelios respecto a 1 milivatio).</p>
+<div class="formula">dBm = 10 · log₁₀(P en mW) &nbsp;&nbsp;·&nbsp;&nbsp; P (mW) = 10<sup>dBm/10</sup></div>
+<div class="two">
+<div>
+<div class="table-wrap"><table>
+<thead><tr><th class="num">dBm</th><th class="num">mW</th><th>Qué es</th></tr></thead>
+<tbody>
+<tr><td class="num">+30</td><td class="num">1.000</td><td>1 W. Máximo legal en algunas bandas de 5 GHz (EIRP)</td></tr>
+<tr><td class="num">+20</td><td class="num">100</td><td>Máximo legal en 2,4 GHz en Europa (EIRP)</td></tr>
+<tr><td class="num">+15</td><td class="num">32</td><td>Potencia típica de un AP de oficina bien ajustado</td></tr>
+<tr><td class="num">0</td><td class="num">1</td><td>1 milivatio</td></tr>
+<tr><td class="num">−30</td><td class="num">0,001</td><td>Junto al AP (no se puede mejorar)</td></tr>
+<tr><td class="num">−50</td><td class="num">0,00001</td><td>Señal excelente</td></tr>
+<tr><td class="num">−67</td><td class="num">≈ 2·10⁻⁷</td><td><b>Mínimo recomendado para voz/vídeo</b></td></tr>
+<tr><td class="num">−75</td><td class="num">≈ 3·10⁻⁸</td><td>Navega, pero lento y con cortes</td></tr>
+<tr><td class="num">−94</td><td class="num">≈ 4·10⁻¹⁰</td><td>Ruido de fondo típico (20 MHz)</td></tr>
+</tbody></table></div>
+</div>
+<div>
+<h4>Las tres reglas de oro</h4>
+<ul>
+<li><b>+3 dB = el doble</b> de potencia. −3 dB = la mitad.</li>
+<li><b>+10 dB = 10 veces</b> más. −10 dB = 10 veces menos.</li>
+<li>Los dB <b>se suman y restan</b>: potencia del AP + ganancia de antena − pérdidas = lo que llega.</li>
+</ul>
+<p class="small">Por eso pasar de −70 a −60 dBm parece poco, pero es <b>10 veces más señal</b>. Y por eso los valores son negativos: lo que recibe un móvil es mucho menos de 1 mW.</p>
+<h4>Conversor</h4>
+<div class="calc" style="margin:0">
+<div class="row"><label>dBm<input type="number" id="c-dbm" value="15" step="any"></label><label>mW<input type="number" id="c-mw" value="31.62" step="any"></label></div>
+</div>
+</div>
+</div>
+
+<h3>Términos de potencia que verás en los equipos</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Término</th><th>Significado</th></tr></thead>
+<tbody>
+<tr><td><b>Tx Power</b></td><td>Potencia que sale de la radio del AP (sin antena), en dBm.</td></tr>
+<tr><td><b>Ganancia de antena (dBi)</b></td><td>La antena no crea energía: la <b>concentra</b> en una dirección. Una omnidireccional de techo: 3–6 dBi. Una sectorial/direccional: 8–20 dBi.</td></tr>
+<tr><td><b>EIRP</b></td><td>Potencia radiada efectiva = Tx Power + ganancia − pérdida del cable. <b>Es lo que regula la ley.</b></td></tr>
+<tr><td><b>RSSI</b></td><td>Potencia recibida por el cliente, en dBm (−30 a −95).</td></tr>
+<tr><td><b>Ruido (noise floor)</b></td><td>Señal de fondo sin datos (otros equipos, electrónica). Típico −90 a −98 dBm.</td></tr>
+<tr><td><b>SNR</b></td><td>Señal − ruido, en dB. Determina la velocidad: a más SNR, modulaciones más densas.</td></tr>
+<tr><td><b>SINR</b></td><td>Como la SNR pero contando también la interferencia de otros APs. Es la que manda en oficinas con vecinos.</td></tr>
+</tbody></table></div>
+
+<div class="callout warn"><span class="t">El error más común: subir la potencia al máximo</span>
+El AP puede gritar a 23 dBm, pero un móvil emite a 10–15 dBm. Si el AP está muy alto, el móvil "ve" la red pero el AP no le oye bien: <b>enlace asimétrico</b>. Además se pisa con los APs vecinos (más interferencia) y los clientes no saltan al AP cercano (sticky clients). Regla: <b>potencia del AP similar o algo superior a la de los clientes</b> (12–17 dBm en 5 GHz, 6–11 dBm en 2,4 GHz) y más APs si falta cobertura.</div>
+
+<h3>Límites legales en Europa (ETSI / CNAF en España)</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Banda</th><th>Canales</th><th class="num">EIRP máx.</th><th>Condiciones</th></tr></thead>
+<tbody>
+<tr><td>2,4 GHz</td><td>1–13</td><td class="num">100 mW (20 dBm)</td><td>Interior y exterior.</td></tr>
+<tr><td>5 GHz UNII-1</td><td>36–48</td><td class="num">200 mW (23 dBm)</td><td>Solo interior. Sin DFS.</td></tr>
+<tr><td>5 GHz UNII-2</td><td>52–64</td><td class="num">200 mW (23 dBm)</td><td>Solo interior. <b>DFS + TPC</b> obligatorios.</td></tr>
+<tr><td>5 GHz UNII-2e</td><td>100–140</td><td class="num">1 W (30 dBm)</td><td>Interior y exterior. <b>DFS + TPC</b>. 120–128: radar meteorológico (espera de 10 min).</td></tr>
+<tr><td>6 GHz (LPI)</td><td>1–93 (5.945–6.425 MHz)</td><td class="num">200 mW (23 dBm)</td><td>Solo interior, baja potencia. Sin DFS.</td></tr>
+</tbody></table></div>
+<p class="small muted">Los APs se configuran con el código de país (ES) y aplican los límites automáticamente. Cambiar el país para "tener más potencia" es ilegal y además empeora la red.</p>
+
+<h2>3. Pérdida por distancia y por paredes</h2>
+<p>En el vacío, la señal cae con el cuadrado de la distancia (<b>Free Space Path Loss</b>):</p>
+<div class="formula">FSPL (dB) = 20·log₁₀(d en m) + 20·log₁₀(f en MHz) − 27,55</div>
+<p>Cada vez que <b>duplicas la distancia pierdes 6 dB</b> (en interiores, con muebles y personas, más bien 7–9 dB). Y a 5 GHz pierdes ≈ 6 dB más que a 2,4 GHz a la misma distancia. Calcula un <b>balance de enlace</b> completo:</p>
+<div class="calc">
+  <div class="row">
+    <label>Banda<select id="l-band"><option value="2.4">2,4 GHz (canal 6)</option><option value="5" selected>5 GHz (canal 36)</option><option value="6">6 GHz (canal 37)</option></select></label>
+    <label>Potencia AP (dBm)<input type="number" id="l-tx" value="15"></label>
+    <label>Ganancia antena (dBi)<input type="number" id="l-g" value="4"></label>
+    <label>Distancia (m)<input type="number" id="l-d" value="15" min="1"></label>
+    <label>Exponente entorno n<select id="l-n"><option value="2">2,0 espacio libre</option><option value="2.2" selected>2,2 oficina diáfana</option><option value="2.8">2,8 oficina con mobiliario</option><option value="3.3">3,3 muy obstruido</option></select></label>
+    <label>Ancho de canal<select id="l-w"><option>20</option><option>40</option><option>80</option><option>160</option></select></label>
+  </div>
+  <div class="row" id="l-walls"></div>
+  <div class="out" id="l-out"></div>
+</div>
+
+<h3>Atenuación típica de materiales</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Material</th><th class="num">2,4 GHz</th><th class="num">5 GHz</th><th class="num">6 GHz</th><th>Comentario</th></tr></thead>
+<tbody id="mat-table"></tbody>
+</table></div>
+<p class="small muted">Valores orientativos: dependen del grosor, la humedad y la armadura metálica. Lo correcto es medir in situ (la "prueba AP en un palo": se coloca un AP temporal y se mide a ambos lados de la pared).</p>
+<div class="callout"><span class="t">Por qué los forjados importan tanto en un edificio de varias plantas</span>Un forjado de hormigón armado quita 15–25 dB. Parece mucho, pero un AP a −50 dBm en una planta llega a −70/−75 dBm a la planta de arriba: <b>no da servicio útil, pero sí interfiere</b> si está en el mismo canal. Por eso el plan de canales se hace <b>en 3D</b>: los APs que quedan uno encima de otro deben ir en canales distintos.</div>
+
+<h2>4. Bandas y canales</h2>
+<h3>2,4 GHz: solo hay 3 canales que no se pisan</h3>
+<p>La banda de 2,4 GHz mide 83,5 MHz y tiene 13 canales separados 5 MHz, pero cada canal ocupa 20–22 MHz. Por eso un canal se solapa con los 4 de cada lado. Los únicos que no se tocan son <b>1, 6 y 11</b> (en Europa también se usa 1-5-9-13, pero mezclarlos con vecinos en 1-6-11 empeora). Cambia los canales de las tres redes y mira cómo se solapan:</p>
+<div class="calc">
+  <div class="row">
+    <label>Tu red A<select id="o-a"></select></label>
+    <label>Tu red B<select id="o-b"></select></label>
+    <label>Vecino<select id="o-c"></select></label>
+    <label>Ancho del vecino<select id="o-w"><option>20</option><option>40</option></select></label>
+  </div>
+  <canvas class="chart" id="ovl"></canvas>
+  <div class="out" id="o-out"></div>
+</div>
+<div class="callout bad"><span class="t">Solapar es peor que compartir</span>Si dos redes están en el <b>mismo canal</b>, se oyen y se turnan ordenadamente (CSMA/CA): cada una tiene menos tiempo de aire, pero funcionan. Si están en canales <b>parcialmente solapados</b> (1 y 3), no se entienden entre sí: la otra red es solo ruido, se producen colisiones y retransmisiones. Por eso <b>poner el canal 3 "para huir del 1 y del 6" es lo peor que se puede hacer</b>.</div>
+
+<h3>5 GHz: muchos canales, con letra pequeña (DFS)</h3>
+<p>En Europa hay 19 canales de 20 MHz (36–64 y 100–140). Se pueden unir de 2 en 2 (40 MHz), de 4 en 4 (80) o de 8 en 8 (160) para ir más rápido, <b>pero quedan menos canales independientes</b>:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Ancho</th><th class="num">Canales independientes (UE)</th><th class="num">Sin DFS</th><th>Velocidad relativa</th><th>Cuándo</th></tr></thead>
+<tbody>
+<tr><td>20 MHz</td><td class="num">19</td><td class="num">4 (36–48)</td><td>×1</td><td><b>Alta densidad</b>: oficinas grandes, auditorios, edificios con muchos APs.</td></tr>
+<tr><td>40 MHz</td><td class="num">9</td><td class="num">2</td><td>×2</td><td>Oficinas medias con pocos APs y pocos vecinos.</td></tr>
+<tr><td>80 MHz</td><td class="num">4</td><td class="num">1</td><td>×4,2</td><td>Casa, despacho aislado. En empresa casi nunca.</td></tr>
+<tr><td>160 MHz</td><td class="num">2</td><td class="num">0</td><td>×8,4</td><td>Casa / laboratorio. En 6 GHz tiene más sentido.</td></tr>
+</tbody></table></div>
+<div class="formula">Capacidad total ≈ nº de canales × velocidad por canal → 19 × 1 ≈ 9 × 2 ≈ 4 × 4,2 — pero con más canales, menos APs comparten aire</div>
+
+<h3>¿Qué es DFS?</h3>
+<p><b>DFS</b> (Dynamic Frequency Selection) es una obligación legal en los canales 52–144: esas frecuencias las usan también <b>radares</b> (meteorológicos, militares, de aeropuertos y barcos), que tienen prioridad.</p>
+<ol>
+<li><b>Antes de emitir</b>, el AP escucha el canal 60 segundos (<b>CAC</b>, Channel Availability Check). En los canales 120–128 (radar meteorológico) son <b>10 minutos</b>.</li>
+<li><b>Mientras emite</b>, sigue escuchando. Si detecta un patrón de radar, debe dejar el canal en menos de 10 s y no volver en <b>30 minutos</b> (Non-Occupancy Period).</li>
+<li>Los clientes conectados a ese AP <b>se desconectan</b> o saltan de canal (si soportan CSA, Channel Switch Announcement).</li>
+</ol>
+<p>Además los canales DFS llevan <b>TPC</b> (Transmit Power Control): el AP debe poder reducir potencia.</p>
+<div class="two">
+<div class="card"><h4>Ventajas</h4><ul class="small"><li>Muchos más canales libres: los vecinos domésticos casi nunca los usan.</li><li>Imprescindibles para edificios con decenas de APs.</li></ul></div>
+<div class="card"><h4>Inconvenientes</h4><ul class="small"><li>Saltos de canal y microcortes si hay radar o <b>falsos positivos</b>.</li><li>Algunos dispositivos antiguos o baratos no los soportan (no ven la red).</li><li>Cerca de aeropuertos, puertos o estaciones meteorológicas puede haber eventos frecuentes.</li></ul></div>
+</div>
+<div class="callout"><span class="t">Cómo actuar</span>Usa canales DFS, pero revisa los <b>registros de eventos de radar</b> del controlador durante unas semanas. Si un canal salta a menudo, exclúyelo del plan. Evita 120–128. Comprueba que los dispositivos críticos (lectores, terminales, equipos médicos) soportan DFS antes de ponerlos en esa red.</div>
+
+<h3>6 GHz (Wi-Fi 6E y 7)</h3>
+<p>480 MHz nuevos en Europa (5.945–6.425 MHz): 24 canales de 20, 6 de 80 o 3 de 160 MHz. <b>Sin DFS, sin vecinos antiguos</b> y solo dispositivos modernos (WPA3 obligatorio). Alcance algo menor que 5 GHz y más pérdida por paredes. Ideal para salas de reuniones y zonas de alta densidad con portátiles y móviles recientes.</p>
+
+<h2>5. Generaciones Wi-Fi: qué cambia de verdad</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Nombre</th><th>Estándar</th><th>Año</th><th>Bandas</th><th>Novedades útiles</th></tr></thead>
+<tbody>
+<tr><td>Wi-Fi 4</td><td>802.11n</td><td>2009</td><td>2,4 / 5</td><td>MIMO, canales de 40 MHz.</td></tr>
+<tr><td><b>Wi-Fi 5</b></td><td>802.11ac</td><td>2013</td><td>5</td><td>80/160 MHz, 256-QAM, <b>MU-MIMO</b> de bajada (el AP habla a varios a la vez con distintas antenas).</td></tr>
+<tr><td><b>Wi-Fi 6</b></td><td>802.11ax</td><td>2019</td><td>2,4 / 5</td><td><b>OFDMA</b> (divide el canal en trozos para varios clientes a la vez → mucho mejor con muchos dispositivos), 1024-QAM, MU-MIMO de subida, <b>BSS Coloring</b> (ignora transmisiones de redes vecinas lejanas en el mismo canal), <b>TWT</b> (ahorro de batería en IoT), WPA3.</td></tr>
+<tr><td>Wi-Fi 6E</td><td>802.11ax</td><td>2021</td><td>+ 6</td><td>Lo mismo que Wi-Fi 6 en la banda limpia de 6 GHz.</td></tr>
+<tr><td>Wi-Fi 7</td><td>802.11be</td><td>2024</td><td>2,4 / 5 / 6</td><td>320 MHz, 4096-QAM, <b>MLO</b> (usa varias bandas a la vez), puncturing (usa un canal ancho aunque una parte esté ocupada).</td></tr>
+</tbody></table></div>
+<div class="callout ok"><span class="t">Wi-Fi 5 vs Wi-Fi 6 en una oficina con 2.000 dispositivos</span>La diferencia no es la velocidad máxima, es la <b>eficiencia con muchos clientes</b>. Con Wi-Fi 5, cada cliente usa el canal entero por turnos, incluso para enviar un paquete pequeño de 100 bytes. Con Wi-Fi 6 (OFDMA), el AP sirve a 9 clientes a la vez en un canal de 20 MHz. En alta densidad, Wi-Fi 6 da 2–4 veces más capacidad útil con los mismos canales, <b>siempre que los clientes también sean Wi-Fi 6</b>.</div>
+
+<h3>De la señal a la velocidad: MCS</h3>
+<p>Cuanta más SNR, más bits por símbolo (modulación más densa). Cada combinación de modulación y codificación es un <b>MCS</b>:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>MCS</th><th>Modulación</th><th class="num">SNR mínima</th><th class="num">20 MHz · 1 flujo</th><th class="num">80 MHz · 2 flujos</th></tr></thead>
+<tbody id="mcs-table"></tbody>
+</table></div>
+<p class="small muted">Velocidades PHY de 802.11ax (GI 0,8 µs). La velocidad real de TCP es el 50–70 % de la PHY y se reparte entre todos los clientes del canal.</p>
+
+<h2>6. Puntos de acceso (AP): diseño y colocación</h2>
+<div class="grid">
+<div class="card"><h4>Por cobertura</h4><p class="small">Que en todo el área haya ≥ −67 dBm de un AP (y ≥ −75 de un segundo AP para roaming), SNR ≥ 25 dB. Válido para almacenes o zonas poco pobladas.</p></div>
+<div class="card"><h4>Por capacidad</h4><p class="small">Que cada radio tenga ≤ 30–50 clientes activos y el tiempo de aire no se sature. <b>En oficinas manda la capacidad</b>: suele exigir más APs que la cobertura.</p></div>
+</div>
+<div class="formula">APs necesarios ≈ max( Área ÷ área por AP , Clientes activos ÷ clientes por radio , Demanda total ÷ capacidad por AP )</div>
+<ul class="check">
+<li><b>En el techo</b>, centrados en la zona, a 2,5–4 m. Las antenas omni de techo emiten en forma de "donut" hacia abajo y a los lados.</li>
+<li><b>Nunca</b> dentro de falsos techos metálicos, armarios, detrás de pilares o encima de bandejas de cables.</li>
+<li>Separados 10–20 m en oficina diáfana; uno por sala si las paredes son de obra.</li>
+<li>Escalonados entre plantas (no exactamente uno encima de otro) y con canales distintos en vertical.</li>
+<li>Cada AP con su cable Cat 6A desde el switch del IDF (PoE+ o PoE++ para Wi-Fi 6E/7). Uplink de 2,5 Gb para Wi-Fi 6E/7.</li>
+<li>APs de interior <b>no</b> en exteriores; para terrazas, APs IP67.</li>
+</ul>
+
+<h3>Roaming: pasar de un AP a otro sin cortes</h3>
+<p>Quien decide cambiar de AP es <b>el cliente</b>, no el AP. Se le ayuda con:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Función</th><th>Qué hace</th></tr></thead>
+<tbody>
+<tr><td><b>802.11k</b></td><td>El AP le da al cliente la lista de APs vecinos: no tiene que escanear todos los canales.</td></tr>
+<tr><td><b>802.11v</b></td><td>El AP le "sugiere" que se vaya a otro AP mejor (BSS Transition).</td></tr>
+<tr><td><b>802.11r (Fast Roaming)</b></td><td>Reautenticación rápida (&lt; 50 ms) en redes 802.1X/WPA3: imprescindible para voz.</td></tr>
+<tr><td><b>Band steering</b></td><td>Empuja a los clientes de doble banda hacia 5/6 GHz.</td></tr>
+<tr><td><b>RSSI mínimo</b></td><td>Desconecta a clientes con señal muy débil (p. ej. &lt; −75 dBm) para que busquen otro AP. Úsalo con prudencia.</td></tr>
+<tr><td><b>Tasas mínimas</b></td><td>Desactivar 1, 2, 5,5 y 11 Mbps (y a veces hasta 12 Mbps). Las balizas y broadcast van más rápido y gastan menos tiempo de aire. Ver <a href="laboratorio.html#logico">simulación de broadcast</a>.</td></tr>
+</tbody></table></div>
+
+<h3>El tiempo de aire (airtime): el recurso escaso</h3>
+<p>En un canal, <b>solo transmite un equipo a la vez</b> (salvo OFDMA/MU-MIMO). Todo consume tiempo: datos, balizas, confirmaciones, broadcast. Cada SSID emite una baliza ~10 veces por segundo en cada AP a la tasa más baja:</p>
+<div class="calc">
+  <div class="row">
+    <label>SSIDs emitidos<input type="number" id="b-ssid" value="4" min="1" max="16"></label>
+    <label>APs en el mismo canal que se oyen<input type="number" id="b-aps" value="3" min="1" max="30"></label>
+    <label>Tasa mínima (Mbps)<select id="b-rate"><option>1</option><option selected>6</option><option>12</option><option>24</option></select></label>
+  </div>
+  <div class="out" id="b-out"></div>
+</div>
+<p class="small muted">Por eso se recomiendan <b>como mucho 3–4 SSIDs</b> (p. ej. Corporativa, Invitados, IoT) y desactivar tasas bajas.</p>
+
+<h2>7. Seguridad Wi-Fi</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Modo</th><th>Cómo funciona</th><th>Uso</th></tr></thead>
+<tbody>
+<tr><td>WEP / WPA (TKIP)</td><td>Roto.</td><td>Nunca.</td></tr>
+<tr><td>WPA2-Personal (PSK)</td><td>Una contraseña compartida.</td><td>Casa, IoT aislado. Si alguien se va, hay que cambiarla a todos.</td></tr>
+<tr><td>WPA3-Personal (SAE)</td><td>Contraseña compartida resistente a ataques de diccionario.</td><td>Pequeña oficina, invitados con contraseña.</td></tr>
+<tr><td><b>WPA2/WPA3-Enterprise (802.1X)</b></td><td>Cada usuario/equipo se autentica con su usuario o <b>certificado</b> contra un servidor RADIUS (NPS, ClearPass, ISE, FreeRADIUS, RADIUS en la nube). El RADIUS puede asignar la VLAN.</td><td><b>Empresa</b>. El perfil se reparte por <a href="gpo.html">GPO</a> o Intune.</td></tr>
+<tr><td>OWE (Enhanced Open)</td><td>Red abierta pero cifrada.</td><td>Invitados sin contraseña.</td></tr>
+<tr><td>Portal cautivo</td><td>Página de aceptación de condiciones o registro.</td><td>Invitados (aceptar condiciones de uso).</td></tr>
+</tbody></table></div>
+<p>Además: <b>aislamiento de clientes</b> en invitados (no se ven entre sí), <b>PMF/802.11w</b> (protege contra desautenticaciones falsas; obligatorio en WPA3), detección de <b>APs falsos</b> (rogue AP / evil twin) desde el controlador (WIPS).</p>
+
+<h2>8. Herramientas de análisis</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Herramienta</th><th>Plataforma</th><th>Para qué</th><th>Coste</th></tr></thead>
+<tbody>
+<tr><td><b>inSSIDer</b> (MetaGeek)</td><td>Windows / macOS</td><td>Ver todas las redes, su canal, ancho, RSSI y el <b>gráfico de solapamiento</b> por canal. La forma clásica de ver "quién está en mi canal". Indica también la generación Wi-Fi y la seguridad.</td><td>Versión básica gratuita (con registro); versión completa de pago</td></tr>
+<tr><td><b>Acrylic Wi-Fi</b> (Tarlogic, española)</td><td>Windows</td><td><b>Home</b>: escáner gratuito con gráficos de canales y señal. <b>Professional</b>: modo monitor, captura de paquetes, ver clientes conectados y tráfico. <b>Heatmaps</b>: mapas de cobertura sobre plano (site survey).</td><td>Home gratis; Pro y Heatmaps de pago</td></tr>
+<tr><td>Ekahau AI Pro + Sidekick 2</td><td>Windows / macOS</td><td>El estándar profesional: diseño predictivo, site survey, análisis de espectro.</td><td>Alto (miles €/año)</td></tr>
+<tr><td>Hamina / NetSpot / iBwave</td><td>Web / Win / Mac</td><td>Planificación predictiva y surveys.</td><td>Variable</td></tr>
+<tr><td>WiFiAnalyzer (VREM, código abierto)</td><td>Android</td><td>Escáner de canales en el móvil, muy práctico para ir planta por planta.</td><td>Gratis</td></tr>
+<tr><td>Comandos del sistema</td><td>Windows: <code>netsh wlan show networks mode=bssid</code>, <code>netsh wlan show interfaces</code>, <code>netsh wlan show wlanreport</code> · macOS: ⌥+clic en Wi-Fi / Diagnóstico inalámbrico · Linux: <code>nmcli dev wifi</code>, <code>iw dev wlan0 scan</code></td><td>Diagnóstico rápido sin instalar nada. El <i>wlanreport</i> genera un HTML con todas las desconexiones del portátil.</td><td>Gratis</td></tr>
+<tr><td>Wireshark (modo monitor)</td><td>Linux / macOS (Win con adaptador compatible)</td><td>Ver tramas 802.11: balizas, autenticaciones, retransmisiones, desautenticaciones.</td><td>Gratis</td></tr>
+<tr><td>Analizador de espectro (Wi-Spy, Sidekick, RF Explorer)</td><td>USB</td><td>Ver <b>interferencias que no son Wi-Fi</b>: microondas, cámaras analógicas, Bluetooth, transmisores de vídeo, lámparas defectuosas.</td><td>Medio</td></tr>
+</tbody></table></div>
+
+<h3>Cómo leer inSSIDer o Acrylic</h3>
+<figure class="diagram">
+<canvas id="spec-demo"></canvas>
+<figcaption>Ejemplo simulado de lo que ves en el gráfico de canales: cada "montaña" es una red. La altura es la señal (RSSI) y la anchura es el ancho de canal. Tus APs (continuo) frente a los vecinos (discontinuo). En el <a href="laboratorio.html">laboratorio</a> esta vista cambia según dónde coloques el ratón en el plano.</figcaption>
+</figure>
+<ul>
+<li><b>Montañas que se tocan parcialmente</b> → solapamiento: mal.</li>
+<li><b>Montañas apiladas en el mismo canal</b> → contención: se reparten el tiempo. Aceptable si las demás están 20 dB por debajo de la tuya.</li>
+<li><b>Un vecino con 80/160 MHz</b> en 5 GHz ocupa 4–8 canales: evita esos canales o pide (amablemente) que lo reduzca.</li>
+<li>Columnas útiles: <b>SSID, BSSID</b> (MAC de cada radio), <b>RSSI</b>, <b>canal</b>, <b>ancho</b>, <b>seguridad</b>, <b>generación</b> (a/b/g/n/ac/ax/be).</li>
+</ul>
+
+<h3>Site survey: los tres tipos</h3>
+<div class="grid g3">
+<div class="card"><h4>Predictivo</h4><p class="small">Antes de instalar: sobre el plano con materiales se simula la cobertura (como el <a href="laboratorio.html">laboratorio</a>, pero con más precisión).</p></div>
+<div class="card"><h4>Pasivo</h4><p class="small">Paseando con el portátil y el plano se mide la señal de todos los APs (propios y vecinos). Acrylic Heatmaps, Ekahau, NetSpot.</p></div>
+<div class="card"><h4>Activo</h4><p class="small">Conectado a la red: se mide la velocidad real, el roaming y la pérdida mientras se camina (iperf3).</p></div>
+</div>
+
+<h2>9. Interferencias que no son Wi-Fi</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Fuente</th><th>Banda</th><th>Síntoma</th></tr></thead>
+<tbody>
+<tr><td>Microondas</td><td>2,4 GHz (canales 7–11 sobre todo)</td><td>Wi-Fi lento en la zona office a la hora de comer.</td></tr>
+<tr><td>Bluetooth, ratones/teclados inalámbricos, auriculares</td><td>2,4 GHz</td><td>Ruido de fondo alto en salas con muchas personas.</td></tr>
+<tr><td>Cámaras/transmisores de vídeo analógicos, vigilabebés</td><td>2,4 / 5,8 GHz</td><td>Canal inutilizable continuamente.</td></tr>
+<tr><td>Radares</td><td>5 GHz (DFS)</td><td>Saltos de canal en los APs.</td></tr>
+<tr><td>Fluorescentes y fuentes de alimentación defectuosas, motores</td><td>Banda ancha</td><td>Ruido de fondo elevado intermitente.</td></tr>
+<tr><td>Cables USB 3.0 mal apantallados</td><td>2,4 GHz</td><td>Ratón o Wi-Fi que fallan cerca de discos USB 3.</td></tr>
+</tbody></table></div>
+
+</div></main>
+<script src="assets/app.js"></script>
+<script src="assets/rf.js"></script>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n, d = 1) => Number(n).toLocaleString('es-ES', { maximumFractionDigits: d });
+  const C = RF.cssv;
+
+  function setupCanvas(cv, h) {
+    const dpr = window.devicePixelRatio || 1, W = cv.clientWidth || 700;
+    cv.style.height = h + 'px'; cv.width = W * dpr; cv.height = h * dpr;
+    const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return [ctx, W, h];
+  }
+
+  // ---- Ondas ----
+  function drawWaves() {
+    const fa = +$('w-fa').value, fb = +$('w-fb').value, ab = +$('w-ab').value, pb = +$('w-pb').value * Math.PI / 180;
+    $('wA-f').textContent = fmt(fa, 2); $('wB-f').textContent = fmt(fb, 2); $('wB-a').textContent = fmt(ab, 2); $('wB-p').textContent = $('w-pb').value + '°';
+    const [ctx, W, H] = setupCanvas($('waves'), 240);
+    ctx.fillStyle = C('--bg-2'); ctx.fillRect(0, 0, W, H);
+    const mid = H / 2, amp = H / 5.2, cycles = 4;
+    ctx.strokeStyle = C('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, mid); ctx.lineTo(W, mid); ctx.stroke();
+    const series = [[(t) => Math.sin(2 * Math.PI * fa * t), RF.isDark() ? '#3987e5' : '#2a78d6', 2], [(t) => ab * Math.sin(2 * Math.PI * fb * t + pb), RF.isDark() ? '#d95926' : '#eb6834', 2], [(t) => Math.sin(2 * Math.PI * fa * t) + ab * Math.sin(2 * Math.PI * fb * t + pb), C('--fg'), 2.5]];
+    let maxS = 0;
+    series.forEach(([f, col, lw], k) => {
+      ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.globalAlpha = k < 2 ? 0.75 : 1; ctx.beginPath();
+      for (let x = 0; x <= W; x++) { const t = x / W * cycles; const y = f(t); if (k === 2) maxS = Math.max(maxS, Math.abs(y)); ctx[x ? 'lineTo' : 'moveTo'](x, mid - y * amp); }
+      ctx.stroke();
+    });
+    ctx.globalAlpha = 1;
+    // potencia relativa (misma frecuencia)
+    let txt;
+    if (Math.abs(fa - fb) < 0.001) {
+      const A = Math.sqrt(1 + ab * ab + 2 * ab * Math.cos(pb));
+      const db = 20 * Math.log10(Math.max(A, 1e-3));
+      txt = `Amplitud resultante: ${fmt(A, 2)} × la onda directa → ${db >= 0 ? '+' : ''}${fmt(db, 1)} dB respecto a recibir solo la onda A.\n${db < -10 ? '⚠ Desvanecimiento profundo: aquí el cliente pierde mucha señal (mueve la antena unos cm).' : db > 3 ? '✓ Interferencia constructiva: la señal se refuerza.' : 'Efecto moderado.'}`;
+    } else {
+      txt = `Frecuencias distintas: la suma oscila (batido) ${fmt(Math.abs(fa - fb), 2)} veces por unidad de tiempo, con picos de ${fmt(1 + ab, 2)} y valles de ${fmt(Math.abs(1 - ab), 2)}.\nEn radio, esto es lo que ve un receptor cuando otra señal cercana en frecuencia se cuela en su canal: la "suma" ya no se parece a lo que se envió → errores.`;
+    }
+    $('w-out').textContent = txt;
+  }
+  ['w-fa', 'w-fb', 'w-ab', 'w-pb'].forEach((i) => $(i).addEventListener('input', drawWaves));
+
+  // ---- Conversor ----
+  $('c-dbm').addEventListener('input', () => { $('c-mw').value = +(Math.pow(10, $('c-dbm').value / 10)).toPrecision(4); });
+  $('c-mw').addEventListener('input', () => { const m = +$('c-mw').value; if (m > 0) $('c-dbm').value = +(10 * Math.log10(m)).toFixed(2); });
+
+  // ---- Materiales ----
+  $('mat-table').innerHTML = Object.entries(RF.MATS).map(([k, m]) => `<tr><td><i class="ln" style="border-color:${m.color}"></i> ${m.name}</td><td class="num">${m.a['2.4']} dB</td><td class="num">${m.a['5']} dB</td><td class="num">${m.a['6']} dB</td><td class="small">${({ pladur: 'Tabiquería interior ligera.', vidrio: 'Mamparas de salas de reuniones.', madera: 'Puertas, mobiliario.', ladrillo: 'Tabiques de obra, medianeras antiguas.', lowe: 'Fachadas modernas eficientes: casi un escudo. Aísla de vecinos… y de tus APs exteriores.', hormigon: 'Núcleos de escalera, muros de carga. Un forjado es parecido o peor.', metal: 'Ascensores, armarios rack, archivadores, cámaras frigoríficas.' })[k]}</td></tr>`).join('') + `<tr><td><b>Forjado entre plantas</b></td><td class="num">${RF.SLAB['2.4']} dB</td><td class="num">${RF.SLAB['5']} dB</td><td class="num">${RF.SLAB['6']} dB</td><td class="small">Hormigón armado con instalaciones. Puede llegar a 30 dB.</td></tr><tr><td>Cuerpo humano</td><td class="num">3</td><td class="num">4</td><td class="num">5</td><td class="small">Por persona entre el AP y el cliente.</td></tr>`;
+
+  // ---- Balance de enlace ----
+  const wallsRow = $('l-walls');
+  const wallDefaults = { pladur: 2, vidrio: 0, madera: 0, ladrillo: 0, lowe: 0, hormigon: 0, metal: 0 };
+  wallsRow.innerHTML = Object.entries(RF.MATS).map(([k, m]) => `<label>${m.name}<input type="number" min="0" max="10" value="${wallDefaults[k]}" data-wall="${k}"></label>`).join('') + `<label>Forjados atravesados<input type="number" min="0" max="5" value="0" id="l-slab"></label>`;
+  function link() {
+    const band = $('l-band').value, ch = { '2.4': 6, '5': 36, '6': 37 }[band];
+    const f = RF.chanFreq(band, ch), tx = +$('l-tx').value, g = +$('l-g').value, d = +$('l-d').value, n = +$('l-n').value, w = +$('l-w').value;
+    const pl = RF.fspl(d, f, n);
+    let wl = 0, parts = [];
+    wallsRow.querySelectorAll('[data-wall]').forEach((i) => { const c = +i.value; if (c > 0) { const a = RF.MATS[i.dataset.wall].a[band] * c; wl += a; parts.push(`${c}× ${RF.MATS[i.dataset.wall].name} (−${a} dB)`); } });
+    const sl = +$('l-slab').value * RF.SLAB[band]; if (sl) parts.push(`${$('l-slab').value}× forjado (−${sl} dB)`);
+    const rssi = tx + g - pl - wl - sl, nf = RF.noiseFloor(w), snr = rssi - nf;
+    const pr = RF.phyRate(snr, w, 2, 'ax');
+    const q = rssi >= -55 ? 'excelente' : rssi >= -67 ? 'buena (apta para voz y vídeo)' : rssi >= -72 ? 'justa (datos)' : rssi >= -80 ? 'débil' : 'insuficiente';
+    $('l-out').innerHTML = `EIRP: ${tx} + ${g} = ${tx + g} dBm (${fmt(Math.pow(10, (tx + g) / 10), 0)} mW)\n− Pérdida por distancia (${f} MHz, ${d} m, n=${n}): ${fmt(pl, 1)} dB\n− Paredes: ${parts.length ? parts.join(', ') : 'ninguna'}\n= RSSI en el cliente: <span class="big">${fmt(rssi, 0)} dBm</span>  → ${q}\nRuido (${w} MHz): ${fmt(nf, 0)} dBm  → SNR = ${fmt(snr, 0)} dB\nModulación alcanzable: ${pr.mcs >= 0 ? 'MCS ' + pr.mcs + ' · ' + pr.mod + ' → ' + fmt(pr.rate, 0) + ' Mbps PHY con 2 flujos' : 'ninguna (sin enlace)'}`;
+  }
+  document.querySelectorAll('#l-band,#l-tx,#l-g,#l-d,#l-n,#l-w,#l-slab,[data-wall]').forEach((i) => { i.addEventListener('input', link); i.addEventListener('change', link); });
+
+  // ---- MCS ----
+  $('mcs-table').innerHTML = RF.MCS_RATE.map((r, i) => `<tr><td>${i}</td><td>${RF.MCS_MOD[i]}</td><td class="num">${RF.MCS_SNR[i]} dB</td><td class="num">${fmt(r, 1)}</td><td class="num">${fmt(r * 4.19 * 2, 0)}</td></tr>`).join('');
+
+  // ---- Solapamiento 2,4 GHz ----
+  ['o-a', 'o-b', 'o-c'].forEach((id, k) => { $(id).innerHTML = RF.BANDS['2.4'].chans.map((c) => `<option ${c === [1, 6, 3][k] ? 'selected' : ''}>${c}</option>`).join(''); });
+  function ovl() {
+    const A = +$('o-a').value, B = +$('o-b').value, N = +$('o-c').value, wN = +$('o-w').value;
+    const cv = $('ovl');
+    const sigs = [
+      { rssi: -45, ch: A, w: 20, own: true, color: RF.cat(0), label: 'Red A' },
+      { rssi: -52, ch: B, w: 20, own: true, color: RF.cat(1), label: 'Red B' },
+      { rssi: -60, ch: N, w: wN, own: false, label: 'Vecino' },
+    ];
+    RF.drawSpectrum(cv, '2.4', sigs, { height: 230 });
+    const c = (s, t, ws, wt) => RF.coupling('2.4', s, ws, t, wt);
+    const pairs = [['A', 'B', c(A, B, 20, 20)], ['A', 'Vecino', c(A, N, 20, wN)], ['B', 'Vecino', c(B, N, 20, wN)]];
+    $('o-out').textContent = pairs.map(([x, y, v]) => {
+      const st = (x === 'A' ? A : B) === (y === 'B' ? B : N) && v > 0.9 ? 'mismo canal → se turnan (contención), aceptable' : v > 0.02 ? 'SOLAPE PARCIAL → interferencia y colisiones ✗' : v > 0.001 ? 'casi independientes (fuga mínima)' : 'independientes ✓';
+      return `${x} ↔ ${y}: ${Math.round(v * 100)} % de la energía de ${y} cae en el canal de ${x} · ${st}`;
+    }).join('\n');
+  }
+  ['o-a', 'o-b', 'o-c', 'o-w'].forEach((i) => $(i).addEventListener('change', ovl));
+
+  // ---- Balizas ----
+  function beacons() {
+    const n = +$('b-ssid').value, aps = +$('b-aps').value, r = +$('b-rate').value;
+    // baliza ~ 300 bytes + preámbulo; DSSS 1 Mbps preámbulo 192 µs, OFDM 20 µs
+    const pre = r === 1 ? 192 : 20, us = pre + 300 * 8 / r;
+    const pct = n * aps * 10 * us / 1e6 * 100;
+    $('b-out').innerHTML = `Cada baliza dura ≈ ${fmt(us, 0)} µs. ${n} SSID × ${aps} AP × 10 balizas/s\nTiempo de aire gastado SOLO en balizas: <span class="big">${fmt(pct, 1)} %</span>\n${pct > 20 ? '✗ Inaceptable: demasiados SSIDs o tasa mínima muy baja.' : pct > 10 ? '⚠ Alto: reduce SSIDs o sube la tasa mínima.' : '✓ Razonable.'}`;
+  }
+  ['b-ssid', 'b-aps', 'b-rate'].forEach((i) => $(i).addEventListener('input', beacons));
+
+  // ---- Espectro demo ----
+  function specDemo() {
+    RF.drawSpectrum($('spec-demo'), '5', [
+      { rssi: -48, ch: 36, w: 20, own: true, color: RF.cat(0), label: 'AP-P2-1' },
+      { rssi: -61, ch: 52, w: 20, own: true, color: RF.cat(1), label: 'AP-P2-2' },
+      { rssi: -66, ch: 100, w: 20, own: true, color: RF.cat(2), label: 'AP-P2-3' },
+      { rssi: -72, ch: 116, w: 20, own: true, color: RF.cat(3), label: 'AP-P2-4' },
+      { rssi: -63, ch: 44, w: 80, own: false, label: 'Vecino_5G' },
+      { rssi: -78, ch: 100, w: 80, own: false, label: 'MOVISTAR_XX' },
+      { rssi: -84, ch: 132, w: 40, own: false, label: 'Oficina-3B' },
+    ], { height: 240 });
+  }
+
+  function all() { drawWaves(); link(); ovl(); beacons(); specDemo(); }
+  all();
+  window.addEventListener('resize', all);
+  new MutationObserver(all).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+})();
+</script>
+</body>
+</html>

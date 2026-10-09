@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Directorio y GPO · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="gpo" style="--lvl:var(--l2)">
+<main><div class="content">
+
+<section class="hero">
+  <div class="kicker">Profundizar</div>
+  <h1>Active Directory y GPO</h1>
+  <p class="lead">Cómo se configuran automáticamente cientos de equipos Windows: el perfil Wi-Fi, los certificados, las impresoras, las actualizaciones, el cifrado… sin tocar uno a uno. Qué son las directivas de grupo (GPO), en qué orden se aplican, cómo se diagnostican y cuál es su equivalente moderno en la nube (Intune).</p>
+  <div class="facts">
+    <span class="chip">Aparece en: <a href="nivel-2.html">N2</a> · <a href="nivel-3.html">N3</a></span>
+    <span class="chip">Caso real: <a href="mi-empresa.html">Mi empresa</a></span>
+  </div>
+</section>
+
+<h2>1. Active Directory en dos minutos</h2>
+<p><b>Active Directory (AD DS)</b> es la base de datos central de la empresa en Windows: usuarios, grupos, equipos e impresoras. Vive en los <b>controladores de dominio</b> (DC), que también suelen ser los servidores <b>DNS</b> internos. Cada PC unido al dominio confía en los DC para iniciar sesión (Kerberos) y para recibir su configuración (GPO).</p>
+<figure class="diagram">
+<svg viewBox="0 0 900 300" role="img" aria-label="Estructura de unidades organizativas de Active Directory">
+  <rect x="360" y="15" width="180" height="40" rx="8" class="bx" style="stroke:var(--l2);stroke-width:2"/><text x="450" y="40" text-anchor="middle" class="b">empresa.local (dominio)</text>
+  <path d="M450 55 V75 M130 75 H770 M130 75 V95 M330 75 V95 M570 75 V95 M770 75 V95" class="ln"/>
+  <rect x="60" y="95" width="140" height="36" rx="6" class="bx"/><text x="130" y="118" text-anchor="middle" class="b">OU Equipos</text>
+  <rect x="260" y="95" width="140" height="36" rx="6" class="bx"/><text x="330" y="118" text-anchor="middle" class="b">OU Usuarios</text>
+  <rect x="500" y="95" width="140" height="36" rx="6" class="bx"/><text x="570" y="118" text-anchor="middle" class="b">OU Servidores</text>
+  <rect x="700" y="95" width="140" height="36" rx="6" class="bx"/><text x="770" y="118" text-anchor="middle" class="b">OU Grupos</text>
+  <path d="M130 131 V150 M60 150 H200 M60 150 V165 M130 150 V165 M200 150 V165" class="ln"/>
+  <rect x="20" y="165" width="80" height="30" rx="5" class="bx2"/><text x="60" y="185" text-anchor="middle" class="s">Portátiles</text>
+  <rect x="105" y="165" width="50" height="30" rx="5" class="bx2"/><text x="130" y="185" text-anchor="middle" class="s">PCs</text>
+  <rect x="160" y="165" width="80" height="30" rx="5" class="bx2"/><text x="200" y="185" text-anchor="middle" class="s">Kioscos</text>
+  <path d="M330 131 V150 M280 150 H380 M280 150 V165 M380 150 V165" class="ln"/>
+  <rect x="245" y="165" width="70" height="30" rx="5" class="bx2"/><text x="280" y="185" text-anchor="middle" class="s">Planta 1…</text>
+  <rect x="345" y="165" width="70" height="30" rx="5" class="bx2"/><text x="380" y="185" text-anchor="middle" class="s">Dirección</text>
+  <text x="450" y="235" text-anchor="middle" class="s">Las GPO se vinculan a las OU. Un objeto recibe las GPO de su OU y de todas las superiores (herencia).</text>
+  <text x="450" y="255" text-anchor="middle" class="s">Separar equipos y usuarios en OUs distintas facilita aplicar configuración de equipo o de usuario.</text>
+</svg>
+</figure>
+
+<h2>2. Qué es una GPO</h2>
+<p>Una <b>GPO</b> (Group Policy Object) es un paquete de configuración que se aplica automáticamente a los equipos o usuarios de una OU. Tiene dos mitades:</p>
+<div class="two">
+<div class="card"><h4>Configuración de equipo</h4><p class="small">Se aplica al arrancar el PC y cada 90 min (±30). Ejemplos: perfil Wi-Fi 802.1X, certificados, firewall de Windows, BitLocker, Windows Update, plan de energía, software instalado.</p></div>
+<div class="card"><h4>Configuración de usuario</h4><p class="small">Se aplica al iniciar sesión y cada 90 min. Ejemplos: unidades de red, impresoras, fondo de pantalla, redirección de carpetas, restricciones del escritorio.</p></div>
+</div>
+<p>Dentro de cada mitad hay <b>Directivas</b> (políticas, el usuario no puede cambiarlas) y <b>Preferencias</b> (valores iniciales, más flexibles, con <i>segmentación por elemento</i>: "aplicar solo si el equipo está en la planta 3").</p>
+
+<h3>Orden de aplicación: L-S-D-OU</h3>
+<div class="grid">
+<div class="card"><b>1. Local</b><p class="small">La directiva local del propio PC.</p></div>
+<div class="card"><b>2. Sitio (Site)</b><p class="small">Vinculada a un sitio de AD (una sede física).</p></div>
+<div class="card"><b>3. Dominio</b><p class="small">Para todos. Aquí la directiva de contraseñas.</p></div>
+<div class="card"><b>4. OU (de la más alta a la más baja)</b><p class="small">La última que se aplica gana si hay conflicto.</p></div>
+</div>
+<ul>
+<li><b>Exigido (Enforced)</b>: la GPO no puede ser sobrescrita por las de OUs inferiores.</li>
+<li><b>Bloquear herencia</b>: una OU deja de recibir las GPO de arriba (salvo las exigidas).</li>
+<li><b>Filtrado de seguridad</b>: aplicar solo a un grupo (p. ej. "Portátiles Wi-Fi").</li>
+<li><b>Filtro WMI</b>: aplicar solo si se cumple una consulta (p. ej. "solo Windows 11", "solo portátiles").</li>
+<li><b>Loopback</b>: aplicar configuración de usuario según el equipo (salas de formación, kioscos).</li>
+</ul>
+
+<h2>3. GPO imprescindibles en una empresa como la mía</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>GPO</th><th>Dónde se configura</th><th>Para qué</th></tr></thead>
+<tbody>
+<tr><td><b>Wi-Fi corporativo 802.1X</b></td><td>Equipo › Directivas › Config. de Windows › Config. de seguridad › <b>Directivas de red inalámbrica (IEEE 802.11)</b></td><td>Crea el perfil del SSID "Empresa" con WPA2/WPA3-Enterprise, EAP-TLS (certificado) o PEAP, conexión automática y antes del inicio de sesión. Nadie teclea contraseñas Wi-Fi.</td></tr>
+<tr><td><b>Autoinscripción de certificados</b></td><td>Equipo › … › Directivas de clave pública › Cliente de Servicios de certificados: inscripción automática</td><td>Cada PC obtiene su certificado de la CA interna (AD CS) para EAP-TLS / VPN.</td></tr>
+<tr><td>Ajustes del adaptador Wi-Fi</td><td>Preferencias › Registro / plan de energía</td><td>Desactivar el ahorro de energía agresivo de la tarjeta (provoca desconexiones), preferir 5/6 GHz si el driver lo permite.</td></tr>
+<tr><td><b>Windows Update / WSUS</b></td><td>Equipo › Plantillas administrativas › Componentes › Windows Update</td><td>Ventanas de actualización, aplazamientos, servidor WSUS o Windows Update for Business. Evita que 2.000 equipos descarguen a la vez.</td></tr>
+<tr><td>Optimización de distribución</td><td>Plantillas › Componentes › Optimización de distribución</td><td>Los PCs comparten actualizaciones entre sí en la LAN (modo "grupo" por planta/subred) → menos consumo de Internet.</td></tr>
+<tr><td><b>BitLocker</b></td><td>Plantillas › Componentes › Cifrado de unidad BitLocker</td><td>Cifrado obligatorio y copia de la clave de recuperación en AD/Entra.</td></tr>
+<tr><td><b>LAPS</b></td><td>Plantillas › Sistema › LAPS</td><td>Contraseña de administrador local única y rotativa por equipo.</td></tr>
+<tr><td>Firewall de Windows</td><td>Config. de seguridad › Firewall de Windows Defender</td><td>Perfil de dominio activado; bloquear entrantes salvo gestión.</td></tr>
+<tr><td>Desactivar LLMNR y NetBIOS</td><td>Plantillas › Red › Cliente DNS (LLMNR) · Preferencias (NetBIOS)</td><td>Menos broadcast en las VLANs Wi-Fi y menos superficie de ataque (envenenamiento LLMNR).</td></tr>
+<tr><td>Unidades de red e impresoras</td><td>Usuario › Preferencias › Asignaciones de unidad / Impresoras</td><td>Por grupo o por planta (segmentación por elemento).</td></tr>
+<tr><td>Proxy / certificados de inspección SSL</td><td>Equipo › Directivas de clave pública › Entidades de certificación raíz de confianza</td><td>Distribuir la CA del firewall para que la inspección TLS no rompa la navegación.</td></tr>
+<tr><td>Bloqueo de pantalla</td><td>Plantillas › Panel de control › Personalización</td><td>Bloqueo tras 10–15 min de inactividad.</td></tr>
+<tr><td>Auditoría</td><td>Config. de seguridad › Configuración de directiva de auditoría avanzada</td><td>Registrar inicios de sesión, cambios de grupos, etc. hacia el SIEM.</td></tr>
+</tbody></table></div>
+
+<h3>Perfil Wi-Fi por GPO, paso a paso</h3>
+<ol>
+<li>Requisitos: CA interna (AD CS) o certificado público en el servidor RADIUS (NPS); NPS con una directiva de red para el SSID; los APs (p. ej. EnGenius Cloud) con el SSID en WPA2/WPA3-Enterprise apuntando al RADIUS.</li>
+<li>Gestión de directivas de grupo → nueva GPO "WIFI-Corporativo" vinculada a la OU de portátiles.</li>
+<li>Equipo › Directivas › Config. de Windows › Config. de seguridad › Directivas de red inalámbrica → <b>Crear nueva directiva para Windows Vista y posteriores</b>.</li>
+<li>Agregar → Infraestructura → nombre del perfil y SSID "Empresa", "Conectar automáticamente".</li>
+<li>Seguridad: WPA2-Enterprise (o WPA3-Enterprise), AES; método <b>Microsoft: tarjeta inteligente u otro certificado (EAP-TLS)</b> o PEAP-MSCHAPv2. Validar certificado del servidor, indicar el nombre del NPS y la CA raíz (¡imprescindible para evitar ataques de AP falso!).</li>
+<li>Modo de autenticación: <b>autenticación de equipo</b> (o equipo o usuario) → el portátil se conecta antes del inicio de sesión, y así se aplican GPO y scripts.</li>
+<li>Opcional: marcar redes "Invitados" como bloqueadas en los equipos corporativos.</li>
+<li><code>gpupdate /force</code> en un equipo de prueba y verificar con <code>netsh wlan show profiles</code>.</li>
+</ol>
+
+<h2>4. Diagnóstico de GPO</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Comando / herramienta</th><th>Para qué</th></tr></thead>
+<tbody>
+<tr><td><code>gpupdate /force</code></td><td>Forzar la aplicación inmediata.</td></tr>
+<tr><td><code>gpresult /r</code> · <code>gpresult /h informe.html</code></td><td>Ver qué GPO se han aplicado, cuáles se han filtrado y por qué.</td></tr>
+<tr><td><code>rsop.msc</code></td><td>Conjunto resultante de directivas (vista gráfica).</td></tr>
+<tr><td>Visor de eventos › Aplicaciones y servicios › Microsoft › Windows › GroupPolicy › Operational</td><td>Errores de procesamiento, tiempos.</td></tr>
+<tr><td><code>nltest /dsgetdc:empresa.local</code></td><td>¿El equipo encuentra un controlador de dominio?</td></tr>
+<tr><td><code>dcdiag</code> · <code>repadmin /replsummary</code></td><td>Salud y replicación de los DC (y del SYSVOL donde viven las GPO).</td></tr>
+<tr><td>Modelado de directivas de grupo (GPMC)</td><td>Simular qué pasaría al mover un usuario/equipo de OU.</td></tr>
+</tbody></table></div>
+<h3>Problemas típicos</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>La GPO no se aplica a un equipo</td><td>Equipo en otra OU; filtrado de seguridad sin "Usuarios autenticados" con lectura; filtro WMI falso</td><td><code>gpresult /h</code> y revisar la sección "Denegadas".</td></tr>
+<tr><td>Las GPO de equipo no llegan a portátiles Wi-Fi</td><td>El portátil se conecta al Wi-Fi solo tras iniciar sesión (perfil de usuario o PSK)</td><td>Perfil 802.1X con autenticación de <b>equipo</b>; o "Esperar siempre a la red al iniciar".</td></tr>
+<tr><td>Inicio de sesión muy lento</td><td>DNS de los PCs apuntando a algo que no es el DC; scripts pesados; unidades de red inaccesibles</td><td>DNS = DCs; scripts asíncronos; revisar tiempos en el registro Operational.</td></tr>
+<tr><td>Cambios que "vuelven"</td><td>Dos GPO en conflicto; preferencia en modo "Reemplazar"</td><td>Revisar orden de vínculos y precedencia.</td></tr>
+<tr><td>GPO distinta en cada DC</td><td>Fallo de replicación SYSVOL (DFSR)</td><td><code>dcdiag /test:sysvolcheck</code>, eventos DFSR.</td></tr>
+<tr><td>Kerberos falla: "la hora no coincide"</td><td>Más de 5 min de diferencia horaria</td><td>NTP jerárquico: PDC → fuente externa; equipos → dominio.</td></tr>
+</tbody></table></div>
+
+<h2>5. GPO frente a Intune (gestión moderna)</h2>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th>GPO (Active Directory)</th><th>Intune (Entra ID)</th></tr></thead>
+<tbody>
+<tr><th>Requiere</th><td>Ver a un controlador de dominio (LAN o VPN)</td><td>Solo Internet</td></tr>
+<tr><th>Ideal para</th><td>Equipos siempre en la oficina, servidores, entornos sin nube</td><td>Portátiles móviles, teletrabajo, móviles iOS/Android, Mac</td></tr>
+<tr><th>Perfil Wi-Fi</th><td>Directiva de red inalámbrica</td><td>Perfil de configuración Wi-Fi + perfil de certificado SCEP/PKCS</td></tr>
+<tr><th>Actualizaciones</th><td>WSUS</td><td>Windows Update for Business / Autopatch</td></tr>
+<tr><th>Despliegue de PCs</th><td>Imagen + unión al dominio</td><td>Autopilot: el portátil llega de fábrica y se configura solo</td></tr>
+</tbody></table></div>
+<p>En una empresa de nivel 3 lo habitual es <b>híbrido</b>: equipos unidos a AD y a Entra, GPO para lo heredado y Intune para lo nuevo, migrando poco a poco (la herramienta <i>Group Policy analytics</i> de Intune indica qué GPO tienen equivalente).</p>
+
+</div></main>
+<script src="assets/app.js"></script>
+</body>
+</html>

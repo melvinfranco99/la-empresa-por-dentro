@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorio de redes · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="laboratorio" style="--lvl:var(--l3)">
+<main><div class="content">
+
+<section class="hero">
+  <div class="kicker">Plataforma de prueba</div>
+  <h1>Laboratorio de redes</h1>
+  <p class="lead">Un simulador para probar antes de tocar la red real. <b>Parte física</b>: coloca puntos de acceso y paredes, cambia canales, potencias y anchos, añade vecinos y mira la cobertura, la interferencia y el espectro como lo verías en inSSIDer o Acrylic. <b>Parte lógica</b>: diseña subredes, mide cuánto Wi-Fi se come el broadcast de una VLAN grande, simula el agotamiento del DHCP y comprueba qué tráfico deja pasar el firewall.</p>
+  <div class="facts">
+    <span class="chip">Teoría: <a href="wifi.html">Wi-Fi a fondo</a></span>
+    <span class="chip">Teoría: <a href="vlan.html">VLANs y subredes</a></span>
+    <span class="chip">Caso real: <a href="mi-empresa.html">Mi empresa</a></span>
+  </div>
+</section>
+
+<div class="callout warn"><span class="t">Qué es y qué no es</span>Es un modelo didáctico: pérdida por distancia con exponente de entorno, atenuación fija por material, solapamiento espectral por máscara 802.11 y SINR. No modela reflexiones ni difracción. Para orientar decisiones y entender causas va muy bien; para un proyecto real, valida siempre con un <b>site survey</b> medido (Acrylic Heatmaps, Ekahau, NetSpot…).</div>
+
+<h2>Simulador físico (radio)</h2>
+<p><b>Cómo se usa:</b> elige un escenario, mueve los APs arrastrando, añade APs, vecinos o paredes con la barra de herramientas y pasa el ratón por el plano para medir en cada punto. Cambia la <b>vista</b> para ver la señal (RSSI), la calidad (SINR), la contención cocanal o la velocidad estimada.</p>
+<div class="filter" id="presets">
+  <button class="on" data-p="oficina">Planta diáfana (4 APs)</button>
+  <button data-p="despachos">Despachos de obra (2 APs en pasillo)</button>
+  <button data-p="vecinos">Rodeado de vecinos (2,4 GHz)</button>
+  <button data-p="denso">Alta densidad, 80 MHz mal planificado</button>
+  <button data-p="vacio">Vacío: dibuja tu planta</button>
+</div>
+<div id="sim"></div>
+
+<h3>Retos para entenderlo jugando</h3>
+<details><summary>1. Sube la potencia de todos los APs al máximo</summary><p>Vista <b>SINR</b>. La señal (RSSI) sube en todo el plano, pero la calidad no mejora apenas: la interferencia de los demás APs sube igual. En los bordes entre APs empeora. Conclusión: <b>más potencia no es más calidad</b>; por eso se ajusta a 12–17 dBm.</p></details>
+<details><summary>2. Pon dos APs vecinos en el mismo canal</summary><p>Vista <b>Contención cocanal</b>. Aparecen zonas naranjas donde 1–2 APs compiten: esos APs se turnan el tiempo de aire y la velocidad estimada cae a la mitad o un tercio.</p></details>
+<details><summary>3. En 2,4 GHz, pon un AP en el canal 3 entre vecinos en 1 y 6</summary><p>Mira el espectro: la "montaña" del canal 3 queda debajo de las del 1 y el 6. La columna <b>Solape</b> muestra qué porcentaje de la energía de cada vecino cae en tu canal. Peor que compartir el canal 1.</p></details>
+<details><summary>4. Cambia el ancho de canal de 20 a 80 MHz en 5 GHz</summary><p>La velocidad pico sube ×4, pero ahora casi todos los APs se solapan entre sí y con los vecinos: la contención y la SINR empeoran. En alta densidad, <b>20 MHz gana</b>.</p></details>
+<details><summary>5. Mete un AP dentro de un cuarto de metal u hormigón</summary><p>Dibuja cuatro paredes de "Metal" alrededor de un AP. Fuera del cuarto la señal desaparece. Por eso los APs nunca van dentro de armarios rack ni falsos techos metálicos.</p></details>
+<details><summary>6. Activa "Plantas contiguas" en el escenario de alta densidad</summary><p>Los APs de arriba y abajo (círculos discontinuos con ↑/↓) también interfieren a través del forjado. Haz el plan de canales en 3D.</p></details>
+<details><summary>7. Cambia el cliente a 1 flujo MIMO y Wi-Fi 4</summary><p>Un móvil barato o un lector de códigos antiguo saca una fracción de la velocidad. Los clientes lentos además ocupan más tiempo de aire para enviar lo mismo y penalizan a todos.</p></details>
+
+<h2 id="logico">Simulador lógico (VLAN, subredes, DHCP, firewall)</h2>
+
+<h3>A. Planificador de subredes (VLSM)</h3>
+<p>Escribe tus VLANs y cuántos equipos necesitan. El planificador reserva espacio para crecimiento, asigna de mayor a menor (así no se fragmenta) y calcula máscara, puerta de enlace, rango y broadcast.</p>
+<div class="calc">
+  <div class="row">
+    <label>Bloque de la sede<input type="text" id="v-base" value="10.42.0.0/16"></label>
+    <label>Margen de crecimiento<select id="v-grow"><option value="1">ninguno</option><option value="1.5">+50 %</option><option value="2" selected>×2</option><option value="3">×3</option></select></label>
+  </div>
+  <div class="table-wrap"><table class="tight" id="v-in"><thead><tr><th>VLAN</th><th>Nombre</th><th>Equipos</th><th></th></tr></thead><tbody></tbody></table></div>
+  <div class="filter"><button type="button" id="v-add">+ Añadir VLAN</button><button type="button" id="v-ex">Cargar ejemplo "mi empresa"</button></div>
+  <div class="addr-bar" id="v-bar"></div>
+  <div class="table-wrap"><table class="tight" id="v-out"></table></div>
+  <div class="out" id="v-msg"></div>
+</div>
+
+<h3>B. ¿Cuánto Wi-Fi se come el broadcast de una VLAN?</h3>
+<p>Cada broadcast o multicast de un equipo de la VLAN se reenvía por <b>todos</b> los APs que emiten esa VLAN, a la <b>tasa básica</b> (la más lenta) y sin confirmación. Con 2.000 equipos en una sola VLAN, el resultado sorprende:</p>
+<div class="calc">
+  <div class="row">
+    <div class="rng">Equipos en la VLAN <b id="bc-n-v">2000</b><input type="range" id="bc-n" min="50" max="4000" step="50" value="2000"></div>
+    <div class="rng">Broadcast/multicast por equipo y segundo <b id="bc-p-v">0,5</b><input type="range" id="bc-p" min="0.1" max="3" step="0.1" value="0.5"></div>
+    <div class="rng">Tamaño medio de trama (bytes) <b id="bc-s-v">200</b><input type="range" id="bc-s" min="64" max="600" step="8" value="200"></div>
+    <div class="rng">Filtrado/supresión en APs y switches <b id="bc-f-v">0 %</b><input type="range" id="bc-f" min="0" max="95" step="5" value="0"></div>
+  </div>
+  <canvas class="chart" id="bc-chart"></canvas>
+  <div class="out" id="bc-out"></div>
+</div>
+<p class="small muted">ARP, DHCP, mDNS (Bonjour, AirPlay, impresoras), SSDP/UPnP (televisores, Chromecast), NetBIOS/LLMNR (Windows), IPv6 ND… Un equipo típico genera de 0,2 a 2 por segundo. Soluciones: VLAN más pequeñas, <b>proxy ARP / ARP suppression</b> en el AP, <b>multicast-to-unicast</b>, filtro de broadcast, desactivar LLMNR/NetBIOS por <a href="gpo.html">GPO</a>, pasarela mDNS en lugar de difundirlo, tasas mínimas altas.</p>
+
+<h3>C. Simulación de agotamiento del DHCP (una semana)</h3>
+<div class="calc">
+  <div class="row">
+    <label>Prefijo de la subred<select id="d-pfx"><option value="24">/24 (254)</option><option value="23">/23 (510)</option><option value="22">/22 (1.022)</option><option value="21" selected>/21 (2.046)</option><option value="20">/20 (4.094)</option></select></label>
+    <label>Duración de la concesión<select id="d-lease"><option value="1">1 h</option><option value="2">2 h</option><option value="8" selected>8 h</option><option value="24">1 día</option><option value="72">3 días</option><option value="192">8 días (por defecto en Windows)</option></select></label>
+    <label>Dispositivos fijos de empleados<input type="number" id="d-emp" value="1800" min="0"></label>
+    <label>% con MAC aleatoria que cambia cada día<input type="number" id="d-rnd" value="15" min="0" max="100"></label>
+    <label>Visitas al día (2 h de media)<input type="number" id="d-vis" value="150" min="0"></label>
+  </div>
+  <canvas class="chart" id="d-chart"></canvas>
+  <div class="out" id="d-out"></div>
+</div>
+
+<h3>D. ¿Pasa este tráfico? Recorrido y firewall</h3>
+<p>Elige origen y destino. Verás por qué equipos pasa el paquete y si el firewall lo permite. Prueba a cambiar dónde se enruta entre VLANs: si se enruta en el core sin ACLs, <b>las reglas del firewall no sirven</b> para el tráfico interno.</p>
+<div class="calc">
+  <div class="row">
+    <label>Origen<select id="p-src"></select></label>
+    <label>Planta del origen<select id="p-sf"></select></label>
+    <label>Destino<select id="p-dst"></select></label>
+    <label>Planta del destino<select id="p-df"></select></label>
+    <label>Enrutamiento entre VLANs internas<select id="p-mode"><option value="fw">En el firewall</option><option value="core-acl" selected>En el core con ACLs</option><option value="core">En el core SIN ACLs</option></select></label>
+  </div>
+  <div class="path-viz" id="p-path"></div>
+  <div class="out" id="p-out"></div>
+  <details><summary>Matriz de política (fila = origen, columna = destino). Edítala.</summary>
+    <div class="table-wrap"><table class="matrix" id="p-matrix"></table></div>
+  </details>
+</div>
+
+</div></main>
+<script src="assets/app.js"></script>
+<script src="assets/rf.js"></script>
+<script src="assets/charts.js"></script>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n, d = 1) => Number(n).toLocaleString('es-ES', { maximumFractionDigits: d });
+
+  // ================= ESCENARIOS FÍSICOS =================
+  const R = (on, ch, w, p) => ({ on, ch, w, p });
+  const ap = (name, x, y, c24, c5, extra) => Object.assign({ name, x, y, gain: 4, ssid: 'Empresa', radios: { '2.4': R(c24 > 0, Math.abs(c24) || 1, 20, 10), '5': R(true, c5, 20, 15), '6': R(true, 37, 80, 15) } }, extra || {});
+  const nb = (ssid, x, y, c24, c5, w5, extra) => Object.assign({ ssid, x, y, gain: 3, radios: { '2.4': R(c24 > 0, c24 || 1, 20, 20), '5': R(c5 > 0, c5 || 36, w5 || 80, 20), '6': R(false, 37, 160, 18) } }, extra || {});
+  function shell(w, h) {
+    return [
+      { x1: 0, y1: 0, x2: w, y2: 0, m: 'lowe' }, { x1: 0, y1: h, x2: w, y2: h, m: 'lowe' },
+      { x1: 0, y1: 0, x2: 0, y2: h, m: 'ladrillo' }, { x1: w, y1: 0, x2: w, y2: h, m: 'ladrillo' },
+    ];
+  }
+  function core(x, y) {
+    return [
+      { x1: x, y1: y, x2: x + 2.5, y2: y, m: 'metal' }, { x1: x, y1: y + 3, x2: x + 2.5, y2: y + 3, m: 'metal' },
+      { x1: x, y1: y, x2: x, y2: y + 3, m: 'metal' }, { x1: x + 2.5, y1: y, x2: x + 2.5, y2: y + 3, m: 'metal' },
+      { x1: x + 2.5, y1: y, x2: x + 6, y2: y, m: 'hormigon' }, { x1: x + 2.5, y1: y + 6, x2: x + 6, y2: y + 6, m: 'hormigon' },
+      { x1: x + 6, y1: y, x2: x + 6, y2: y + 6, m: 'hormigon' }, { x1: x, y1: y + 3, x2: x, y2: y + 6, m: 'ladrillo' }, { x1: x, y1: y + 6, x2: x + 2.5, y2: y + 6, m: 'ladrillo' },
+    ];
+  }
+  const PRESETS = {
+    oficina: () => ({
+      w: 40, h: 24, n: 2.2, view: { x0: -7, y0: -7, x1: 47, y1: 31 },
+      walls: [...shell(40, 24), ...core(17, 9),
+        { x1: 2, y1: 6, x2: 14, y2: 6, m: 'vidrio' }, { x1: 8, y1: 0, x2: 8, y2: 6, m: 'vidrio' }, { x1: 14, y1: 0, x2: 14, y2: 6, m: 'vidrio' },
+        { x1: 30, y1: 18, x2: 30, y2: 24, m: 'pladur' }, { x1: 30, y1: 18, x2: 40, y2: 18, m: 'pladur' }],
+      labels: [{ x: 5, y: 3, t: 'Sala 1' }, { x: 11, y: 3, t: 'Sala 2' }, { x: 20, y: 7.5, t: 'ascensor · escalera' }, { x: 24, y: 20, t: 'Open space' }, { x: 35, y: 21, t: 'Office' }],
+      aps: [ap('AP1', 10, 7, 1, 36), ap('AP2', 30, 7, -6, 52), ap('AP3', 10, 17, -11, 100), ap('AP4', 30, 15, 11, 116)],
+      neighbors: [nb('Vecino-A', -3.5, 6, 6, 36), nb('MOVISTAR_3F2A', -3.5, 18, 1, 100), nb('Oficina-B', 43.5, 12, 11, 44, 40), nb('Bar_Wifi', 20, -5, 3, 0)],
+    }),
+    despachos: () => {
+      const walls = [...shell(40, 24), { x1: 0, y1: 10, x2: 40, y2: 10, m: 'ladrillo' }, { x1: 0, y1: 14, x2: 40, y2: 14, m: 'ladrillo' }];
+      for (let x = 5; x < 40; x += 5) { walls.push({ x1: x, y1: 0, x2: x, y2: 10, m: 'ladrillo' }); walls.push({ x1: x, y1: 14, x2: x, y2: 24, m: 'ladrillo' }); }
+      return { w: 40, h: 24, n: 2.4, view: { x0: -4, y0: -4, x1: 44, y1: 28 }, walls, labels: [{ x: 20, y: 12.6, t: 'pasillo' }],
+        aps: [ap('AP1', 10, 12, 1, 36), ap('AP2', 30, 12, 6, 52)], neighbors: [] };
+    },
+    vecinos: () => {
+      const s = PRESETS.oficina();
+      s.neighbors = [nb('Vecino-A', -3.5, 4, 1, 36), nb('Vecino-B', -3.5, 12, 3, 52), nb('MOVISTAR_3F2A', -3.5, 20, 6, 100), nb('Oficina-B', 43.5, 5, 9, 44, 40), nb('DIGI_5521', 43.5, 18, 11, 116), nb('Bar_Wifi', 20, -5, 4, 0), nb('Hotel_Guest', 8, 29, 13, 132)];
+      s.aps.forEach((a, i) => { a.radios['2.4'] = R(true, [1, 6, 11, 1][i], 20, 14); });
+      s._band = '2.4';
+      return s;
+    },
+    denso: () => {
+      const s = PRESETS.oficina();
+      s.aps = [ap('AP1', 7, 6, 1, 36), ap('AP2', 20, 5, 6, 44), ap('AP3', 33, 6, 11, 52), ap('AP4', 7, 18, 6, 60), ap('AP5', 20, 19, 11, 100), ap('AP6', 33, 18, 1, 108)];
+      s.aps.forEach((a, i) => { a.radios['5'].w = 80; a.radios['5'].ch = [36, 52, 100, 36, 52, 100][i]; });
+      s.aps.push(Object.assign(ap('P+1 A', 12, 10, 0, 36), { floor: 1, name: 'AP-sup-1' }), Object.assign(ap('P+1 B', 28, 14, 0, 100), { floor: 1, name: 'AP-sup-2' }), Object.assign(ap('P-1 A', 20, 12, 0, 52), { floor: -1, name: 'AP-inf-1' }));
+      s.aps.filter((a) => a.floor).forEach((a) => (a.radios['5'].w = 80));
+      return s;
+    },
+    vacio: () => ({ w: 30, h: 20, n: 2.2, view: { x0: -3, y0: -3, x1: 33, y1: 23 }, walls: shell(30, 20), labels: [], aps: [ap('AP1', 15, 10, 6, 36)], neighbors: [] }),
+  };
+  let sim;
+  function load(p) {
+    const sc = PRESETS[p]();
+    $('sim').innerHTML = '';
+    sim = new RF.FloorSim($('sim'), sc, { editable: true, band: sc._band || '5', mode: 'rssi', height: 230 });
+    sim.state.probe = { x: sc.w * 0.55, y: sc.h * 0.45 };
+  }
+  $('presets').querySelectorAll('button').forEach((b) => b.onclick = () => { $('presets').querySelectorAll('button').forEach((x) => x.classList.remove('on')); b.classList.add('on'); load(b.dataset.p); });
+  load('oficina');
+
+  // ================= A · VLSM =================
+  let vrows = [[10, 'Gestión', 120], [20, 'Servidores', 60], [40, 'Wi-Fi corporativo', 2000], [50, 'Voz', 150], [60, 'Impresoras', 40], [70, 'IoT / AV', 200], [80, 'Cámaras', 60], [99, 'Invitados', 600]];
+  const ipToInt = (s) => s.split('.').reduce((a, o) => (a << 8 >>> 0) + (+o), 0) >>> 0;
+  const intToIp = (n) => [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.');
+  function renderVin() {
+    $('v-in').querySelector('tbody').innerHTML = vrows.map((r, i) => `<tr><td><input type="number" value="${r[0]}" data-i="${i}" data-k="0" style="width:70px"></td><td><input type="text" value="${r[1]}" data-i="${i}" data-k="1"></td><td><input type="number" value="${r[2]}" data-i="${i}" data-k="2" style="width:90px"></td><td><button type="button" data-del="${i}" class="icon-btn" title="Quitar">✕</button></td></tr>`).join('');
+    $('v-in').querySelectorAll('input').forEach((inp) => inp.addEventListener('input', () => { const r = vrows[+inp.dataset.i]; r[+inp.dataset.k] = inp.dataset.k === '1' ? inp.value : +inp.value; vlsm(); }));
+    $('v-in').querySelectorAll('[data-del]').forEach((b) => b.onclick = () => { vrows.splice(+b.dataset.del, 1); renderVin(); vlsm(); });
+  }
+  function vlsm() {
+    const m = $('v-base').value.trim().match(/^(\d+\.\d+\.\d+\.\d+)\/(\d+)$/);
+    if (!m) { $('v-msg').textContent = 'Formato del bloque: 10.42.0.0/16'; return; }
+    const bp = +m[2], bsize = Math.pow(2, 32 - bp), base = (ipToInt(m[1]) & (bp ? (0xFFFFFFFF << (32 - bp)) >>> 0 : 0)) >>> 0;
+    const g = +$('v-grow').value;
+    const list = vrows.map((r, idx) => { const need = Math.ceil(r[2] * g) + 3; const bits = Math.max(2, Math.ceil(Math.log2(need))); return { vlan: r[0], name: r[1], hosts: r[2], size: Math.pow(2, bits), pfx: 32 - bits, idx }; }).sort((a, b) => b.size - a.size);
+    let cur = 0, ok = true;
+    list.forEach((s) => { cur = Math.ceil(cur / s.size) * s.size; s.off = cur; cur += s.size; if (cur > bsize) ok = false; });
+    const cols = (i) => RF.cat(i);
+    $('v-bar').innerHTML = list.map((s, i) => `<span title="VLAN ${s.vlan} ${s.name} /${s.pfx}" style="width:${Math.max(0.4, s.size / bsize * 100)}%;background:${i < 8 ? cols(i) : 'var(--fg-3)'}"></span>`).join('') + `<span style="flex:1;background:var(--bg-3)"></span>`;
+    $('v-out').innerHTML = `<thead><tr><th>VLAN</th><th>Nombre</th><th class="num">Pedidos</th><th>Red</th><th>Puerta de enlace</th><th>Rango utilizable</th><th>Broadcast</th><th class="num">Capacidad</th><th class="num">Uso</th></tr></thead><tbody>` +
+      list.map((s, i) => { const net = base + s.off; return `<tr><td><i class="sw" style="background:${i < 8 ? cols(i) : 'var(--fg-3)'}"></i>${s.vlan}</td><td>${s.name}</td><td class="num">${fmt(s.hosts, 0)}</td><td class="mono">${intToIp(net)}/${s.pfx}</td><td class="mono">${intToIp(net + 1)}</td><td class="mono">${intToIp(net + 2)} – ${intToIp(net + s.size - 2)}</td><td class="mono">${intToIp(net + s.size - 1)}</td><td class="num">${fmt(s.size - 3, 0)}</td><td class="num">${Math.round(s.hosts / (s.size - 3) * 100)} %</td></tr>`; }).join('') + '</tbody>';
+    const used = cur;
+    $('v-msg').innerHTML = ok ? `✓ Todo cabe en ${$('v-base').value}: se usan ${fmt(used, 0)} de ${fmt(bsize, 0)} direcciones (${fmt(used / bsize * 100, 1)} %).\nLas VLANs grandes van primero y alineadas a su tamaño (requisito para que la máscara funcione).` : `✗ No cabe: hacen falta ${fmt(cur, 0)} direcciones y el bloque /${bp} tiene ${fmt(bsize, 0)}. Usa un prefijo más corto (más grande) o reduce el margen.`;
+  }
+  $('v-base').addEventListener('input', vlsm); $('v-grow').addEventListener('change', vlsm);
+  $('v-add').onclick = () => { vrows.push([100 + vrows.length, 'Nueva', 50]); renderVin(); vlsm(); };
+  $('v-ex').onclick = () => { vrows = [[10, 'Gestión (switches, APs, SAI)', 120], [20, 'Servidores', 60], [30, 'Puestos cableados', 300], [40, 'Wi-Fi corporativo', 2000], [50, 'Voz IP', 150], [60, 'Impresoras', 40], [70, 'IoT / salas / AV', 200], [80, 'Cámaras', 60], [99, 'Invitados', 600]]; renderVin(); vlsm(); };
+  renderVin(); vlsm();
+
+  // ================= B · BROADCAST =================
+  function bcast() {
+    const n = +$('bc-n').value, p = +$('bc-p').value, sz = +$('bc-s').value, f = +$('bc-f').value / 100;
+    $('bc-n-v').textContent = fmt(n, 0); $('bc-p-v').textContent = fmt(p, 1); $('bc-s-v').textContent = sz; $('bc-f-v').textContent = Math.round(f * 100) + ' %';
+    const rates = [1, 6, 12, 24];
+    const dur = (r) => (r === 1 ? 192 : 20) + 34 + sz * 8 / r; // preámbulo + DIFS aprox + trama
+    const xs = []; for (let k = 50; k <= 4000; k += 50) xs.push(k);
+    const series = rates.map((r, i) => ({ name: 'tasa ' + r + ' Mbps', color: RF.cat(i), data: xs.map((N) => Math.min(100, N * p * (1 - f) * dur(r) / 1e6 * 100)) }));
+    Charts.lineChart($('bc-chart'), { x: xs, series, yMax: 100, height: 260, xLabel: 'Equipos en la VLAN', yLabel: '% tiempo de aire', yFmt: (v, t) => fmt(v, t ? 1 : 0) + ' %', xFmt: (v) => fmt(v, 0), marker: { i: xs.indexOf(n), label: fmt(n, 0) + ' equipos' } });
+    const lines = rates.map((r) => { const v = n * p * (1 - f) * dur(r) / 1e6 * 100; return `  tasa básica ${String(r).padStart(2)} Mbps → ${v > 100 ? '>100' : fmt(v, 1)} % del tiempo de aire de CADA AP ${v > 30 ? '✗' : v > 10 ? '⚠' : '✓'}`; });
+    $('bc-out').textContent = `${fmt(n * p * (1 - f), 0)} tramas de broadcast/multicast por segundo que emiten todos los APs de la VLAN:\n${lines.join('\n')}\nEse tiempo de aire se pierde para los datos de verdad. Con VLAN por planta (÷6) o con supresión del 80–90 %, el problema desaparece.`;
+  }
+  ['bc-n', 'bc-p', 'bc-s', 'bc-f'].forEach((i) => $(i).addEventListener('input', bcast));
+  bcast();
+
+  // ================= C · DHCP =================
+  function dhcp() {
+    const pfx = +$('d-pfx').value, pool = Math.pow(2, 32 - pfx) - 2 - 20, L = +$('d-lease').value;
+    const E = +$('d-emp').value, rnd = +$('d-rnd').value / 100, V = +$('d-vis').value;
+    const stable = Math.round(E * (1 - rnd)), rot = E - stable;
+    const days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+    const work = (d) => d < 5;
+    const hours = [], used = [];
+    // cohortes: [cantidad, inicio, fin, identidadPersistente]
+    const coh = [];
+    for (let d = 0; d < 7; d++) if (work(d)) {
+      coh.push({ n: rot, s: d * 24 + 8, e: d * 24 + 18 });
+      for (let h = 9; h < 17; h++) coh.push({ n: V / 8, s: d * 24 + h, e: d * 24 + h + 2 });
+    }
+    const stableSpans = []; for (let d = -7; d < 7; d++) if (work((d + 7) % 7)) stableSpans.push([d * 24 + 8, d * 24 + 18]);
+    for (let t = 0; t < 168; t++) {
+      let u = 0;
+      if (stableSpans.some(([s, e]) => t >= s && t < e + L)) u += stable;
+      coh.forEach((c) => { if (t >= c.s && t < c.e + L) u += c.n; });
+      // concesiones largas: identidades rotativas y visitas de la semana anterior siguen ocupando
+      if (L > 24) for (let d = -7; d < 0; d++) if (work(d + 7)) { if (t >= d * 24 + 8 && t < d * 24 + 18 + L) u += rot + V; }
+      hours.push(t); used.push(Math.round(u));
+    }
+    const peak = Math.max(...used), over = used.filter((u) => u > pool).length;
+    Charts.lineChart($('d-chart'), { x: hours, series: [{ name: 'Concesiones en uso', color: RF.cat(0), data: used }], hLines: [{ y: pool, label: 'Tamaño del ámbito (' + fmt(pool, 0) + ')', color: RF.cssv('--bad') }], height: 250, area: true, xFmt: (v, i, full) => full ? days[Math.floor(v / 24)] + ' ' + (v % 24) + ':00' : (v % 24 === 0 ? days[v / 24] : (v % 24 === 12 ? '12h' : '')), yLabel: 'direcciones' });
+    let need = 32; while (Math.pow(2, 32 - need) - 22 < peak * 1.2 && need > 8) need--;
+    $('d-out').innerHTML = `Pico: <span class="big">${fmt(peak, 0)}</span> concesiones de ${fmt(pool, 0)} disponibles (${fmt(peak / pool * 100, 0)} %).\n${over ? `✗ ${over} horas a la semana con el ámbito agotado: los dispositivos que llegan se quedan sin IP.` : peak > pool * 0.8 ? '⚠ Por encima del 80 %: sin margen.' : '✓ Hay margen.'}\nSubred mínima recomendable con +20 % de margen: /${need}.\nPrueba a acortar la concesión: con MAC aleatorias y visitas, una concesión de 8 días llena cualquier ámbito.`;
+  }
+  ['d-pfx', 'd-lease', 'd-emp', 'd-rnd', 'd-vis'].forEach((i) => { $(i).addEventListener('input', dhcp); $(i).addEventListener('change', dhcp); });
+  dhcp();
+
+  // ================= D · RECORRIDO / FIREWALL =================
+  const Z = [
+    { k: 'gest', n: 'Gestión (VLAN 10)', wifi: false, fw: false },
+    { k: 'srv', n: 'Servidores (VLAN 20)', wifi: false, fw: false, cpd: true },
+    { k: 'cab', n: 'PC cableado (VLAN 30)', wifi: false, fw: false },
+    { k: 'wifi', n: 'Portátil Wi-Fi corp. (VLAN 40)', wifi: true, fw: false },
+    { k: 'voz', n: 'Teléfono IP (VLAN 50)', wifi: false, fw: false },
+    { k: 'imp', n: 'Impresora (VLAN 60)', wifi: false, fw: false },
+    { k: 'iot', n: 'Pantalla sala / IoT (VLAN 70)', wifi: true, fw: true },
+    { k: 'cam', n: 'Cámara (VLAN 80)', wifi: false, fw: true },
+    { k: 'inv', n: 'Móvil invitado (VLAN 99)', wifi: true, fw: true },
+    { k: 'net', n: 'Internet', wifi: false, fw: true, ext: true },
+  ];
+  const allow = {};
+  const def = {
+    gest: ['gest', 'srv', 'net'], srv: ['srv', 'net', 'imp'], cab: ['srv', 'imp', 'iot', 'net', 'voz'], wifi: ['srv', 'imp', 'iot', 'net'],
+    voz: ['srv', 'net', 'voz'], imp: ['srv'], iot: ['net'], cam: ['srv'], inv: ['net'], net: [],
+  };
+  Z.forEach((a) => { allow[a.k] = {}; Z.forEach((b) => { allow[a.k][b.k] = def[a.k].includes(b.k) || a.k === b.k && !['inv', 'cam', 'iot'].includes(a.k); }); });
+  function renderMatrix() {
+    $('p-matrix').innerHTML = `<thead><tr><th>origen ↓ / destino →</th>${Z.map((z) => `<th title="${z.n}">${z.n.split(' (')[0]}</th>`).join('')}</tr></thead><tbody>` +
+      Z.map((a) => `<tr><th style="text-align:left">${a.n}</th>${Z.map((b) => `<td><input type="checkbox" data-a="${a.k}" data-b="${b.k}" ${allow[a.k][b.k] ? 'checked' : ''}></td>`).join('')}</tr>`).join('') + '</tbody>';
+    $('p-matrix').querySelectorAll('input').forEach((i) => i.onchange = () => { allow[i.dataset.a][i.dataset.b] = i.checked; path(); });
+  }
+  const floors = ['PB', 'P1', 'P2', 'P3', 'P4', 'P5'];
+  $('p-src').innerHTML = Z.filter((z) => !z.ext).map((z) => `<option value="${z.k}">${z.n}</option>`).join('');
+  $('p-dst').innerHTML = Z.map((z) => `<option value="${z.k}" ${z.k === 'srv' ? 'selected' : ''}>${z.n}</option>`).join('');
+  $('p-src').value = 'wifi';
+  ['p-sf', 'p-df'].forEach((id, k) => $(id).innerHTML = floors.map((f, i) => `<option value="${i}" ${i === (k ? 0 : 3) ? 'selected' : ''}>${f}</option>`).join(''));
+  function path() {
+    const s = Z.find((z) => z.k === $('p-src').value), d = Z.find((z) => z.k === $('p-dst').value);
+    const sf = floors[$('p-sf').value], df = floors[$('p-df').value], mode = $('p-mode').value;
+    const hops = [];
+    hops.push(s.n.split(' (')[0]);
+    if (s.wifi) hops.push('AP ' + sf + ' (SSID → VLAN)');
+    hops.push('Switch ' + sf);
+    const same = s.k === d.k;
+    let viaFw = false, verdict, why;
+    if (same && !d.ext) {
+      if (sf !== df) hops.push('Core (L2, misma VLAN)'), hops.push('Switch ' + df);
+      const iso = ['inv', 'cam', 'iot'].includes(s.k) && !allow[s.k][d.k];
+      verdict = iso ? 'no' : 'ok';
+      why = iso ? 'Misma VLAN, pero con aislamiento de clientes / private VLAN: los equipos no se ven entre sí.' : 'Misma VLAN: el tráfico va directo por capa 2. Ni el core enruta ni el firewall lo ve. Por eso es importante no mezclar en una VLAN equipos de distinta confianza.';
+    } else {
+      hops.push('Core L3');
+      viaFw = d.ext || s.fw || d.fw || mode === 'fw';
+      if (viaFw) hops.push('Firewall');
+      if (d.ext) { hops.push('Internet (NAT)'); }
+      else { if (d.cpd) hops.push('Switch CPD'); else hops.push('Switch ' + df); if (d.wifi) hops.push('AP ' + df); }
+      hops.push(d.n.split(' (')[0]);
+      const rule = allow[s.k][d.k];
+      if (viaFw) { verdict = rule ? 'ok' : 'no'; why = rule ? 'El firewall tiene una regla que lo permite (y lo registra e inspecciona).' : 'El firewall lo bloquea: no hay regla que permita ' + s.n + ' → ' + d.n + '.'; }
+      else if (mode === 'core-acl') { verdict = rule ? 'ok' : 'no'; why = rule ? 'Se enruta en el core a velocidad de cable; la ACL lo permite. El firewall no lo inspecciona.' : 'La ACL del core lo bloquea.'; }
+      else { verdict = 'ok'; why = rule ? 'Se enruta en el core sin ACL: pasa (y además estaba permitido).' : '⚠ Debería estar prohibido según la matriz, pero se enruta en el core SIN ACLs: ¡pasa igualmente! El firewall nunca lo ve. Este es el agujero típico de las redes "con VLANs" que en realidad no están segmentadas.'; verdict = rule ? 'ok' : 'mid'; }
+    }
+    const blockAt = verdict === 'no' ? (viaFw ? hops.indexOf('Firewall') : hops.indexOf('Core L3')) : -1;
+    $('p-path').innerHTML = hops.map((h, i) => `<span class="hop ${i === blockAt ? 'block' : ''}">${h}</span>`).join('<span class="arr">→</span>');
+    $('p-out').innerHTML = `<span class="verdict ${verdict}">${verdict === 'ok' ? 'PERMITIDO' : verdict === 'no' ? 'BLOQUEADO' : 'PASA (NO DEBERÍA)'}</span>  ${why}`;
+  }
+  ['p-src', 'p-dst', 'p-sf', 'p-df', 'p-mode'].forEach((i) => $(i).addEventListener('change', path));
+  renderMatrix(); path();
+
+  window.addEventListener('resize', () => { bcast(); dhcp(); });
+  new MutationObserver(() => { bcast(); dhcp(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+})();
+</script>
+</body>
+</html>

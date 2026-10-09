@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mi empresa · La empresa por dentro</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='4' width='26' height='7' rx='2' fill='%232563eb'/><rect x='3' y='13' width='26' height='7' rx='2' fill='%237c3aed'/><rect x='3' y='22' width='26' height='7' rx='2' fill='%23ea580c'/></svg>">
+</head>
+<body data-page="mi-empresa" style="--lvl:#db2777">
+<main><div class="content">
+
+<section class="hero">
+  <span class="lvl-tag">★ MI EMPRESA · NIVEL 3 ALTO</span>
+  <h1>Mi empresa: 6 plantas, 24 APs, ~2.000 dispositivos Wi-Fi</h1>
+  <p class="lead">El caso real, de principio a fin: plano general del edificio y de cada planta con sus 4 puntos de acceso, plan de canales en 3D, vecinos, VLANs y subredes, capacidad del Wi-Fi, qué línea contratar a la operadora, los switches EnGenius, las GPO, cómo montarlo desde cero y todos los problemas (físicos, técnicos y humanos), separando los que resolvemos nosotros de los que no dependen de nosotros.</p>
+  <div class="facts">
+    <span class="chip"><b>6</b> plantas</span>
+    <span class="chip"><b>24</b> APs cableados (4 por planta)</span>
+    <span class="chip"><b>~2.000</b> dispositivos por Wi-Fi</span>
+    <span class="chip">Switches <b>EnGenius</b></span>
+    <span class="chip">Vecinos con Wi-Fi a los lados</span>
+  </div>
+</section>
+
+<h2 id="nivel">Dónde encaja mi empresa</h2>
+<p>Por número de dispositivos, plantas y necesidad de redundancia, la empresa está en un <b>nivel 3 alto</b>, en la frontera con el 4. Todo lo de los niveles anteriores sigue valiendo (es la base) y los niveles superiores marcan hacia dónde crecer:</p>
+<div class="ladder">
+  <a href="nivel-0.html" style="--lvl:var(--l0)"><span class="n">N0</span><span><span class="t">Casa / autónomo</span><br><span class="d">Hereda: contraseñas, MFA, copias 3-2-1, no abrir puertos, Wi-Fi bien colocado.</span></span><span class="p">base</span></a>
+  <a href="nivel-1.html" style="--lvl:var(--l1)"><span class="n">N1</span><span><span class="t">Microempresa</span><br><span class="d">Hereda: rack, cableado estructurado, firewall con dos líneas, primeras VLANs, APs gestionados, PoE.</span></span><span class="p">base</span></a>
+  <a href="nivel-2.html" style="--lvl:var(--l2)"><span class="n">N2</span><span><span class="t">Pequeña empresa</span><br><span class="d">Hereda: cuarto técnico, core L3, Active Directory + GPO, servidores virtualizados, monitorización.</span></span><span class="p">base</span></a>
+  <a href="nivel-3.html" class="here" style="--lvl:#db2777"><span class="n">N3</span><span><span class="t">Mediana empresa <span class="you">★ AQUÍ</span></span><br><span class="d">Lo propio: un IDF por planta, fibra vertical doble, todo duplicado, 802.1X, plan de canales en 3D, DMZ, equipo IT.</span></span><span class="p">tú</span></a>
+  <a href="nivel-4.html" style="--lvl:var(--l4)"><span class="n">N4</span><span><span class="t">Grande multisede</span><br><span class="d">Siguiente paso si se abren sedes: SD-WAN, CPD de respaldo, NOC.</span></span><span class="p">crecer</span></a>
+  <a href="nivel-5.html" style="--lvl:var(--l5)"><span class="n">N5</span><span><span class="t">Multinacional</span><br><span class="d">Para profundizar: Zero Trust completo, SRE, automatización total.</span></span><span class="p">profundizar</span></a>
+</div>
+
+<h2 id="supuestos">Datos de partida y supuestos</h2>
+<div class="two">
+<div class="card"><h4>Lo que sabemos</h4><ul class="small">
+<li>Edificio de <b>6 plantas</b> (PB + 5).</li>
+<li><b>4 puntos de acceso por planta</b> (24 en total), todos conectados por cable.</li>
+<li>Unos <b>2.000 dispositivos</b>, la mayoría por Wi-Fi.</li>
+<li>Switches <b>EnGenius</b>.</li>
+<li>Hay <b>vecinos con sus redes Wi-Fi</b> alrededor.</li>
+</ul></div>
+<div class="card"><h4>Lo que suponemos (ajústalo)</h4><ul class="small">
+<li>Planta de <b>40 × 24 m</b> (≈ 960 m²), 3,5 m entre forjados.</li>
+<li>Fachadas norte y sur de <b>vidrio bajo emisivo</b>; medianeras este y oeste de <b>ladrillo</b> pegadas a edificios vecinos.</li>
+<li>Núcleo central con ascensor (metal), escalera (hormigón) y el <b>IDF</b> de cada planta.</li>
+<li>~900 personas (≈ 2,2 dispositivos cada una: portátil + móvil + algo más).</li>
+<li>APs Wi-Fi 6 de doble banda; CPD/MDF en planta baja.</li>
+</ul></div>
+</div>
+<div class="callout"><span class="t">Todo es editable</span>Los planos de planta de esta página son simuladores: puedes mover los APs, cambiar canales y potencias y medir punto a punto. Si tu edificio tiene otras medidas o materiales, dibújalo en el <a href="laboratorio.html">laboratorio</a> (escenario "Vacío").</div>
+
+<h2 id="general">Plano general del edificio</h2>
+<figure class="diagram">
+<svg viewBox="0 0 900 600" role="img" aria-label="Sección del edificio de 6 plantas con IDFs, fibra vertical y vecinos">
+  <!-- vecinos -->
+  <rect x="10" y="150" width="130" height="430" class="zonef"/>
+  <text x="75" y="140" text-anchor="middle" class="b">Edificio vecino O</text>
+  <text x="75" y="172" text-anchor="middle" class="s">viviendas</text>
+  <rect x="760" y="70" width="130" height="510" class="zonef"/>
+  <text x="825" y="60" text-anchor="middle" class="b">Edificio vecino E</text>
+  <text x="825" y="92" text-anchor="middle" class="s">oficinas</text>
+  <g class="s">
+    <text x="22" y="230">📶 ch1 · ch36/80</text><text x="22" y="320">📶 ch6 · ch100/80</text><text x="22" y="410">📶 ch3 (!)</text><text x="22" y="500">📶 ch11 · ch44/80</text>
+    <text x="775" y="150">📶 ch11 · ch44/40</text><text x="775" y="250">📶 ch1 · ch116/40</text><text x="775" y="350">📶 ch6 · ch52/40</text><text x="775" y="450">📶 ch9 (!)</text>
+  </g>
+  <!-- edificio -->
+  <rect x="160" y="40" width="580" height="540" fill="none" stroke="var(--d-stroke)" stroke-width="3"/>
+  <g stroke="var(--d-stroke)" stroke-width="2"><path d="M160 130 H740 M160 220 H740 M160 310 H740 M160 400 H740 M160 490 H740"/></g>
+  <g class="b"><text x="172" y="62">P5 · Dirección</text><text x="172" y="152">P4 · Despachos</text><text x="172" y="242">P3 · Open space</text><text x="172" y="332">P2 · Open space</text><text x="172" y="422">P1 · Open space</text><text x="172" y="512">PB · Recepción · cafetería · sala</text></g>
+  <!-- APs por planta -->
+  <g>
+<circle cx="240" cy="100" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="350" cy="100" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="560" cy="100" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="670" cy="100" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/>
+<circle cx="240" cy="190" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="350" cy="190" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="560" cy="190" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="670" cy="190" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/>
+<circle cx="240" cy="280" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="350" cy="280" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="560" cy="280" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="670" cy="280" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/>
+<circle cx="240" cy="370" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="350" cy="370" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="560" cy="370" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="670" cy="370" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/>
+<circle cx="240" cy="460" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="350" cy="460" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="560" cy="460" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="670" cy="460" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/>
+<circle cx="240" cy="550" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="350" cy="550" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="560" cy="550" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/><circle cx="670" cy="550" r="9" class="bx" style="stroke:var(--d-wifi);stroke-width:2.5"/>
+  </g>
+  <!-- núcleo e IDFs -->
+  <rect x="420" y="40" width="70" height="540" class="zonef" style="stroke:var(--l3)"/>
+  <text x="455" y="595" text-anchor="middle" class="s">núcleo: ascensor · escalera · patinillo</text>
+  <g>
+    <rect x="495" y="88" width="48" height="26" rx="4" class="bx" style="stroke:var(--l3);stroke-width:2"/><text x="519" y="105" text-anchor="middle" class="b" font-size="11">IDF5</text>
+    <rect x="495" y="178" width="48" height="26" rx="4" class="bx" style="stroke:var(--l3);stroke-width:2"/><text x="519" y="195" text-anchor="middle" class="b" font-size="11">IDF4</text>
+    <rect x="495" y="268" width="48" height="26" rx="4" class="bx" style="stroke:var(--l3);stroke-width:2"/><text x="519" y="285" text-anchor="middle" class="b" font-size="11">IDF3</text>
+    <rect x="495" y="358" width="48" height="26" rx="4" class="bx" style="stroke:var(--l3);stroke-width:2"/><text x="519" y="375" text-anchor="middle" class="b" font-size="11">IDF2</text>
+    <rect x="495" y="448" width="48" height="26" rx="4" class="bx" style="stroke:var(--l3);stroke-width:2"/><text x="519" y="465" text-anchor="middle" class="b" font-size="11">IDF1</text>
+    <rect x="495" y="520" width="110" height="50" rx="4" class="bx" style="stroke:var(--l3);stroke-width:3"/><text x="550" y="541" text-anchor="middle" class="b" font-size="11">MDF / CPD</text><text x="550" y="557" text-anchor="middle" class="s">core · firewalls · servidores</text>
+  </g>
+  <!-- fibra vertical: dos rutas -->
+  <path d="M435 101 V545 H495" class="fib" stroke-width="3"/>
+  <path d="M475 101 V535 H495" class="fib" stroke-width="3" stroke-dasharray="8 4"/>
+  <path d="M435 101 H495 M435 191 H495 M435 281 H495 M435 371 H495 M435 461 H495" class="fib"/>
+  <path d="M475 108 H495 M475 198 H495 M475 288 H495 M475 378 H495 M475 468 H495" class="fib" stroke-dasharray="8 4"/>
+  <!-- PB IDF -->
+  
+  <!-- ISPs -->
+  <path d="M160 560 H100 V600" class="wan"/><text x="104" y="596" class="s" font-size="10">ISP A · fachada O</text>
+  <path d="M605 560 H740 V600" class="wan"/><text x="745" y="598" class="s" font-size="10">ISP B · fachada E</text>
+  <path d="M160 560 H495" class="wan"/>
+  <!-- calle -->
+  <text x="450" y="28" text-anchor="middle" class="s">cubierta: posible antena 5G de respaldo · pararrayos</text>
+</svg>
+<div class="legend">
+  <span><i style="border-color:var(--d-fiber)"></i>Fibra vertical OS2, ruta A</span>
+  <span><i class="dash" style="border-color:var(--d-fiber)"></i>Ruta B (redundante)</span>
+  <span><i style="border-color:var(--d-wan)"></i>Operadoras por fachadas distintas</span>
+  <span>○ AP en techo (4 por planta)</span>
+</div>
+<figcaption>Sección vertical. Cada planta tiene su IDF en el núcleo (apilados), con un switch EnGenius PoE que alimenta los 4 APs y los puestos de la planta. Dos fibras por planta suben por rutas distintas hasta el core del MDF. Los vecinos emiten a través de las medianeras.</figcaption>
+</figure>
+
+<h3>Diagrama lógico</h3>
+<figure class="diagram">
+<svg viewBox="0 0 900 470" role="img" aria-label="Red lógica de la empresa">
+  <ellipse cx="300" cy="35" rx="70" ry="22" class="bx2"/><text x="300" y="40" text-anchor="middle" class="b">ISP A (principal)</text>
+  <ellipse cx="600" cy="35" rx="70" ry="22" class="bx2"/><text x="600" y="40" text-anchor="middle" class="b">ISP B (respaldo)</text>
+  <path d="M300 57 V90 M600 57 V90" class="wan flow"/>
+  <rect x="240" y="90" width="420" height="52" rx="8" class="bx" style="stroke:var(--bad);stroke-width:2"/>
+  <text x="450" y="112" text-anchor="middle" class="b">Firewalls NGFW en alta disponibilidad (activo/pasivo)</text>
+  <text x="450" y="130" text-anchor="middle" class="s">SD-WAN · VPN/ZTNA · IPS · gateway de Invitados, IoT y Cámaras</text>
+  <path d="M450 142 V170" class="fib" stroke-width="3"/>
+  <rect x="300" y="170" width="300" height="50" rx="8" class="bx" style="stroke:var(--l3);stroke-width:2"/>
+  <text x="450" y="192" text-anchor="middle" class="b">Core L3 (2 switches en stack/MLAG)</text>
+  <text x="450" y="209" text-anchor="middle" class="s">SVIs de VLANs internas · DHCP relay · raíz STP</text>
+  <!-- servidores -->
+  <path d="M600 195 H660" class="fib"/>
+  <rect x="660" y="160" width="230" height="110" rx="8" class="zonef" style="stroke:var(--l3)"/>
+  <text x="775" y="180" text-anchor="middle" class="b">VLAN 20 · Servidores</text>
+  <text x="675" y="200" class="s">DC1 / DC2: AD, DNS, GPO</text>
+  <text x="675" y="217" class="s">DHCP en failover</text>
+  <text x="675" y="234" class="s">NPS / RADIUS (802.1X Wi-Fi)</text>
+  <text x="675" y="251" class="s">Ficheros, impresión, backup</text>
+  <path d="M150 195 H300" class="vpn"/>
+  <rect x="10" y="170" width="140" height="50" rx="25" class="bx2"/><text x="80" y="192" text-anchor="middle" class="b">EnGenius Cloud</text><text x="80" y="208" text-anchor="middle" class="s">gestión por Internet</text>
+  <!-- switches de planta -->
+  <g>
+    <path d="M330 220 L80 290 M370 220 L230 290 M410 220 L380 290 M490 220 L530 290 M530 220 L680 290 M570 220 L830 290" class="fib"/>
+    <rect x="30" y="290" width="100" height="40" rx="6" class="bx"/><text x="80" y="308" text-anchor="middle" class="b" font-size="12">EnGenius PB</text><text x="80" y="323" text-anchor="middle" class="s">48p PoE+</text>
+    <rect x="180" y="290" width="100" height="40" rx="6" class="bx"/><text x="230" y="308" text-anchor="middle" class="b" font-size="12">EnGenius P1</text><text x="230" y="323" text-anchor="middle" class="s">48p PoE+</text>
+    <rect x="330" y="290" width="100" height="40" rx="6" class="bx"/><text x="380" y="308" text-anchor="middle" class="b" font-size="12">EnGenius P2</text><text x="380" y="323" text-anchor="middle" class="s">48p PoE+</text>
+    <rect x="480" y="290" width="100" height="40" rx="6" class="bx"/><text x="530" y="308" text-anchor="middle" class="b" font-size="12">EnGenius P3</text><text x="530" y="323" text-anchor="middle" class="s">48p PoE+</text>
+    <rect x="630" y="290" width="100" height="40" rx="6" class="bx"/><text x="680" y="308" text-anchor="middle" class="b" font-size="12">EnGenius P4</text><text x="680" y="323" text-anchor="middle" class="s">48p PoE+</text>
+    <rect x="780" y="290" width="100" height="40" rx="6" class="bx"/><text x="830" y="308" text-anchor="middle" class="b" font-size="12">EnGenius P5</text><text x="830" y="323" text-anchor="middle" class="s">48p PoE+</text>
+    <text x="450" y="262" text-anchor="middle" class="s">2 × 10 Gb por planta (fibra, LACP, rutas distintas)</text>
+  </g>
+  <g>
+    <path d="M55 330 V360 M70 330 V360 M90 330 V360 M105 330 V360" class="cu"/>
+    <circle cx="55" cy="368" r="7" class="bx" style="stroke:var(--d-wifi);stroke-width:2"/><circle cx="70" cy="368" r="7" class="bx" style="stroke:var(--d-wifi);stroke-width:2"/><circle cx="90" cy="368" r="7" class="bx" style="stroke:var(--d-wifi);stroke-width:2"/><circle cx="105" cy="368" r="7" class="bx" style="stroke:var(--d-wifi);stroke-width:2"/>
+    <text x="80" y="392" text-anchor="middle" class="s">4 APs (trunk)</text>
+  </g>
+  <text x="450" y="368" text-anchor="middle" class="s">… igual en cada planta: 4 APs por cable Cat 6A, PoE+, puerto en modo trunk</text>
+  <rect x="140" y="410" width="620" height="50" rx="8" class="bx2"/>
+  <text x="450" y="430" text-anchor="middle" class="b">"Empresa" 802.1X → VLAN 40 · "Empresa-IoT" → 70 · "Invitados" → 99</text>
+  <text x="450" y="448" text-anchor="middle" class="s">Máximo 3 SSIDs para no malgastar tiempo de aire en balizas</text>
+</svg>
+</figure>
+
+<h2 id="plantas">Plano de cada planta</h2>
+<p>Elige planta. Cada plano es un simulador: pasa el ratón para medir y ver el espectro en ese punto (como con inSSIDer/Acrylic), arrastra los APs, cambia sus canales y activa o desactiva los vecinos y las plantas contiguas (los APs de arriba y de abajo que se cuelan por el forjado).</p>
+<div class="filter" id="floor-tabs"></div>
+<div id="floor-desc"></div>
+<div id="floor-sim"></div>
+<div class="table-wrap"><table class="tight" id="floor-table"></table></div>
+
+<h2 id="canales">Plan de canales en 3D</h2>
+<p>Con 24 APs y 2.000 clientes, la clave es <b>no repetir canal entre APs que se oyen</b>, ni en horizontal ni en vertical. Por eso:</p>
+<ul>
+<li><b>5 GHz a 20 MHz</b>: en la UE hay 19 canales de 20 MHz; quitando 120–128 (radar meteorológico, espera de 10 min) quedan 16. Con 4 APs por planta, <b>4 plantas seguidas usan canales distintos</b> y el patrón se repite cada 4 plantas (4 forjados ≈ 80 dB de separación).</li>
+<li><b>2,4 GHz solo en 2 APs por planta</b> (en diagonal) a baja potencia, en 1/6/11 alternando. Con 4 radios por planta en 2,4 GHz se interferirían todas entre sí y con los vecinos. Esa banda queda para dispositivos antiguos e IoT.</li>
+<li><b>6 GHz</b> (si los APs son Wi-Fi 6E/7): canales de 80 MHz para portátiles y móviles recientes. Hay 6 canales de 80 MHz, de sobra porque esta banda atraviesa peor los forjados.</li>
+</ul>
+<div class="table-wrap"><table id="chan-table"></table></div>
+<p class="small muted">En amarillo, canales DFS (52–140): si un radar obliga a abandonar el canal, el AP salta a otro. Revisa los eventos de radar en EnGenius Cloud las primeras semanas y quita del plan los que salten a menudo. Los dispositivos que no soportan DFS siguen teniendo los canales 36–48 en las plantas donde se usan.</p>
+
+<h2 id="capacidad">Capacidad: ¿bastan 24 APs para 2.000 dispositivos?</h2>
+<p>La cobertura de 4 APs por planta de ~1.000 m² suele ser suficiente; lo que hay que comprobar es la <b>capacidad</b>. 2.000 dispositivos entre 24 APs son ~83 por AP. Ajusta los supuestos:</p>
+<div class="calc">
+  <div class="row">
+    <label>Dispositivos Wi-Fi<input type="number" id="k-dev" value="2000"></label>
+    <label>APs<input type="number" id="k-ap" value="24"></label>
+    <label>% transmitiendo a la vez en hora punta<input type="number" id="k-act" value="30"></label>
+    <label>Demanda por dispositivo activo (Mbps)<input type="number" id="k-dem" value="4" step="0.5"></label>
+    <label>Ancho de canal 5 GHz<select id="k-w"><option>20</option><option>40</option><option>80</option></select></label>
+    <label>Generación de APs y clientes<select id="k-std"><option value="ax">Wi-Fi 6</option><option value="ac">Wi-Fi 5</option></select></label>
+  </div>
+  <canvas class="chart" id="k-chart"></canvas>
+  <div class="out" id="k-out"></div>
+</div>
+<p class="small muted">Capacidad útil por AP estimada: radio 5 GHz a MCS 7 medio con 2 flujos × 60 % de eficiencia (Wi-Fi 6 suma +25 % por OFDMA en alta densidad) + radio 2,4 GHz en la mitad de los APs. Es una aproximación para decidir; la medición real se hace con un survey activo.</p>
+
+<h2 id="vlans">VLANs y subredes de mi empresa</h2>
+<p>Bloque de la sede: <code>10.42.0.0/16</code> (poco común, para no chocar con las redes de casa de quien se conecta por VPN). El número de VLAN coincide con el tercer octeto siempre que se puede.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>VLAN</th><th>Nombre</th><th>Subred</th><th class="num">Capacidad</th><th>Puerta de enlace</th><th>Dónde se enruta</th><th>Notas</th></tr></thead>
+<tbody>
+<tr><td>10</td><td>Gestión</td><td class="mono">10.42.10.0/24</td><td class="num">254</td><td>Core</td><td>Core (ACL: solo IT)</td><td>Switches EnGenius, APs (VLAN nativa del trunk de AP), SAI, iDRAC.</td></tr>
+<tr><td>20</td><td>Servidores</td><td class="mono">10.42.20.0/24</td><td class="num">254</td><td>Core</td><td>Core</td><td>DC, DNS, DHCP, NPS, ficheros.</td></tr>
+<tr><td>30</td><td>Puestos cableados</td><td class="mono">10.42.30.0/23</td><td class="num">510</td><td>Core</td><td>Core</td><td>PCs fijos y salas.</td></tr>
+<tr><td><b>40</b></td><td><b>Wi-Fi corporativo (opción A: edificio)</b></td><td class="mono">10.42.64.0/20</td><td class="num">4.094</td><td>Core</td><td>Core</td><td>Una VLAN en los 24 APs. Roaming entre plantas sin cambiar IP. Requiere proxy ARP / multicast→unicast / filtro de broadcast en los APs.</td></tr>
+<tr><td><b>41–46</b></td><td><b>Wi-Fi corporativo (opción B: por planta)</b></td><td class="mono">10.42.64.0/22 … 10.42.84.0/22</td><td class="num">1.022 c/u</td><td>Core</td><td>Core</td><td>Una /22 por planta (≈330 dispositivos × 2 de margen + visitas internas). Broadcast ÷6, pero al cambiar de planta cambia la IP.</td></tr>
+<tr><td>50</td><td>Voz IP</td><td class="mono">10.42.50.0/24</td><td class="num">254</td><td>Core</td><td>Core</td><td>QoS (DSCP EF / PCP 5).</td></tr>
+<tr><td>60</td><td>Impresoras</td><td class="mono">10.42.60.0/25</td><td class="num">126</td><td>Core</td><td>Core (ACL)</td><td>Solo reciben de usuarios y del servidor de impresión.</td></tr>
+<tr><td>70</td><td>IoT / salas / AV</td><td class="mono">10.42.70.0/24</td><td class="num">254</td><td>Firewall</td><td>Firewall</td><td>Pantallas, Chromecast/AirPlay (con pasarela mDNS), sensores.</td></tr>
+<tr><td>80</td><td>Cámaras</td><td class="mono">10.42.80.0/24</td><td class="num">254</td><td>Firewall</td><td>Firewall</td><td>Sin Internet. Solo hacia el grabador.</td></tr>
+<tr><td>99</td><td>Invitados</td><td class="mono">172.20.0.0/20</td><td class="num">4.094</td><td>Firewall</td><td>Firewall</td><td>Solo Internet, aislamiento de clientes, concesión DHCP de 2 h, límite de velocidad por cliente.</td></tr>
+<tr><td>999</td><td>Nativa "aparcamiento"</td><td>—</td><td class="num">—</td><td>—</td><td>—</td><td>VLAN vacía como nativa en los enlaces entre switches.</td></tr>
+</tbody></table></div>
+<div class="callout ok"><span class="t">Recomendación para la VLAN Wi-Fi</span>Si los APs soportan <b>proxy ARP</b> (o ARP suppression), <b>multicast-to-unicast</b> y filtrado de broadcast, la <b>opción A</b> (una VLAN /20 para todo el edificio) da la mejor experiencia: la gente se mueve entre plantas con llamadas activas. Si no lo soportan, la <b>opción B</b> (VLAN por planta): con 2.000 dispositivos en una VLAN sin supresión, el broadcast puede comerse una parte enorme del tiempo de aire de cada AP. Compruébalo con el <a href="laboratorio.html#logico">simulador de broadcast</a> (2.000 equipos frente a 330). Con la opción A, plan B para fallos: dividir en 2–3 VLANs por grupos de plantas.</div>
+<h3>Cómo se configura el puerto de un AP</h3>
+<pre><code>Puerto 41-44 del EnGenius de cada planta  →  perfil "AP-Trunk"
+  Modo:            trunk
+  VLAN nativa:     10  (gestión: el AP obtiene su IP aquí y habla con EnGenius Cloud)
+  VLANs etiquetadas: 40 (o 41-46 según planta), 70, 99
+  PoE:             802.3at (PoE+), prioridad alta
+  STP:             edge/portfast, BPDU guard desactivado en trunk de AP
+SSID "Empresa"     → VLAN 40 · WPA2/WPA3-Enterprise · RADIUS = NPS (10.42.20.15) · 802.11k/v/r
+SSID "Empresa-IoT" → VLAN 70 · WPA2-PSK · solo 2,4/5 GHz · aislamiento de clientes
+SSID "Invitados"   → VLAN 99 · portal cautivo / OWE · aislamiento · límite 20 Mbps por cliente</code></pre>
+
+<h2 id="internet">Qué plan contratar al proveedor de Internet</h2>
+<p>El ancho de banda se dimensiona por <b>personas y uso a la vez</b>, no por dispositivos: muchos de los 2.000 están casi parados (el móvil en el bolsillo). Ajusta el perfil:</p>
+<div class="calc">
+  <div class="row">
+    <label>Personas en el edificio<input type="number" id="i-ppl" value="900"></label>
+    <label>% en videollamada en el pico<input type="number" id="i-vid" value="25"></label>
+    <label>Mbps por videollamada<input type="number" id="i-vm" value="3" step="0.5"></label>
+    <label>Mbps resto de uso por persona<input type="number" id="i-base" value="1.2" step="0.1"></label>
+    <label>Invitados a la vez (máx.)<input type="number" id="i-gst" value="60"></label>
+    <label>Actualizaciones / copias en horario<select id="i-upd"><option value="0.15">Escalonadas + caché (Delivery Optimization)</option><option value="0.5" selected>Algo de control</option><option value="1">Sin control</option></select></label>
+  </div>
+  <canvas class="chart" id="i-chart"></canvas>
+  <div class="out" id="i-out"></div>
+</div>
+<h3>Qué exigir en el contrato (más importante que los megas)</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Requisito</th><th>Por qué</th></tr></thead>
+<tbody>
+<tr><td><b>Fibra profesional / dedicada</b> con caudal garantizado</td><td>La FTTH residencial comparte el árbol GPON con los vecinos; la dedicada garantiza el caudal en ambos sentidos.</td></tr>
+<tr><td><b>Simétrica</b></td><td>Videollamadas, subida a la nube, copias de seguridad y VPN usan la subida tanto como la bajada.</td></tr>
+<tr><td><b>SLA</b>: disponibilidad ≥ 99,9 %, reparación en 4–8 h, soporte 24×7, penalizaciones</td><td>Una caída con 900 personas cuesta miles de euros por hora.</td></tr>
+<tr><td><b>Dos operadores distintos</b>, entrada por <b>fachadas y centrales distintas</b> (diversidad de ruta, por escrito)</td><td>Si las dos fibras van por la misma zanja, una obra las corta a la vez.</td></tr>
+<tr><td><b>IP fijas</b> (bloque /29 o /28) y sin CGNAT</td><td>VPN, publicación de servicios, listas blancas de proveedores.</td></tr>
+<tr><td>Router de la operadora en modo <b>bridge</b> o entrega en Ethernet/fibra directa al firewall</td><td>Que el control (NAT, reglas, QoS) esté en tu firewall, no en el router de la operadora.</td></tr>
+<tr><td>Escalabilidad sin cambio de equipo (1 → 10 Gb)</td><td>Ampliar en días, no en meses.</td></tr>
+<tr><td>Opcional: BGP con IPs propias</td><td>Si los servicios publicados son críticos y se quiere conmutar entre operadores sin cambiar de IP (más propio de N4).</td></tr>
+</tbody></table></div>
+<div class="callout warn"><span class="t">Comprueba también el firewall</span>Contratar 10 Gb no sirve si el firewall solo inspecciona 2 Gb con IPS y antivirus activados. Mira en la ficha el <b>"Threat Protection throughput"</b> (no el máximo de cortafuegos) y dimensiona con margen (×1,5 del pico).</div>
+
+<h2 id="engenius">Switches EnGenius y configuración de la red</h2>
+<p>EnGenius tiene switches gestionados en la nube (<b>EnGenius Cloud</b>, serie ECS) y en local (serie Fit/EWS), y APs que se gestionan desde la misma plataforma. Para cada planta lo típico es un switch de <b>48 puertos PoE+ con 4 uplinks SFP+ de 10 Gb</b> (comprueba en la ficha el <b>presupuesto PoE</b> del modelo concreto; varía mucho de un modelo a otro).</p>
+<div class="calc">
+  <h3 id="poe-planta">Presupuesto PoE de un IDF</h3>
+  <div class="row">
+    <label>Presupuesto PoE del switch (W)<input type="number" id="e-bud" value="410"></label>
+    <label>APs (W cada uno)<input type="number" id="e-apw" value="22"></label>
+    <label>Nº APs<input type="number" id="e-ap" value="4"></label>
+    <label>Teléfonos IP (W)<input type="number" id="e-telw" value="5"></label>
+    <label>Nº teléfonos<input type="number" id="e-tel" value="20"></label>
+    <label>Cámaras (W)<input type="number" id="e-camw" value="8"></label>
+    <label>Nº cámaras<input type="number" id="e-cam" value="3"></label>
+  </div>
+  <div class="out" id="e-out"></div>
+</div>
+<h3>Lista de comprobación de configuración</h3>
+<div class="two">
+<div class="card"><h4>Switches (EnGenius Cloud)</h4>
+<ul class="check small">
+<li>Organización → red "Sede" → añadir switches por número de serie y nombrarlos <code>SW-P0</code>…<code>SW-P5</code>.</li>
+<li>Crear VLANs 10, 20, 30, 40/41–46, 50, 60, 70, 80, 99, 999.</li>
+<li><b>Perfiles de puerto</b>: "Usuario" (access 30 + voz 50), "AP-Trunk", "Uplink" (trunk, nativa 999), "Impresora" (access 60), "Cámara" (access 80).</li>
+<li>Uplinks: 2 puertos SFP+ en <b>LACP</b> hacia el core (cada fibra por una ruta).</li>
+<li>VLAN de gestión 10 con IP fija por switch.</li>
+<li><b>RSTP/MSTP</b> activado; el core es la raíz (prioridad baja). <b>Loop protection</b> y <b>BPDU guard</b> en puertos de usuario.</li>
+<li><b>Storm control</b> de broadcast/multicast en puertos de usuario.</li>
+<li><b>IGMP snooping</b> para que el multicast no inunde todo.</li>
+<li><b>LLDP/LLDP-MED</b> para teléfonos (anuncia la VLAN de voz).</li>
+<li><b>PoE</b>: prioridad alta para APs; programación de PoE si se quiere apagar teléfonos de noche.</li>
+<li>Syslog/SNMP hacia la monitorización; alertas por correo o app.</li>
+<li>Actualización de firmware programada fuera de horario, <b>planta a planta</b>, nunca todas a la vez.</li>
+</ul></div>
+<div class="card"><h4>APs y SSIDs</h4>
+<ul class="check small">
+<li>País = España. Canales y potencias <b>fijos</b> según el plan (o automáticos con rango limitado y revisados).</li>
+<li>5 GHz: 20 MHz, potencia 12–17 dBm. 2,4 GHz: solo 2 APs por planta, 6–10 dBm.</li>
+<li>Tasas mínimas: desactivar 1–11 Mbps (mínimo 12 o 24 Mbps).</li>
+<li>Band steering hacia 5/6 GHz. 802.11k/v/r activados en "Empresa".</li>
+<li>RSSI mínimo moderado (p. ej. −75 dBm) para evitar clientes pegajosos.</li>
+<li>Máximo 3 SSIDs. Ocultar el SSID no aporta seguridad.</li>
+<li>Invitados: aislamiento de clientes, límite por cliente, portal con condiciones de uso.</li>
+<li>Proxy ARP / multicast→unicast / filtro de broadcast si están disponibles (clave para la opción A).</li>
+<li>Detección de APs falsos (rogue AP) activada.</li>
+<li>Tras cambios: medir con Acrylic/inSSIDer planta por planta y un survey activo.</li>
+</ul></div>
+</div>
+<p class="small muted">Si EnGenius Cloud deja de estar accesible (corte de Internet o incidencia de la plataforma), los equipos siguen funcionando con la última configuración; lo que se pierde es poder cambiarla y ver la monitorización mientras dura.</p>
+
+<h3>Cableado de los APs: distancias</h3>
+<p>Cada AP debe quedar a menos de 90 m de cable del IDF de su planta (incluidas las subidas y bajadas al techo). En la tabla de cada planta de arriba verás la longitud estimada de cada cable.</p>
+
+<h2 id="puestos">Puestos, directorio y GPO</h2>
+<ul>
+<li>Portátiles unidos a <b>Active Directory + Entra ID</b> (híbrido) y gestionados por <b>GPO</b> e Intune.</li>
+<li>El <b>perfil Wi-Fi "Empresa" se reparte por GPO</b> con 802.1X y certificado de equipo: el portátil se conecta solo, antes de iniciar sesión, en cualquier planta. Detalle en <a href="gpo.html">Active Directory y GPO</a>.</li>
+<li>GPO de <b>Optimización de distribución</b> por planta: los PCs comparten actualizaciones entre sí y no saturan Internet.</li>
+<li>GPO para desactivar <b>LLMNR/NetBIOS</b> y ajustar el ahorro de energía de la tarjeta Wi-Fi.</li>
+<li>Móviles corporativos con Intune (perfil Wi-Fi y certificado SCEP). Móviles personales a "Invitados" o a una VLAN BYOD con acceso limitado.</li>
+</ul>
+
+<h2 id="cero">Cómo montarlo desde cero</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Fase</th><th>Qué se hace</th><th>Entregable</th><th>Semanas</th></tr></thead>
+<tbody>
+<tr><td>1. Auditoría</td><td>Inventario de dispositivos, usuarios por planta, aplicaciones, contratos; <b>survey pasivo</b> con Acrylic/inSSIDer en cada planta (vecinos, canales, ruido); fotos del núcleo y patinillos.</td><td>Informe de situación</td><td class="num">1–2</td></tr>
+<tr><td>2. Diseño</td><td>Plan de VLANs e IP, SSIDs, plan de canales 3D, nº y ubicación de APs (predictivo), cableado, PoE, energía, presupuesto.</td><td>Documento de diseño + planos</td><td class="num">2</td></tr>
+<tr><td>3. Contratación</td><td>Operadoras (¡plazo de alta largo: pedir el primer día!), hardware, instalador de cableado, licencias.</td><td>Pedidos</td><td class="num">4–12</td></tr>
+<tr><td>4. Obra física</td><td>IDFs (ventilación, enchufe con SAI, cerradura), fibra vertical doble, sellado cortafuegos de pasos de forjado, cableado Cat 6A certificado a cada AP y roseta, etiquetado.</td><td>Certificados de cableado</td><td class="num">3–6</td></tr>
+<tr><td>5. Núcleo</td><td>Firewalls HA, core, servidores (DC, DNS, DHCP, NPS), CA interna.</td><td>Núcleo operativo</td><td class="num">1–2</td></tr>
+<tr><td>6. Plantas</td><td>Switches EnGenius por planta con perfiles de puerto; APs con SSIDs y canales del plan.</td><td>Red por planta</td><td class="num">1 por planta</td></tr>
+<tr><td>7. Puestos</td><td>GPO/Intune: perfil Wi-Fi 802.1X, certificados, actualizaciones; migración de usuarios por plantas.</td><td>Usuarios migrados</td><td class="num">2–4</td></tr>
+<tr><td>8. Validación</td><td><b>Survey de validación</b> (señal, SINR, solapes), survey activo (iperf3, roaming entre plantas, llamada Teams caminando), prueba de caída de una operadora, de un firewall, de una fibra vertical.</td><td>Informe de pruebas</td><td class="num">1</td></tr>
+<tr><td>9. Documentación</td><td>Planos finales, mapa de puertos, IPAM, contraseñas en bóveda, contratos y teléfonos de soporte, procedimientos.</td><td>Carpeta de red</td><td class="num">1</td></tr>
+<tr><td>10. Operación</td><td>Monitorización y alertas, revisión mensual de eventos DFS y utilización de canal, firmware trimestral, revisión anual del diseño.</td><td>Rutina</td><td class="num">continuo</td></tr>
+</tbody></table></div>
+
+<h2 id="problemas">Problemas: quién los resuelve</h2>
+<div class="filter" data-filter-for="me-probs">
+  <input type="search" placeholder="Buscar: vecinos, DFS, ascensor, privacidad…">
+  <button data-tag="all" class="on">Todos</button>
+  <button data-tag="fis">Físicos</button>
+  <button data-tag="tec">Técnicos</button>
+  <button data-tag="hum">Humanos, éticos y legales</button>
+  <button data-tag="si">Los resolvemos nosotros</button>
+  <button data-tag="no">No dependen de nosotros</button>
+</div>
+<div class="table-wrap"><table id="me-probs">
+<thead><tr><th>Problema</th><th>Tipo</th><th>¿Nosotros?</th><th>Quién</th><th>Qué hacer</th></tr></thead>
+<tbody>
+<tr data-tags="fis si"><td>Wi-Fi débil junto al ascensor y la escalera</td><td>Físico</td><td><span class="verdict ok">Sí</span></td><td><span class="who int">Redes</span></td><td>El núcleo es metal y hormigón: ajustar posición de APs o añadir uno pequeño en esa zona.</td></tr>
+<tr data-tags="fis si"><td>Los APs de una planta interfieren con los de la de arriba</td><td>Físico</td><td><span class="verdict ok">Sí</span></td><td><span class="who int">Redes</span></td><td>Plan de canales 3D, APs escalonados entre plantas, potencia moderada.</td></tr>
+<tr data-tags="fis si"><td>Un IDF se calienta en verano</td><td>Físico</td><td><span class="verdict mid">En parte</span></td><td><span class="who mix">IT + mantenimiento</span></td><td>Ventilación forzada o rejilla, sensor de temperatura con alerta, no guardar cajas dentro.</td></tr>
+<tr data-tags="fis no"><td>Gotera de la planta de arriba sobre el IDF</td><td>Físico</td><td><span class="verdict no">No</span></td><td><span class="who ext">Propiedad / mantenimiento</span></td><td>Avisar a la propiedad; mientras, proteger el rack. En el diseño: IDF lejos de baños y bajantes.</td></tr>
+<tr data-tags="fis no"><td>Pasar cables por el patinillo requiere permiso</td><td>Físico</td><td><span class="verdict no">No</span></td><td><span class="who dir">Propiedad / comunidad</span></td><td>Pedir autorización por escrito; cumplir el sellado cortafuegos (normativa contra incendios).</td></tr>
+<tr data-tags="fis si"><td>El personal de limpieza desenchufa el switch de una planta</td><td>Físico / humano</td><td><span class="verdict ok">Sí</span></td><td><span class="who int">IT + servicios generales</span></td><td>IDF cerrado con llave, enchufes del SAI sin acceso, etiqueta "NO DESENCHUFAR".</td></tr>
+<tr data-tags="fis no"><td>Corte de luz en el edificio</td><td>Físico</td><td><span class="verdict no">No</span></td><td><span class="who ext">Distribuidora eléctrica</span></td><td>SAI en cada IDF (15–30 min) y en el MDF; apagado ordenado; generador si el negocio lo exige.</td></tr>
+<tr data-tags="fis no"><td>Una obra en la calle corta la fibra</td><td>Físico</td><td><span class="verdict no">No</span></td><td><span class="who ext">Operadora</span></td><td>Segunda operadora por otra fachada; abrir avería con el número de circuito.</td></tr>
+<tr data-tags="fis si"><td>Sala de reuniones grande sin Wi-Fi con 60 personas</td><td>Físico / capacidad</td><td><span class="verdict mid">Sí, con compra</span></td><td><span class="who mix">Redes + compras</span></td><td>AP dedicado en la sala (o dos), 6 GHz si es posible, canales de 20 MHz.</td></tr>
+<tr data-tags="tec no"><td>Vecinos en el canal 3, 9 o con 80 MHz encima de los míos</td><td>Técnico</td><td><span class="verdict no">No</span></td><td><span class="who ext">Los vecinos</span></td><td>No podemos tocar sus redes. Adaptarnos: canales que ellos no usan, 5/6 GHz, 2,4 GHz al mínimo. Ver <a href="#vecinos">vecinos</a>.</td></tr>
+<tr data-tags="tec si"><td>Los portátiles se quedan pegados a un AP de otra zona</td><td>Técnico</td><td><span class="verdict ok">Sí</span></td><td><span class="who int">Redes</span></td><td>802.11k/v/r, potencia más baja, RSSI mínimo, drivers actualizados por GPO/Intune.</td></tr>
+<tr data-tags="tec si"><td>Se corta la llamada al cambiar de planta</td><td>Técnico</td><td><span class="verdict ok">Sí</span></td><td><span class="who int">Redes</span></td><td>Si la VLAN es por planta, cambia la IP: usar la opción A (VLAN de edificio) o roaming L3; 802.11r.</td></tr>
+<tr data-tags="tec si"><td>Sin IP por la tarde (169.254)</td><td>Técnico</td><td><span class="verdict ok">Sí</span></td><td><span class="who int">Sistemas</span></td><td>Ámbito DHCP agotado: subred mayor, concesión más corta, MAC aleatorias. Ver <a href="laboratorio.html#logico">simulador DHCP</a>.</td></tr>
+<tr data-tags="tec si"><td>Wi-Fi lento en todo el edificio a la vez</td><td>Técnico</td><td><span class="verdict ok">Sí</span></td><td><span class="who int">Redes</span></td><td>Broadcast/multicast en la VLAN Wi-Fi, bucle, actualización masiva. Revisar utilización de canal y contadores.</td></tr>
+<tr data-tags="tec no"><td>Saltos de canal en 52–140</td><td>Técnico</td><td><span class="verdict mid">En parte</span></td><td><span class="who mix">Radares (externo) / redes</span></td><td>DFS es obligatorio: no se puede evitar el radar. Quitar del plan los canales que salten a menudo.</td></tr>
+<tr data-tags="tec no"><td>EnGenius Cloud no accesible</td><td>Técnico</td><td><span class="verdict no">No</span></td><td><span class="who ext">Fabricante</span></td><td>La red sigue funcionando; no se pueden hacer cambios. Mirar la página de estado del fabricante.</td></tr>
+<tr data-tags="tec no"><td>Un firmware de AP con fallos</td><td>Técnico</td><td><span class="verdict mid">En parte</span></td><td><span class="who mix">Fabricante + redes</span></td><td>Actualizar primero una planta piloto; volver a la versión anterior; abrir caso de soporte.</td></tr>
+<tr data-tags="tec no"><td>Internet saturado en hora punta</td><td>Técnico / dinero</td><td><span class="verdict no">No solo</span></td><td><span class="who dir">Dirección / compras</span></td><td>Primero QoS y controlar actualizaciones; si el p95 supera el 70 %, ampliar contrato. Ver <a href="#internet">plan de Internet</a>.</td></tr>
+<tr data-tags="tec si"><td>Dispositivos IoT que no se conectan</td><td>Técnico</td><td><span class="verdict ok">Sí</span></td><td><span class="who int">Redes</span></td><td>SSID IoT en 2,4 GHz/WPA2, sin DFS, VLAN 70.</td></tr>
+<tr data-tags="hum si"><td>Monitorizar qué hace cada empleado en Internet</td><td>Ético / legal</td><td><span class="verdict mid">Con límites</span></td><td><span class="who dir">Dirección + DPD + IT</span></td><td>RGPD y LOPDGDD (art. 87): política de uso informada por escrito, proporcionalidad, nada de vigilancia encubierta. Registrar por seguridad, no espiar.</td></tr>
+<tr data-tags="hum si"><td>Inspección TLS del tráfico personal (banca, salud)</td><td>Ético / legal</td><td><span class="verdict ok">Sí</span></td><td><span class="who mix">IT + DPD</span></td><td>Excluir categorías sensibles de la inspección; informar a la plantilla.</td></tr>
+<tr data-tags="hum si"><td>Localizar a personas por el Wi-Fi (analítica de ubicación)</td><td>Ético / legal</td><td><span class="verdict mid">Con límites</span></td><td><span class="who dir">Dirección + DPD</span></td><td>Es geolocalización (LOPDGDD art. 90): informar previamente, finalidad legítima, no para controlar a personas sin base legal.</td></tr>
+<tr data-tags="hum si"><td>Un directivo pide acceso al correo de un empleado</td><td>Ético / legal</td><td><span class="verdict mid">Con procedimiento</span></td><td><span class="who dir">Dirección + legal + DPD</span></td><td>Nunca "por las buenas": procedimiento escrito, justificación, presencia de representante, registro. IT no decide solo.</td></tr>
+<tr data-tags="hum si"><td>Presión para saltarse la seguridad ("quítame el MFA", "ábreme ese puerto")</td><td>Humano</td><td><span class="verdict ok">Sí</span></td><td><span class="who int">IT</span></td><td>Explicar el riesgo, ofrecer alternativa, documentar la excepción con firma del responsable y fecha de caducidad.</td></tr>
+<tr data-tags="hum si"><td>Hemos cometido un error que tumbó la red</td><td>Humano / ético</td><td><span class="verdict ok">Sí</span></td><td><span class="who int">IT</span></td><td>Reconocerlo pronto, restaurar, postmortem sin culpables, cambiar el proceso (cambios con aprobación y vuelta atrás).</td></tr>
+<tr data-tags="hum si"><td>Guardias y avisos fuera de horario</td><td>Humano / legal</td><td><span class="verdict mid">Con acuerdo</span></td><td><span class="who dir">Dirección + RR. HH.</span></td><td>Derecho a la desconexión digital (LOPDGDD art. 88): guardias pactadas y compensadas, no disponibilidad implícita.</td></tr>
+<tr data-tags="hum si"><td>Software sin licencia instalado por usuarios</td><td>Legal</td><td><span class="verdict ok">Sí</span></td><td><span class="who int">IT</span></td><td>Usuarios sin permisos de administrador, catálogo de software, inventario.</td></tr>
+<tr data-tags="hum no"><td>"Bloquead la Wi-Fi del vecino que nos molesta"</td><td>Ético / legal</td><td><span class="verdict no">No</span></td><td>—</td><td><b>Ilegal</b>: inhibidores y ataques de desautenticación están prohibidos (Ley General de Telecomunicaciones y posible delito). Ver <a href="#vecinos">vecinos</a>.</td></tr>
+<tr data-tags="hum si"><td>Cámaras en zonas de trabajo</td><td>Legal</td><td><span class="verdict mid">Con límites</span></td><td><span class="who dir">Dirección + DPD</span></td><td>LOPDGDD art. 89: informar, carteles, nunca en zonas de descanso o aseos; VLAN aislada.</td></tr>
+<tr data-tags="hum si"><td>Datos de los invitados del Wi-Fi</td><td>Legal</td><td><span class="verdict ok">Sí</span></td><td><span class="who mix">IT + DPD</span></td><td>Si el portal recoge correo o teléfono: información RGPD, finalidad, plazo de conservación.</td></tr>
+</tbody></table></div>
+
+<h2 id="vecinos">Los vecinos y su Wi-Fi</h2>
+<p>Las redes de los vecinos son una interferencia que <b>no controlamos</b>. Lo que sí podemos hacer:</p>
+<div class="two">
+<div class="card"><h4>✓ Lo que podemos hacer</h4>
+<ul class="small">
+<li><b>Medir</b> con inSSIDer/Acrylic en cada planta, junto a cada medianera, en distintas horas.</li>
+<li>Elegir <b>canales que no usan</b> (los routers domésticos usan casi siempre 36–48 con 80 MHz: los <b>canales DFS 100–140 suelen estar libres</b>).</li>
+<li>Usar <b>20 MHz</b> en 5 GHz y llevar a los clientes a 5/6 GHz.</li>
+<li>Bajar la potencia y alejar los APs de las medianeras.</li>
+<li>Reducir 2,4 GHz al mínimo: ahí no hay escapatoria (solo 3 canales).</li>
+<li>Wi-Fi 6 <b>BSS Coloring</b>: ignora transmisiones lejanas de otras redes en el mismo canal.</li>
+<li><b>Hablar con ellos</b>: una nota amable proponiendo canales (muchas veces es un router de operadora que ni saben configurar).</li>
+<li>Si una emisión no es Wi-Fi o supera límites legales: denunciar la interferencia perjudicial a la <b>Inspección de Telecomunicaciones</b> del Ministerio.</li>
+</ul></div>
+<div class="card"><h4>✗ Lo que NO podemos hacer</h4>
+<ul class="small">
+<li>Usar <b>inhibidores</b> (jammers): prohibidos.</li>
+<li>Enviar <b>desautenticaciones</b> para echar a sus clientes (lo que hacen algunas funciones "anti-rogue" agresivas): ilegal fuera de tu propia red y puede ser delito.</li>
+<li>Subir la potencia por encima del límite legal o cambiar el país del AP.</li>
+<li>Conectarnos a sus redes o "tomar prestados" sus canales con su contraseña.</li>
+</ul></div>
+</div>
+<pre><code>Hola, somos el departamento de IT de [Empresa], en el edificio de al lado.
+Hemos detectado que vuestra red "[SSID]" usa el canal [X] con un ancho de [80] MHz,
+que coincide con el nuestro y nos afecta a ambos. Si os parece, podríais
+configurarla en el canal [Y] y 20/40 MHz: iría igual o mejor para vosotros.
+Os ayudamos encantados si lo necesitáis. Gracias. — [Nombre, teléfono]</code></pre>
+
+<h2 id="crecer">Hacia dónde crecer</h2>
+<div class="grid">
+<a class="card" href="nivel-4.html" style="--lvl:var(--l4)"><h4>Si se abre otra sede → N4</h4><p class="small">SD-WAN, direccionamiento por sede (10.42 = esta sede), CPD de respaldo o nube.</p></a>
+<a class="card" href="nivel-3.html" style="--lvl:var(--l3)"><h4>Reforzar N3</h4><p class="small">NAC completo, SIEM, segundo CPD/DR en nube, pruebas de recuperación.</p></a>
+<a class="card" href="nivel-5.html" style="--lvl:var(--l5)"><h4>Ideas de N5</h4><p class="small">Zero Trust (ZTNA en vez de VPN), automatización de la configuración, SLOs.</p></a>
+<a class="card" href="wifi.html"><h4>Wi-Fi 7 y 6 GHz</h4><p class="small">Cuando renueves APs: 6 GHz descongestiona 5 GHz para todos los dispositivos recientes.</p></a>
+</div>
+
+</div></main>
+<script src="assets/app.js"></script>
+<script src="assets/rf.js"></script>
+<script src="assets/charts.js"></script>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n, d = 1) => Number(n).toLocaleString('es-ES', { maximumFractionDigits: d });
+
+  // ================== PLANTAS ==================
+  const FLOORS = ['PB', 'P1', 'P2', 'P3', 'P4', 'P5'];
+  const NAMES = ['Planta baja · recepción, cafetería, sala polivalente', 'Planta 1 · open space', 'Planta 2 · open space', 'Planta 3 · open space', 'Planta 4 · despachos', 'Planta 5 · dirección y salas'];
+  const CH5 = [[36, 100, 52, 116], [44, 108, 60, 132], [40, 104, 56, 136], [48, 112, 64, 140], [52, 116, 36, 100], [60, 132, 44, 108]];
+  const CH24 = [[1, 0, 0, 6], [11, 0, 0, 1], [6, 0, 0, 11], [1, 0, 0, 6], [11, 0, 0, 1], [6, 0, 0, 11]];
+  const CH6 = [[1, 33, 65, 17], [49, 81, 17, 1], [33, 65, 1, 49], [81, 17, 49, 33], [65, 1, 33, 81], [17, 49, 81, 65]];
+  const POS = [
+    [[7, 6], [33, 6], [7, 18], [30, 20]],
+    [[10, 7], [30, 7], [10, 17], [30, 16]],
+    [[11, 7], [31, 7], [9, 17], [29, 17]],
+    [[10, 7], [30, 7], [10, 17], [30, 16]],
+    [[6, 12], [15, 12], [28, 12], [36, 12]],
+    [[8, 6], [31, 6], [11, 18], [32, 18]],
+  ];
+  const ZONE = [
+    ['Cafetería norte', 'Sala polivalente', 'Cafetería sur', 'Recepción'],
+    ['Open space NO', 'Open space NE', 'Open space SO', 'Open space SE'],
+    ['Open space NO', 'Open space NE', 'Open space SO', 'Open space SE'],
+    ['Open space NO', 'Open space NE', 'Open space SO', 'Open space SE'],
+    ['Pasillo oeste', 'Pasillo centro-oeste', 'Pasillo centro-este', 'Pasillo este'],
+    ['Despachos dirección', 'Sala de consejo', 'Salas reuniones', 'Zona asistentes'],
+  ];
+  const IDF = { x: 24.3, y: 13.5 };
+  const R = (on, ch, w, p) => ({ on, ch, w, p });
+  function apsOf(f, rel) {
+    return POS[f].map(([x, y], i) => ({
+      name: 'AP-' + FLOORS[f] + '-' + (i + 1), x, y, gain: 4, ssid: 'Empresa', floor: rel || 0,
+      radios: { '2.4': R(CH24[f][i] > 0, CH24[f][i] || 1, 20, 8), '5': R(true, CH5[f][i], 20, 14), '6': R(true, CH6[f][i], 80, 14) },
+    }));
+  }
+  function shell() { return [{ x1: 0, y1: 0, x2: 40, y2: 0, m: 'lowe' }, { x1: 0, y1: 24, x2: 40, y2: 24, m: 'lowe' }, { x1: 0, y1: 0, x2: 0, y2: 24, m: 'ladrillo' }, { x1: 40, y1: 0, x2: 40, y2: 24, m: 'ladrillo' }]; }
+  function core() {
+    return [
+      { x1: 17, y1: 9, x2: 19.5, y2: 9, m: 'metal' }, { x1: 17, y1: 12, x2: 19.5, y2: 12, m: 'metal' }, { x1: 17, y1: 9, x2: 17, y2: 12, m: 'metal' }, { x1: 19.5, y1: 9, x2: 19.5, y2: 12, m: 'metal' },
+      { x1: 19.5, y1: 9, x2: 23, y2: 9, m: 'hormigon' }, { x1: 23, y1: 9, x2: 23, y2: 15, m: 'hormigon' }, { x1: 17, y1: 15, x2: 23, y2: 15, m: 'hormigon' }, { x1: 17, y1: 12, x2: 17, y2: 15, m: 'ladrillo' },
+      { x1: 23, y1: 12, x2: 25.6, y2: 12, m: 'ladrillo' }, { x1: 25.6, y1: 12, x2: 25.6, y2: 15, m: 'ladrillo' }, { x1: 23, y1: 15, x2: 25.6, y2: 15, m: 'madera' },
+    ];
+  }
+  function layout(f) {
+    const w = [...shell(), ...core()], l = [{ x: 20, y: 8.3, t: 'ascensor · escalera' }, { x: 24.3, y: 11.5, t: '' }];
+    if (f === 0) {
+      w.push({ x1: 14, y1: 0, x2: 14, y2: 24, m: 'pladur' }, { x1: 28, y1: 0, x2: 28, y2: 11, m: 'vidrio' }, { x1: 28, y1: 11, x2: 40, y2: 11, m: 'vidrio' }, { x1: 16, y1: 18, x2: 26, y2: 18, m: 'vidrio' });
+      l.push({ x: 7, y: 12, t: 'Cafetería' }, { x: 34, y: 3, t: 'Sala polivalente' }, { x: 21, y: 21.5, t: 'Recepción' }, { x: 34, y: 17, t: 'Zona espera' });
+    } else if (f >= 1 && f <= 3) {
+      w.push({ x1: 2, y1: 5, x2: 14, y2: 5, m: 'vidrio' }, { x1: 8, y1: 0, x2: 8, y2: 5, m: 'vidrio' }, { x1: 14, y1: 0, x2: 14, y2: 5, m: 'vidrio' }, { x1: 31, y1: 19, x2: 31, y2: 24, m: 'pladur' }, { x1: 31, y1: 19, x2: 40, y2: 19, m: 'pladur' });
+      if (f === 2) w.push({ x1: 26, y1: 0, x2: 26, y2: 5, m: 'vidrio' }, { x1: 26, y1: 5, x2: 38, y2: 5, m: 'vidrio' });
+      l.push({ x: 5, y: 2.6, t: 'Sala A' }, { x: 11, y: 2.6, t: 'Sala B' }, { x: 9, y: 12, t: 'Open space' }, { x: 31, y: 12, t: 'Open space' }, { x: 35.5, y: 21.5, t: 'Office' });
+    } else if (f === 4) {
+      w.push({ x1: 0, y1: 10, x2: 17, y2: 10, m: 'pladur' }, { x1: 25.6, y1: 10, x2: 40, y2: 10, m: 'pladur' }, { x1: 0, y1: 14, x2: 17, y2: 14, m: 'pladur' }, { x1: 25.6, y1: 14, x2: 40, y2: 14, m: 'pladur' });
+      for (let x = 4; x < 40; x += 4) { if (x > 16 && x < 26) continue; w.push({ x1: x, y1: 0, x2: x, y2: 10, m: 'pladur' }, { x1: x, y1: 14, x2: x, y2: 24, m: 'pladur' }); }
+      l.push({ x: 8, y: 12.5, t: 'pasillo' }, { x: 33, y: 12.5, t: 'pasillo' }, { x: 2, y: 5, t: 'desp.' }, { x: 38, y: 19, t: 'desp.' });
+    } else {
+      w.push({ x1: 0, y1: 10, x2: 17, y2: 10, m: 'ladrillo' }, { x1: 6, y1: 0, x2: 6, y2: 10, m: 'madera' }, { x1: 12, y1: 0, x2: 12, y2: 10, m: 'madera' }, { x1: 26, y1: 0, x2: 26, y2: 10, m: 'ladrillo' }, { x1: 26, y1: 10, x2: 40, y2: 10, m: 'ladrillo' }, { x1: 4, y1: 14, x2: 18, y2: 14, m: 'vidrio' }, { x1: 18, y1: 14, x2: 18, y2: 24, m: 'vidrio' });
+      l.push({ x: 3, y: 5, t: 'Dirección' }, { x: 9, y: 5, t: 'Desp.' }, { x: 33, y: 5, t: 'Sala de consejo' }, { x: 11, y: 20, t: 'Salas reuniones' }, { x: 31, y: 19, t: 'Asistentes' });
+    }
+    return { w, l };
+  }
+  const NB = [
+    // [ssid, x, y, ch24, ch5, w5]
+    [['MOVISTAR_8A21', -4, 5, 1, 36, 80], ['Vodafone-3F', -4, 17, 6, 100, 80], ['Bar_Esquina', 12, -10, 11, 0, 0], ['Oficina-E', 44, 9, 11, 44, 40], ['Tienda_E', 44, 19, 1, 52, 40]],
+    [['MOVISTAR_8A21', -4, 6, 1, 36, 80], ['DIGI_77', -4, 18, 3, 44, 80], ['Oficina-E', 44, 10, 6, 116, 40], ['Coworking_E', 44, 20, 11, 60, 80]],
+    [['Vodafone-2B', -4, 8, 6, 100, 80], ['Orange-HOME', -4, 19, 11, 36, 80], ['Oficina-E', 44, 6, 1, 52, 40], ['Oficina-E-guest', 44, 18, 9, 108, 40]],
+    [['MiFibra-3C', -4, 6, 1, 36, 80], ['MOVISTAR_11', -4, 17, 4, 100, 80], ['Oficina-E', 44, 9, 11, 132, 40]],
+    [['Pepephone', -4, 7, 6, 44, 80], ['Lowi_4A', -4, 18, 1, 100, 160], ['Oficina-E', 44, 12, 11, 36, 40], ['Despacho-Abog', 44, 20, 9, 0, 0]],
+    [['Atico-5', -4, 10, 11, 36, 80], ['Oficina-E-dir', 44, 8, 1, 60, 40], ['Hotel_Terraza', 20, -12, 6, 140, 80]],
+  ];
+  function scene(f) {
+    const L = layout(f);
+    let aps = apsOf(f, 0);
+    if (f < 5) aps = aps.concat(apsOf(f + 1, 1));
+    if (f > 0) aps = aps.concat(apsOf(f - 1, -1));
+    return {
+      w: 40, h: 24, n: 2.4, view: { x0: -7, y0: -7, x1: 47, y1: 30 }, walls: L.w, labels: L.l, idf: IDF, aps,
+      neighbors: NB[f].map(([ssid, x, y, c24, c5, w5]) => ({ ssid, x, y, gain: 3, radios: { '2.4': R(c24 > 0, c24 || 1, 20, 20), '5': R(c5 > 0, c5 || 36, w5 || 80, 20), '6': R(false, 1, 160, 18) } })),
+    };
+  }
+  const tabs = $('floor-tabs'); let cur = -1, simObj = null;
+  FLOORS.slice().reverse().forEach((f) => { const i = FLOORS.indexOf(f); const b = document.createElement('button'); b.textContent = f; b.dataset.f = i; b.onclick = () => showFloor(i); tabs.appendChild(b); });
+  function showFloor(i) {
+    cur = i;
+    tabs.querySelectorAll('button').forEach((b) => b.classList.toggle('on', +b.dataset.f === i));
+    $('floor-desc').innerHTML = `<h3>${NAMES[i]}</h3><p class="small">4 APs en techo cableados al IDF del núcleo (switch EnGenius PoE+). Vecinos: ${NB[i].map((n) => n[0]).join(', ')}. ${i === 4 ? '<b>Ojo:</b> los APs están en el pasillo; los despachos con puerta cerrada reciben a través de un tabique. Prueba a mover dos APs dentro de los despachos grandes.' : i === 0 ? 'La sala polivalente puede llenarse: es la zona más exigente en capacidad.' : ''}</p>`;
+    $('floor-sim').innerHTML = '';
+    const sc = scene(i);
+    simObj = new RF.FloorSim($('floor-sim'), sc, { editable: true, band: '5', mode: 'rssi', height: 220, onUpdate: () => floorTable(sc, i) });
+    simObj.state.probe = { x: 20, y: 18 };
+    floorTable(sc, i);
+  }
+  function floorTable(sc, f) {
+    const own = sc.aps.filter((a) => !a.floor);
+    $('floor-table').innerHTML = `<thead><tr><th>AP</th><th>Zona</th><th>5 GHz</th><th>2,4 GHz</th><th>6 GHz</th><th>Potencia 5G</th><th class="num">Cable al IDF</th><th>Puerto</th></tr></thead><tbody>` +
+      own.map((a, i) => {
+        const len = (Math.abs(a.x - IDF.x) + Math.abs(a.y - IDF.y)) * 1.1 + 6;
+        const r5 = a.radios['5'], r2 = a.radios['2.4'], r6 = a.radios['6'];
+        return `<tr><td><i class="sw" style="background:${RF.cat(i)}"></i>${a.name}</td><td>${ZONE[f][i] || ''}</td><td>ch ${r5.ch}/${r5.w}${RF.DFS(r5.ch) ? ' <span class="who mix">DFS</span>' : ''}</td><td>${r2.on ? 'ch ' + r2.ch : 'apagada'}</td><td>ch ${r6.ch}/${r6.w}</td><td>${r5.p} dBm</td><td class="num">${fmt(len, 0)} m ${len > 90 ? '✗' : '✓'}</td><td>SW-${FLOORS[f]} p${41 + i} (trunk)</td></tr>`;
+      }).join('') + '</tbody>';
+  }
+  showFloor(2);
+
+  // ================== TABLA CANALES ==================
+  (function () {
+    let h = '<thead><tr><th>Planta</th>' + [1, 2, 3, 4].map((i) => `<th>AP-${i} · 5 GHz</th>`).join('') + '<th>2,4 GHz (AP1 / AP4)</th><th>6 GHz (80 MHz)</th></tr></thead><tbody>';
+    for (let f = 5; f >= 0; f--) {
+      h += `<tr><th>${FLOORS[f]}</th>` + CH5[f].map((c) => `<td style="${RF.DFS(c) ? 'background:var(--warn-soft)' : ''}"><b>${c}</b></td>`).join('') + `<td>${CH24[f][0]} / ${CH24[f][3]}</td><td>${CH6[f].join(' · ')}</td></tr>`;
+    }
+    $('chan-table').innerHTML = h + '</tbody>';
+  })();
+
+  // ================== CAPACIDAD ==================
+  function cap() {
+    const dev = +$('k-dev').value, aps = Math.max(1, +$('k-ap').value), act = +$('k-act').value / 100, dem = +$('k-dem').value, w = +$('k-w').value, std = $('k-std').value;
+    const per5 = RF.phyRate(26, w, 2, std).rate * 0.6 * (std === 'ax' ? 1.25 : 1) * (w > 20 ? 0.8 : 1);
+    const perAp = per5 + 0.5 * RF.phyRate(26, 20, 2, std).rate * 0.35;
+    const f = (n) => (n * perAp) / (dev * act);
+    const xs = []; for (let n = 8; n <= 72; n += 2) xs.push(n);
+    Charts.lineChart($('k-chart'), { x: xs, series: [{ name: 'Mbps por dispositivo activo', color: RF.cat(0), data: xs.map(f) }], hLines: [{ y: dem, label: 'Demanda: ' + dem + ' Mbps', color: RF.cssv('--bad') }], height: 240, xLabel: 'Número de APs', yLabel: 'Mbps', xFmt: (v) => v, marker: xs.indexOf(aps - (aps % 2)) >= 0 ? { i: xs.indexOf(aps - (aps % 2)), label: aps + ' APs' } : null });
+    const cpa = dev / aps, actPer = cpa * act, mbps = f(aps), util = Math.min(999, dem / mbps * 100);
+    const need = Math.ceil((dev * act * dem) / (perAp * 0.7));
+    const needDensity = Math.ceil(dev * act / 30);
+    const rec = Math.max(need, needDensity);
+    $('k-out').innerHTML = `Capacidad útil estimada por AP: ${fmt(perAp, 0)} Mbps → total ${fmt(perAp * aps / 1000, 2)} Gbps\nDispositivos por AP: ${fmt(cpa, 0)} (activos a la vez: ${fmt(actPer, 0)})\nMbps por dispositivo activo: <span class="big">${fmt(mbps, 1)}</span>  frente a ${dem} necesarios → uso del aire ≈ ${fmt(util, 0)} %\n${util > 100 ? '✗ Insuficiente en hora punta.' : util > 70 ? '⚠ Justo: sin margen para salas llenas o picos.' : '✓ Suficiente de media.'}\nAPs recomendados (≤ 70 % de uso y ≤ 30 activos por AP): <b>${rec}</b> (≈ ${Math.ceil(rec / 6)} por planta).\nAunque la media dé, las <b>salas de reuniones y la planta baja</b> concentran gente: ahí se añaden APs dedicados.`;
+  }
+  ['k-dev', 'k-ap', 'k-act', 'k-dem', 'k-w', 'k-std'].forEach((i) => { $(i).addEventListener('input', cap); $(i).addEventListener('change', cap); });
+  cap();
+
+  // ================== INTERNET ==================
+  function inet() {
+    const ppl = +$('i-ppl').value, vid = +$('i-vid').value / 100, vm = +$('i-vm').value, base = +$('i-base').value, gst = +$('i-gst').value, upd = +$('i-upd').value;
+    const pres = [0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.05, 0.15, 0.55, 0.9, 1, 1, 0.95, 0.6, 0.75, 0.95, 0.9, 0.7, 0.4, 0.15, 0.06, 0.03, 0.02, 0.02];
+    const vprof = [0, 0, 0, 0, 0, 0, 0, 0.2, 0.6, 0.9, 1, 1, 0.8, 0.3, 0.5, 0.9, 1, 0.7, 0.4, 0.2, 0, 0, 0, 0];
+    const hours = [...Array(24).keys()];
+    const down = hours.map((h) => { const p = ppl * pres[h]; return p * base + ppl * vid * vprof[h] * vm + gst * pres[h] * 2 + ppl * 0.4 * upd * pres[h]; });
+    const up = hours.map((h, i) => ppl * pres[h] * base * 0.35 + ppl * vid * vprof[h] * vm * 0.9 + gst * pres[h] * 0.4);
+    const peakD = Math.max(...down), peakU = Math.max(...up), peak = Math.max(peakD, peakU);
+    const need = peak * 1.3 / 0.7;
+    const opts = [[300, '300 Mbps'], [600, '600 Mbps'], [1000, '1 Gbps'], [2000, '2 × 1 Gbps (SD-WAN)'], [2500, '2,5 Gbps'], [10000, '10 Gbps']];
+    const rec = opts.find((o) => o[0] >= need) || opts[opts.length - 1];
+    const hl = [1000, 10000].filter((v) => v < Math.max(peak * 2.2, 1200)).map((v) => ({ y: v, label: (v >= 1000 ? v / 1000 + ' Gbps' : v + ' Mbps') + ' contratados', color: RF.cssv('--fg-3') }));
+    hl.push({ y: need, label: 'Necesario (pico × 1,3 ÷ 70 %)', color: RF.cssv('--bad') });
+    Charts.lineChart($('i-chart'), { x: hours, series: [{ name: 'Bajada', color: RF.cat(0), data: down }, { name: 'Subida', color: RF.cat(1), data: up }], hLines: hl, height: 260, xLabel: 'Hora del día', yLabel: 'Mbps', xFmt: (v, i, full) => full ? v + ':00' : v + 'h', yFmt: (v, t) => fmt(v, 0) + (t ? ' Mbps' : '') });
+    const backup = Math.max(300, Math.round(peak * 0.6 / 100) * 100);
+    $('i-out').innerHTML = `Pico de bajada: ${fmt(peakD, 0)} Mbps · pico de subida: ${fmt(peakU, 0)} Mbps\nLínea necesaria (con 30 % de crecimiento y sin pasar del 70 %): <span class="big">${fmt(need / 1000, 2)} Gbps</span> simétricos\n\nRecomendación:\n  • Principal: <b>${need > 1600 ? 'fibra dedicada 10 Gbps (caudal garantizado ajustable) ' : need > 800 ? 'fibra dedicada 2–2,5 Gbps o 10 Gbps con caudal contratado' : 'fibra dedicada 1 Gbps'}</b> con SLA 4–8 h e IP fijas\n  • Respaldo (otro operador, otra fachada): <b>≥ ${backup >= 1000 ? fmt(backup / 1000, 1) + ' Gbps' : backup + ' Mbps'}</b> (FTTH profesional) + 5G para lo crítico\n  • Firewall con ≥ ${fmt(need * 1.5 / 1000, 1)} Gbps de throughput con protección de amenazas\nCon 2 líneas en activo-activo (SD-WAN) se usa la capacidad de las dos en el día a día.`;
+  }
+  ['i-ppl', 'i-vid', 'i-vm', 'i-base', 'i-gst', 'i-upd'].forEach((i) => { $(i).addEventListener('input', inet); $(i).addEventListener('change', inet); });
+  inet();
+
+  // ================== PoE ==================
+  function poe() {
+    const b = +$('e-bud').value, used = +$('e-apw').value * +$('e-ap').value + +$('e-telw').value * +$('e-tel').value + +$('e-camw').value * +$('e-cam').value;
+    const pct = used / b * 100;
+    $('e-out').innerHTML = `Consumo PoE: <span class="big">${fmt(used, 0)} W</span> de ${fmt(b, 0)} W (${fmt(pct, 0)} %)\n${pct > 100 ? '✗ Excede: algún equipo no arrancará.' : pct > 80 ? '⚠ Sin margen: añade un segundo switch o fuente.' : '✓ Correcto.'}\nAl SAI del IDF: ≈ ${fmt(used + 80, 0)} W (PoE + consumo propio del switch). Autonomía de 15 min → SAI de ≈ ${fmt(Math.ceil((used + 80) * 1.25 / 0.9 / 100) * 100, 0)} VA con baterías adecuadas.`;
+  }
+  ['e-bud', 'e-apw', 'e-ap', 'e-telw', 'e-tel', 'e-camw', 'e-cam'].forEach((i) => $(i).addEventListener('input', poe));
+  poe();
+
+  window.addEventListener('resize', () => { cap(); inet(); });
+  new MutationObserver(() => { cap(); inet(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+})();
+</script>
+</body>
+</html>

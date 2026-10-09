@@ -28,6 +28,37 @@
 <div class="table-wrap"><table id="glos">
 <thead><tr><th>Término</th><th>Qué es</th></tr></thead>
 <tbody>
+<tr data-tags="red"><td><b>dBm / dBi / dB</b></td><td>dBm: potencia absoluta respecto a 1 mW (escala logarítmica, +3 dB = doble). dBi: ganancia de antena. dB: diferencia relativa.</td></tr>
+<tr data-tags="red"><td><b>RSSI</b></td><td>Potencia de señal recibida por el cliente, en dBm (−30 excelente, −67 mínimo para voz, −80 casi inútil).</td></tr>
+<tr data-tags="red"><td><b>SNR / SINR</b></td><td>Señal frente a ruido / frente a ruido + interferencia, en dB. Determina la modulación (MCS) y la velocidad.</td></tr>
+<tr data-tags="red"><td><b>EIRP</b></td><td>Potencia radiada efectiva: potencia del transmisor + ganancia de antena − pérdidas. Es lo que limita la ley.</td></tr>
+<tr data-tags="red"><td><b>DFS / TPC / CAC</b></td><td>Selección dinámica de frecuencia (canales 52–144 compartidos con radares), control de potencia y escucha previa de 60 s (10 min en 120–128).</td></tr>
+<tr data-tags="red"><td><b>Canal / ancho de canal</b></td><td>Trozo de espectro que usa una red. En 2,4 GHz solo 1, 6 y 11 no se solapan. En 5 GHz se pueden unir canales (40/80/160 MHz) a costa de tener menos.</td></tr>
+<tr data-tags="red"><td><b>CCI / ACI</b></td><td>Interferencia cocanal (mismo canal: se turnan) / de canal adyacente (solape parcial: colisiones, peor).</td></tr>
+<tr data-tags="red"><td><b>MCS</b></td><td>Esquema de modulación y codificación: de BPSK a 1024/4096-QAM según la SNR.</td></tr>
+<tr data-tags="red"><td><b>OFDMA</b></td><td>Wi-Fi 6: divide el canal en subcanales para atender a varios clientes a la vez.</td></tr>
+<tr data-tags="red"><td><b>MU-MIMO</b></td><td>Varias antenas para enviar a varios clientes simultáneamente por caminos espaciales distintos.</td></tr>
+<tr data-tags="red"><td><b>BSS Coloring</b></td><td>Wi-Fi 6: marca de "color" para ignorar transmisiones débiles de otras redes en el mismo canal.</td></tr>
+<tr data-tags="red"><td><b>Band steering</b></td><td>Empujar a los clientes de doble banda hacia 5/6 GHz.</td></tr>
+<tr data-tags="red"><td><b>802.11k / v / r</b></td><td>Ayudas al roaming: lista de vecinos, sugerencia de cambio de AP y reautenticación rápida.</td></tr>
+<tr data-tags="red"><td><b>Airtime (tiempo de aire)</b></td><td>Porcentaje del tiempo que el canal está ocupado. Recurso escaso en Wi-Fi: solo habla uno a la vez.</td></tr>
+<tr data-tags="red"><td><b>Multitrayecto</b></td><td>La señal llega por varios caminos (rebotes) y se suma o se anula según la fase.</td></tr>
+<tr data-tags="red"><td><b>Site survey</b></td><td>Estudio de cobertura: predictivo (sobre plano), pasivo (midiendo señal) o activo (midiendo velocidad).</td></tr>
+<tr data-tags="red"><td><b>inSSIDer</b></td><td>Programa de MetaGeek para ver redes Wi-Fi, canales, señal y solapamientos.</td></tr>
+<tr data-tags="red"><td><b>Acrylic Wi-Fi</b></td><td>Suite de Tarlogic (Home gratuita, Professional, Heatmaps) para escanear, capturar y hacer mapas de cobertura.</td></tr>
+<tr data-tags="red"><td><b>EnGenius Cloud</b></td><td>Plataforma de EnGenius para gestionar switches y APs desde la nube.</td></tr>
+<tr data-tags="red"><td><b>SSID / BSSID</b></td><td>Nombre de la red / dirección MAC de cada radio que la emite.</td></tr>
+<tr data-tags="red"><td><b>Proxy ARP / ARP suppression</b></td><td>El AP o switch responde a los ARP en nombre de los clientes y evita difundirlos a todo el Wi-Fi.</td></tr>
+<tr data-tags="red seg"><td><b>MAC aleatoria</b></td><td>Los móviles y portátiles usan una MAC distinta por red (y a veces la rotan): afecta al DHCP y a los filtros por MAC.</td></tr>
+<tr data-tags="red"><td><b>VLSM</b></td><td>Máscaras de longitud variable: subredes de distinto tamaño dentro de un mismo bloque.</td></tr>
+<tr data-tags="red"><td><b>SVI</b></td><td>Interfaz virtual de VLAN en un switch L3: es la puerta de enlace de esa VLAN.</td></tr>
+<tr data-tags="red"><td><b>DHCP relay</b></td><td>Reenvía las peticiones DHCP de una VLAN a un servidor que está en otra.</td></tr>
+<tr data-tags="red"><td><b>LLDP</b></td><td>Protocolo por el que los equipos anuncian quiénes son a sus vecinos de red; LLDP-MED anuncia la VLAN de voz.</td></tr>
+<tr data-tags="red"><td><b>VLAN nativa</b></td><td>VLAN que viaja sin etiqueta por un trunk.</td></tr>
+<tr data-tags="seg"><td><b>EAP-TLS / PEAP</b></td><td>Métodos de 802.1X: con certificado (el más seguro) o con usuario y contraseña dentro de un túnel.</td></tr>
+<tr data-tags="seg srv"><td><b>NPS</b></td><td>Servidor RADIUS de Windows Server, usado para Wi-Fi 802.1X y VPN.</td></tr>
+<tr data-tags="seg"><td><b>PMF (802.11w)</b></td><td>Protección de tramas de gestión: impide desautenticaciones falsas.</td></tr>
+<tr data-tags="org seg"><td><b>LOPDGDD</b></td><td>Ley Orgánica española de Protección de Datos y Garantía de los Derechos Digitales (complementa al RGPD).</td></tr>
 <tr data-tags="red"><td><b>802.1Q</b></td><td>Estándar para etiquetar tramas con su número de VLAN en un enlace trunk.</td></tr>
 <tr data-tags="red seg"><td><b>802.1X</b></td><td>Autenticación de un dispositivo antes de darle acceso a la red (cable o Wi-Fi), normalmente contra un servidor RADIUS.</td></tr>
 <tr data-tags="srv"><td><b>AD (Active Directory)</b></td><td>Directorio de Microsoft local: usuarios, grupos, equipos y políticas de un dominio Windows.</td></tr>
